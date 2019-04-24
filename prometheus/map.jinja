@@ -1,0 +1,24 @@
+# -*- coding: utf-8 -*-
+# vim: ft=jinja
+
+{#- Get the `tplroot` from `tpldir` #}
+{%- set tplroot = tpldir.split('/')[0] %}
+{#- Start imports as #}
+{%- import_yaml tplroot ~ "/defaults.yaml" as default_settings %}
+{%- import_yaml tplroot ~ "/osfamilymap.yaml" as osfamilymap %}
+{%- import_yaml tplroot ~ "/osmap.yaml" as osmap %}
+{%- import_yaml tplroot ~ "/osfingermap.yaml" as osfingermap %}
+
+{%- set defaults = salt['grains.filter_by'](default_settings,
+    default='prometheus',
+    merge=salt['grains.filter_by'](osfamilymap, grain='os_family',
+      merge=salt['grains.filter_by'](osmap, grain='os',
+        merge=salt['grains.filter_by'](osfingermap, grain='osfinger',
+          merge=salt['pillar.get']('prometheus:lookup', default={})
+        )
+      )
+    )
+) %}
+
+{#- Merge the prometheus pillar #}
+{%- set prometheus = salt['pillar.get']('prometheus', default=defaults, merge=True) %}

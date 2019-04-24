@@ -1,0 +1,11 @@
+# -*- coding: utf-8 -*-
+# vim: ft=yaml
+---
+prometheus:
+  pkg: prometheus
+  rootgroup: root
+  config_file: /etc/prometheus/prometheus.yml
+  config: {}
+  service:
+    name: prometheus
+    sysrc: False
