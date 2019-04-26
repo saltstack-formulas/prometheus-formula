@@ -12,29 +12,16 @@ include:
 {%- if prometheus.service.sysrc %}
 prometheus_args:
   sysrc.managed:
-    - value: {{ prometheus.service.flags }}
+    # service prometheus restart tended to hang on FreeBSD
+    # https://github.com/saltstack/salt/issues/44848#issuecomment-487016414
+    - value: "{{ prometheus.service.flags }} >/dev/null 2>&1"
 {%- endif %}
 
-{#- On FreeBSD restarting this service hangs. #}
-{#- See https://github.com/saltstack/salt/issues/44848#issuecomment-486460601 #}
-{%- if salt['grains.get']('os_family') == 'FreeBSD' %}
-prometheus-service-running-service-enable:
-  service.enabled:
-    - name: {{ prometheus.service.name }}
-
-prometheus-service-running-service-running:
-  cmd.run:
-    - name: "service {{ prometheus.service.name }} onerestart >/dev/null 2>&1"
-    - hide_output: True
-    - timeout: 60
-    - onchanges:
-{%- else %}{# business as usual #}
 prometheus-service-running-service-running:
   service.running:
     - name: {{ prometheus.service.name }}
     - enable: True
     - watch:
-{%- endif %}
       - file: prometheus-config-file-file-managed
 {%- if prometheus.service.sysrc %}
       - sysrc: prometheus_args
