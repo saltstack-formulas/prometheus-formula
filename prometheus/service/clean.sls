@@ -9,10 +9,3 @@ prometheus-service-clean-service-dead:
   service.dead:
     - name: {{ prometheus.service.name }}
     - enable: False
-
-{%- if prometheus.service.use_sysrc %}
-prometheus_flags:
-  sysrc.absent:
-    - require:
-      - service: prometheus-service-clean-service-dead
-{%- endif %}

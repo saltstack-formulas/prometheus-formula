@@ -14,3 +14,13 @@ prometheus-config-clean-file-absent:
     - name: {{ prometheus.config_file }}
     - require:
       - sls: {{ sls_service_clean }}
+
+{%- if salt['grains.get']('os_family') == 'FreeBSD' %}
+{%-   for parameter in ['args', 'data_dir'] %}
+prometheus-service-args-{{ parameter }}:
+  sysrc.absent:
+    - name: prometheus_{{ parameter }}
+    - require:
+      - service: prometheus-service-clean-service-dead
+{%-   endfor %}
+{%- endif %}

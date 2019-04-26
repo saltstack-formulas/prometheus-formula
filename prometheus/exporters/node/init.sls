@@ -4,16 +4,7 @@
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
-
-{%- macro concat_args(args) %}
-{%-   if args|length > 0 %}
-{%-     for k,v in args -%}
-{%-       if not k or not v %}{% continue %}{% endif -%}
-          --{{ k }}={{ v }}
-{%-       if not loop.last %} {% endif -%}
-{%-     endfor -%}
-{%-   endif -%}
-{%- endmacro %}
+{%- from tplroot ~ "/map.jinja" import concat_args %}
 
 prometheus-exporters-node-pkg-installed:
   pkg.installed:
@@ -49,7 +40,7 @@ prometheus-exporters-node-args:
     - name: node_exporter_args
     # service node_exporter restart tended to hang on FreeBSD
     # https://github.com/saltstack/salt/issues/44848#issuecomment-487016414
-    - value: "{{ concat_args(args|dictsort) }} >/dev/null 2>&1"
+    - value: "{{ concat_args(args) }} >/dev/null 2>&1"
     - watch_in:
       - service: prometheus-exporters-node-service-running
 

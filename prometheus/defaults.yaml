@@ -8,7 +8,8 @@ prometheus:
   config: {}
   service:
     name: prometheus
-    sysrc: False
+    user: prometheus
+    group: prometheus
   exporters:
     node:
       pkg: prometheus-node-exporter

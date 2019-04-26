@@ -6,7 +6,8 @@ prometheus:
   config_file: /etc/prometheus/prometheus.yml
   service:
     name: prometheus
-    flags: --web.listen-address="0.0.0.0:9090"
+    args:
+      web.listen-address: 0.0.0.0:9090
 
   tofs:
     # The files_switch key serves as a selector for alternative

@@ -11,6 +11,7 @@
 # osfamilymap: {}
 ---
 Debian:
+  args_file: /etc/default/prometheus
   exporters:
     node:
       config_file: /etc/default/prometheus-node-exporter
@@ -28,8 +29,6 @@ Alpine: {}
 FreeBSD:
   rootgroup: wheel
   config_file: /usr/local/etc/prometheus.yml
-  service:
-    sysrc: True
   exporters:
     node:
       pkg: node_exporter
@@ -37,8 +36,6 @@ FreeBSD:
 
 OpenBSD:
   rootgroup: wheel
-  service:
-    sysrc: True
 
 Solaris: {}
 
