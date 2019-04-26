@@ -9,3 +9,7 @@ prometheus:
   service:
     name: prometheus
     sysrc: False
+  exporters:
+    node:
+      pkg: prometheus-node-exporter
+      service: prometheus-node-exporter

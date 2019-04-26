@@ -6,4 +6,9 @@ control 'Prometheus service' do
     it { should be_enabled }
     it { should be_running }
   end
+
+  describe service('prometheus-node-exporter') do
+    it { should be_enabled }
+    it { should be_running }
+  end
 end

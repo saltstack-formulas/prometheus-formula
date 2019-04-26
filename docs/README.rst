@@ -92,3 +92,9 @@ dependency on ``prometheus.service.clean`` via include list.
 This state will remove the prometheus package and has a depency on
 ``prometheus.config.clean`` via include list.
 
+``prometheus.exporters``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will manage prometheus exporters according to Pillar ``prometheus:exporters``.
+It includes sub-states like ``prometheus.exporters.node``.
+If you don't want to use Pillar data for this you may use the sub-states directly.

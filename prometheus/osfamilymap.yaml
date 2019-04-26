@@ -10,7 +10,10 @@
 # you will need to provide at least an empty dict in this file, e.g.
 # osfamilymap: {}
 ---
-Debian: {}
+Debian:
+  exporters:
+    node:
+      config_file: /etc/default/prometheus-node-exporter
 
 RedHat: {}
 
@@ -27,6 +30,10 @@ FreeBSD:
   config_file: /usr/local/etc/prometheus.yml
   service:
     sysrc: True
+  exporters:
+    node:
+      pkg: node_exporter
+      service: node_exporter
 
 OpenBSD:
   rootgroup: wheel
