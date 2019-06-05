@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`1.2.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v1.1.0...v1.2.0>`_ (2019-06-05)
+------------------------------------------------------------------------------------------------------------
+
+Features
+^^^^^^^^
+
+
+* **macos:** basic package and group handling (\ `e6a8b0c <https://github.com/saltstack-formulas/prometheus-formula/commit/e6a8b0c>`_\ )
+
 `1.1.0 <https://github.com/alxwr/prometheus-formula/compare/v1.0.0...v1.1.0>`_ (2019-04-30)
 -----------------------------------------------------------------------------------------------
 
