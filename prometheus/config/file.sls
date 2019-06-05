@@ -20,6 +20,7 @@ prometheus-config-file-file-managed:
     - mode: 644
     - user: root
     - group: {{ prometheus.rootgroup }}
+    - makedirs: True
     - template: jinja
     - context:
         config: {{ prometheus.config|json }}
