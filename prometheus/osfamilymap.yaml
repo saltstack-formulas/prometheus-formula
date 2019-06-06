@@ -11,6 +11,7 @@
 # osfamilymap: {}
 ---
 {%- if grains.os == 'MacOS' %}
+  {% set macos_user = salt['cmd.run']("stat -f '%Su' /dev/console") %}
   {% set macos_group = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
 {%- endif %}
 
@@ -20,7 +21,13 @@ Debian:
     node:
       config_file: /etc/default/prometheus-node-exporter
 
-RedHat: {}
+RedHat:
+  pkg:
+    use_upstream_repo: True
+    repo:
+      baseurl: 'https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch'
+      gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
+      metadata_expire: 300
 
 Suse: {}
 
@@ -35,7 +42,8 @@ FreeBSD:
   config_file: /usr/local/etc/prometheus.yml
   exporters:
     node:
-      pkg: node_exporter
+      pkg:
+        name: node_exporter
       service: node_exporter
 
 OpenBSD:
@@ -46,4 +54,5 @@ Solaris: {}
 Windows: {}
 
 MacOS:
+  rootuser: {{ macos_user | d('') }}
   rootgroup: {{ macos_group | d('') }}

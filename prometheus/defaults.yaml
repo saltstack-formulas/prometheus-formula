@@ -2,7 +2,16 @@
 # vim: ft=yaml
 ---
 prometheus:
-  pkg: prometheus
+  pkg:
+    name: prometheus
+    use_upstream_repo: False
+    repo:
+      humanname: prometheus
+      name: prometheus
+      comments:
+        - installed by salt
+      enabled: 1
+      gpgcheck: 1
   rootgroup: root
   config_file: /etc/prometheus/prometheus.yml
   config: {}
@@ -12,5 +21,6 @@ prometheus:
     group: prometheus
   exporters:
     node:
-      pkg: prometheus-node-exporter
+      pkg:
+        name: prometheus-node-exporter
       service: prometheus-node-exporter

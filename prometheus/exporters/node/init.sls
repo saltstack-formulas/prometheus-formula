@@ -8,7 +8,7 @@
 
 prometheus-exporters-node-pkg-installed:
   pkg.installed:
-    - name: {{ prometheus.exporters.node.pkg }}
+    - name: {{ prometheus.exporters.node.pkg.name }}
 
 {%- if 'args' in prometheus.exporters.node %}
 {%-   set args = prometheus.exporters.node.get('args', {}) -%}

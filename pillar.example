@@ -2,7 +2,8 @@
 # vim: ft=yaml
 ---
 prometheus:
-  pkg: prometheus
+  pkg:
+    name: prometheus
   config_file: /etc/prometheus/prometheus.yml
   service:
     name: prometheus
