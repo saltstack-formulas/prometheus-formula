@@ -7,4 +7,4 @@
 
 prometheus-package-install-pkg-installed:
   pkg.installed:
-    - name: {{ prometheus.pkg }}
+    - name: {{ prometheus.pkg.name }}

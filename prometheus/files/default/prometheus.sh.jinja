@@ -3,4 +3,8 @@
 # Your changes may be overwritten.
 ########################################################################
 
-{{ config|yaml(False) }}
+{%- if prometheus.environ %}
+    {%- for item in prometheus.environ %}
+{{ item }}
+    {%- endfor %}
+{%- endif %}

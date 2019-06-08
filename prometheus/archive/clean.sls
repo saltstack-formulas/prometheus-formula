@@ -5,7 +5,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 
-include:
-  - {{ '.archive' if prometheus.pkg.use_upstream_archive else '.package' }}
-  - .config
-  - .service
+prometheus-cli-package-archive-clean-file-absent:
+  file.absent:
+    - names:
+      - {{ prometheus.base_dir }}

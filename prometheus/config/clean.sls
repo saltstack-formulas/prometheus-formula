@@ -11,7 +11,9 @@ include:
 
 prometheus-config-clean-file-absent:
   file.absent:
-    - name: {{ prometheus.config_file }}
+    - names:
+       - {{ prometheus.config_file }}
+       - {{ prometheus.environ_file }}
     - require:
       - sls: {{ sls_service_clean }}
 

@@ -2,15 +2,32 @@
 # vim: ft=yaml
 ---
 prometheus:
-  pkg: prometheus
+  version: '2.10.0'
+  pkg:
+    name: prometheus
+    binary: prometheus
+    use_upstream_archive: False
+    archive:
+      name: /opt
+      uri: https://github.com/prometheus/prometheus/releases/download/
+      source: None
+      # linux amd64 source hash
+      source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+      trim_output: True
+      enforce_toplevel: True
+      archive_format: tar.gz
   rootgroup: root
+  kernel: {{ grains.kernel | lower }}
   config_file: /etc/prometheus/prometheus.yml
   config: {}
+  environ_file: /etc/default/prometheus.sh
+  environ: []
   service:
     name: prometheus
     user: prometheus
     group: prometheus
   exporters:
     node:
-      pkg: prometheus-node-exporter
+      pkg:
+        name: prometheus-node-exporter
       service: prometheus-node-exporter

@@ -35,7 +35,8 @@ FreeBSD:
   config_file: /usr/local/etc/prometheus.yml
   exporters:
     node:
-      pkg: node_exporter
+      pkg:
+        name: node_exporter
       service: node_exporter
 
 OpenBSD:
@@ -43,7 +44,17 @@ OpenBSD:
 
 Solaris: {}
 
-Windows: {}
+Windows:
+  pkg:
+    archive:
+      name: C:\\Program Files
+      source: https://github.com/prometheus/prometheus/releases/download/v2.10.0/prometheus-2.10.0.windows-amd64.tar.gz
+      source_hash: eb138082a4d5e4d5b1e3ca838fa508f053474d46bca76e87ab0834f0d8b110db
 
 MacOS:
+  pkg:
+    archive:
+      name: /opt
+      source: https://github.com/prometheus/prometheus/releases/download/v2.10.0/prometheus-2.10.0.darwin-amd64.tar.gz
+      source_hash: 740e36bcacc0c5d4495f5341fcfa8b7e0dc623d12e8b07ac291052ea0a681325
   rootgroup: {{ macos_group | d('') }}

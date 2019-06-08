@@ -4,3 +4,4 @@
 include:
   - .args
   - .file
+  - .environ
