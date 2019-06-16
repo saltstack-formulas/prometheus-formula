@@ -4,6 +4,7 @@
 prometheus:
   pkg:
     name: prometheus
+    use_upstream_archive: False
     archive:
       source: https://github.com/prometheus/prometheus/releases/download/v2.10.0/prometheus-2.10.0.linux-amd64.tar.gz
       source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7

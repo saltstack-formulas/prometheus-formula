@@ -9,9 +9,16 @@
 prometheus-package-archive-install-file-directory:
   file.directory:
     - name: {{ prometheus.pkg.archive.name }}
+    - user: root
+    - group: root
+    - mode: 755
     - makedirs: True
     - require_in:
       - archive: prometheus-package-archive-install-archive-extracted
+    - recurse:
+        - user
+        - group
+        - mode
 
 prometheus-package-archive-install-archive-extracted:
   archive.extracted:
@@ -21,3 +28,8 @@ prometheus-package-archive-install-archive-extracted:
         until: True
         interval: 60
         splay: 10
+    - user: root
+    - group: root
+    - recurse:
+        - user
+        - group

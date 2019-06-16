@@ -2,6 +2,8 @@
 # vim: ft=yaml
 ---
 prometheus:
+  dir:
+    root: /opt
   version: '2.10.0'
   pkg:
     name: prometheus
