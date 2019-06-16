@@ -1,4 +1,4 @@
-control 'template configuration environment' do
+control 'prometheus configuration environment' do
   title 'should match desired lines'
 
   describe file('/etc/default/prometheus.sh') do

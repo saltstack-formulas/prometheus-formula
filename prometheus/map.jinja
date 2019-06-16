@@ -26,17 +26,18 @@
 {#- Merge the prometheus pillar #}
 {%- set prometheus = salt['pillar.get']('prometheus', default=defaults, merge=True) %}
 
-{#- Update archive details #}
+{#- archive jinja #}
 {%- if prometheus.pkg.use_upstream_archive %}
     {%- set name = 'prometheus-%s.%s-%s'|format(prometheus.version, prometheus.kernel, prometheus.arch) %}
+    {%- set uri = prometheus.pkg.archive.uri + '/v' + prometheus.version + '/' + name %}
     {%- do prometheus.pkg.archive.update({
-           'source': prometheus.pkg.archive.uri + 'v' + prometheus.version + '/' + name 
-                                                + '.' + prometheus.pkg.archive.archive_format,
-           'archive_format': prometheus.pkg.archive.archive_format.split('.')[0]
+           'source':         uri + '.' + prometheus.pkg.archive.archive_suffix,
+           'archive_format': prometheus.pkg.archive.archive_format
     }) %}
     {%- do prometheus.update({'base_dir': prometheus.pkg.archive.name + '/' + name}) %}
     {%- do prometheus.environ.append('export PATH=${PATH}:' + prometheus.pkg.archive.name + '/' + name) %}
 {%- endif %}
+
 
 {#- Contactenate arguments #}
 {%- macro concat_args(args) %}

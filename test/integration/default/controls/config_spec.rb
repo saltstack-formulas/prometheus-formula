@@ -7,7 +7,7 @@ control 'Prometheus configuration' do
     it { should be_grouped_into 'root' }
     its('mode') { should cmp '0644' }
     its('content') { should include 'File managed by Salt' }
-    its('content') { should include 'Your changes will be overwritten.' }
+    its('content') { should include 'Your changes may be overwritten.' }
     its('content') { should include 'global:' }
     its('content') { should include 'alerting:' }
   end

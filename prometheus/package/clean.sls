@@ -12,5 +12,7 @@ include:
 prometheus-package-clean-pkg-removed:
   pkg.removed:
     - name: {{ prometheus.pkg.name }}
+      {%- if 'config' in prometheus and prometheus.config %}
     - require:
       - sls: {{ sls_config_clean }}
+      {%- endif %}

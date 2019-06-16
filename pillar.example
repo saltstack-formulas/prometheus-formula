@@ -8,6 +8,7 @@ prometheus:
     archive:
       source: https://github.com/prometheus/prometheus/releases/download/v2.10.0/prometheus-2.10.0.linux-amd64.tar.gz
       source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+      archive_format: tar
       enforce_toplevel: False
   config_file: /etc/prometheus/prometheus.yml
   environ_file: /etc/default/prometheus.sh
@@ -15,6 +16,10 @@ prometheus:
     name: prometheus
     args:
       web.listen-address: 0.0.0.0:9090
+
+  linux:
+    #'Alternatives system' priority: zero disables (default)
+    altpriority: 0
 
   tofs:
     # The files_switch key serves as a selector for alternative

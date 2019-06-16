@@ -14,7 +14,7 @@ include:
 prometheus-service-running-service-unmasked:
   service.unmasked:
     - name: {{ prometheus.service.name }}
-    - onlyif: systemctl >/dev/null 2>&1
+    - onlyif: systemctl list-unit-files | grep {{ prometheus.service.name }} >/dev/null 2>&1
 
 prometheus-service-running-service-running:
   service.running:
@@ -28,3 +28,4 @@ prometheus-service-running-service-running:
       - sls: {{ sls_config_args }}
       - sls: {{ sls_config_file }}
   {%- endif %}
+    - onlyif: systemctl list-unit-files | grep {{ prometheus.service.name }} >/dev/null 2>&1
