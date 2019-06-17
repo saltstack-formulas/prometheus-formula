@@ -27,4 +27,3 @@ prometheus-config-file-file-managed-environ_file:
         prometheus: {{ prometheus|json }}
     - require:
       - sls: {{ sls_archive_install if prometheus.pkg.use_upstream_archive else sls_package_install }}
-

@@ -2,22 +2,10 @@
 # vim: ft=yaml
 ---
 prometheus:
-  dir: /opt/prometheus
-  base_dir: /opt/prometheus-2.10.0
-  version: '2.10.0'
   pkg:
     name: prometheus
-    binary: prometheus
     use_upstream_archive: False
-    archive:
-      name: /opt
-      uri: https://github.com/prometheus/prometheus/releases/download/
-      source: None
-      source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7  #linux amd64
-      trim_output: True
-      enforce_toplevel: True
-      archive_suffix: tar.gz
-      archive_format: tar
+
   rootgroup: root
   kernel: {{ grains.kernel | lower }}
   config_file: /etc/prometheus/prometheus.yml
@@ -37,3 +25,10 @@ prometheus:
   linux:
     #'Alternatives system' priority: zero disables (default)
     altpriority: 0
+
+  archive:
+    # see ./archive/default.yaml
+    wanted:
+      - prometheus
+      - alertmanager
+      - node_exporter

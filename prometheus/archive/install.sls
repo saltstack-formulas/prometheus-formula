@@ -3,33 +3,37 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- from tplroot ~ "/jinja/macros.jinja" import format_kwargs with context %}
 
-prometheus-package-archive-install-file-directory:
+    {%- for k in p.archive.wanted %}
+
+prometheus-archive-install-{{ k }}-file-directory:
   file.directory:
-    - name: {{ prometheus.pkg.archive.name }}
+    - name: {{ p.archive.dir }}
     - user: root
     - group: root
     - mode: 755
     - makedirs: True
     - require_in:
-      - archive: prometheus-package-archive-install-archive-extracted
+      - archive: prometheus-archive-install-{{ k }}-archive-extracted
     - recurse:
         - user
         - group
         - mode
 
-prometheus-package-archive-install-archive-extracted:
+prometheus-archive-install-{{ k }}-archive-extracted:
   archive.extracted:
-    {{- format_kwargs(prometheus.pkg.archive) }}
-    - retry:
-        attempts: 3
-        until: True
-        interval: 60
-        splay: 10
+    - name: {{ p.archive.dir }}
+    - source: {{ p.archive.uri + '/' + k + '/releases/download/v' + p.archive.versions[k]
+               + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch)
+               + '.' + p.archive.suffix }}
+    - source_hash: {{ p.archive.hashes[k] }} 
     - user: root
     - group: root
+    {{- format_kwargs(p.archive.kwargs) }}
     - recurse:
         - user
         - group
+
+    {%- endfor %}
