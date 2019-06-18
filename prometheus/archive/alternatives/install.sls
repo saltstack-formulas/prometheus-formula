@@ -7,16 +7,15 @@
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 {%- set sls_archive_install = tplroot ~ '.archive.install' %}
 
-  {%- if grains.kernel|lower in ('linux',) and p.linux.altpriority|int > 0 %}
+    {%- if grains.kernel|lower in ('linux',) and p.linux.altpriority|int > 0 %}
 
 include:
   - {{ sls_archive_install }}
 
+        {%- for k in p.archive.wanted %}
+            {%- set dir = p.archive.dir.opt + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch) %}
 
-      {%- for k in p.archive.wanted %}
-          {%- set dir = p.archive.dir + '/' + k + '-%s.%s-%s'|format(p.archive.version["k"], p.kernel, p.arch) %}
-
-prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install:
+prometheus-archive-alternatives-install-{{ k }}-home-cmd-run:
   cmd.run:
     - onlyif: {{ grains.os_family in ('Suse',) }}
     - name: update-alternatives --install {{ dir }} prometheus-{{ k }}-home {{ dir }} {{p.linux.altpriority}}
@@ -24,9 +23,11 @@ prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install:
       - archive: prometheus-archive-install-{{ k }}-archive-extracted
     - require:
       - sls: {{ sls_archive_install }}
+
+prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install:
   alternatives.install:
     - name: prometheus-{{ k }}-home
-    - link: {{ p.dir }}
+    - link: {{ p.archive.dir.opt }}/{{ k }}
     - path: {{ dir }}
     - priority: {{ p.linux.altpriority }}
     - order: 10
@@ -41,17 +42,19 @@ prometheus-archive-alternatives-install-{{ k }}-home-alternatives-set:
     - name: prometheus-{{ k }}-home
     - path: {{ dir }}
     - require:
+      - cmd: prometheus-archive-alternatives-install-{{ k }}-home-cmd-run
       - alternatives: prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install
     - onlyif: {{ grains.os_family not in ('Suse',) }}
 
-          {% for i in p.archive.binaries['k'] %}
+
+          {% for i in p.archive.binaries[k] %}
 
 prometheus-archive-alternatives-install-{{ k }}-alternatives-install-{{ i }}:
   cmd.run:
     - onlyif: {{ grains.os_family in ('Suse',) }}
     - name: update-alternatives --install /usr/bin/{{i}} prometheus-{{ k }}-{{i}} {{ dir }}/{{i}} {{p.linux.altpriority}}
     - require:
-      - cmd: prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install
+      - cmd: prometheus-archive-alternatives-install-{{ k }}-home-cmd-run
   alternatives.install:
     - name: prometheus-{{ k }}-{{ i }}
     - link: /usr/bin/{{ i }}
@@ -69,7 +72,7 @@ prometheus-archive-alternatives-install-{{ k }}-alternatives-set-{{ i }}:
     - require:
       - alternatives: prometheus-archive-alternatives-install-{{ k }}-alternatives-install-{{ i }}
     - onlyif: {{ grains.os_family not in ('Suse',) }}
-
           {% endfor %}
-     {% endfor %}
-  {%- endif %}
+
+        {% endfor %}
+    {%- endif %}

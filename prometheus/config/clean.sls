@@ -8,9 +8,6 @@
 
 include:
   - {{ sls_archive_clean }}
-    {%- if prometheus.pkg.use_upstream_archive and kernel|lower == 'linux'  %}
-  - .systemd
-    {%- endif %}
 
 prometheus-config-clean-file-absent:
   file.absent:

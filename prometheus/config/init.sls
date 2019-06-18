@@ -9,8 +9,3 @@ include:
   - .args
   - .file
   - .environ
-    {%- if prometheus.pkg.use_upstream_archive and kernel|lower == 'linux'  %}
-  - .systemd
-    {%- endif %}
-
-

@@ -3,21 +3,40 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_alternatives_clean = tplroot ~ '.archive.alternatives.clean' %}
 
-  {%- if prometheus.pkg.use_upstream_archive %}
+    {%- if p.pkg.use_upstream_archive %}
 
 include:
   - {{ sls_alternatives_clean }}
 
+        {%- for k in p.archive.wanted %}
+            {%- set dir = p.archive.dir.opt + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch) %}
 
-      {%- for k in prometheus.archive.wanted %}
 prometheus-archive-clean-{{ k }}-file-absent:
   file.absent:
-    - name: {{ prometheus.archive.dir + '/' + k + '-%s.%s-%s'|format(prometheus.archive.versions[k], prometheus.kernel, prometheus.arch) }}
+    - names:
+      - {{ dir }}
+      - {{ p.archive.systemd.dir }}/{{ k }}.service
     #- require:
       #- sls: {{ sls_alternatives_clean }}
+
+prometheus-archive-clean-{{ k }}-user-absent:
+  user.absent:
+    - name: {{ k }}
+  group.absent:
+    - name: {{ k }}
+    - require:
+      - user: prometheus-archive-clean-{{ k }}-user-absent
+
         {%- endfor %}
 
-  {%- endif %}
+prometheus-archive-clean-file-directory:
+  file.absent:
+    - names:
+      - {{ p.archive.dir.opt }}
+      - {{ p.archive.dir.etc }}
+      - {{ p.archive.dir.var }}
+
+    {%- endif %}

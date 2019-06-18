@@ -3,7 +3,14 @@
 ---
 prometheus:
   archive:
-    dir: /opt/prometheus
+    wanted:
+      - prometheus
+      - alertmanager
+      - node_exporter
+    systemd:
+      dir: /usr/lib/systemd/system
+      after:  docker.service
+      wants: network-online.target docker.target
     uri: https://github.com/prometheus
     suffix: tar.gz
     kwargs:
@@ -15,6 +22,10 @@ prometheus:
         until: True
         interval: 60
         splay: 10
+    dir:
+      opt: /opt/prometheus
+      etc: /etc/prometheus
+      var: /var/lib/prometheus
     binaries:
       prometheus:
         - prometheus
@@ -40,7 +51,6 @@ prometheus:
         - pushgateway
       statsd_exporter:
         - statsd_exporter
-      
     versions:
       prometheus: '2.10.0'
       alertmanager: '0.17.0'
@@ -65,3 +75,15 @@ prometheus:
       node_exporter: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
       pushgateway: 6949866ba9ad0cb88d3faffd4281f17df79281398b4dbd0ec3aab300071681ca
       statsd_exporter: 4632ad0c5552e271e84c376da3ffe3af8c265ec5c3035334b70e35756aca1906
+    configs:
+      prometheus: {}
+      alertmanager: {}
+      blackbox_exporter: {}
+      consul_exporter: {}
+      graphite_exporter: {}
+      haproxy_exporter: {}
+      memcached_exporter: {}
+      mysqld_exporter: {}
+      node_exporter: {}
+      pushgateway: {}
+      statsd_exporter: {}

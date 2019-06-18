@@ -16,19 +16,11 @@ prometheus:
     name: prometheus
     user: prometheus
     group: prometheus
+  linux:
+    #'Alternatives system' priority: zero disables (default)
+    altpriority: 0
   exporters:
     node:
       pkg:
         name: prometheus-node-exporter
       service: prometheus-node-exporter
-
-  linux:
-    #'Alternatives system' priority: zero disables (default)
-    altpriority: 0
-
-  archive:
-    # see ./archive/default.yaml
-    wanted:
-      - prometheus
-      - alertmanager
-      - node_exporter
