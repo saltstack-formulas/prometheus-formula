@@ -6,37 +6,38 @@
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_alternatives_clean = tplroot ~ '.archive.alternatives.clean' %}
 
-    {%- if p.pkg.use_upstream_archive %}
+    {%- if p.use_upstream_archive %}
 
 include:
   - {{ sls_alternatives_clean }}
 
-        {%- for k in p.archive.wanted %}
-            {%- set dir = p.archive.dir.opt + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch) %}
+        {%- for name in p.wanted %}
 
-prometheus-archive-clean-{{ k }}-file-absent:
+prometheus-archive-clean-{{ name }}-file-absent:
   file.absent:
     - names:
-      - {{ dir }}
-      - {{ p.archive.systemd.dir }}/{{ k }}.service
-    #- require:
-      #- sls: {{ sls_alternatives_clean }}
-
-prometheus-archive-clean-{{ k }}-user-absent:
-  user.absent:
-    - name: {{ k }}
-  group.absent:
-    - name: {{ k }}
+      - {{ p.dir.basedir }}/{{ name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) }}
     - require:
-      - user: prometheus-archive-clean-{{ k }}-user-absent
+      - sls: {{ sls_alternatives_clean }}
+
+prometheus-archive-clean-{{ name }}-user-absent:
+  user.absent:
+    - name: {{ name }}
+  group.absent:
+    - name: {{ name }}
+    - require:
+      - user: prometheus-archive-clean-{{ name }}-user-absent
+      - sls: {{ sls_alternatives_clean }}
 
         {%- endfor %}
 
 prometheus-archive-clean-file-directory:
   file.absent:
     - names:
-      - {{ p.archive.dir.opt }}
-      - {{ p.archive.dir.etc }}
-      - {{ p.archive.dir.var }}
+      - {{ p.dir.basedir }}
+      - {{ p.dir.etc }}
+      - {{ p.dir.var }}
+    - require:
+      - sls: {{ sls_alternatives_clean }}
 
     {%- endif %}

@@ -12,67 +12,66 @@
 include:
   - {{ sls_archive_install }}
 
-        {%- for k in p.archive.wanted %}
-            {%- set dir = p.archive.dir.opt + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch) %}
+       {%- for name in p.wanted %}
+           {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
 
-prometheus-archive-alternatives-install-{{ k }}-home-cmd-run:
+prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
   cmd.run:
     - onlyif: {{ grains.os_family in ('Suse',) }}
-    - name: update-alternatives --install {{ dir }} prometheus-{{ k }}-home {{ dir }} {{p.linux.altpriority}}
+    - name: update-alternatives --install {{ p.dir.basedir }}/{{ bundle }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
     - watch:
-      - archive: prometheus-archive-install-{{ k }}-archive-extracted
+      - archive: prometheus-archive-install-{{ name }}-archive-extracted
     - require:
       - sls: {{ sls_archive_install }}
 
-prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install:
+prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
   alternatives.install:
-    - name: prometheus-{{ k }}-home
-    - link: {{ p.archive.dir.opt }}/{{ k }}
-    - path: {{ dir }}
+    - name: prometheus-{{ name }}-home
+    - link: {{ p.dir.basedir }}/{{ name }}
+    - path: {{ p.dir.basedir }}/{{ bundle }}
     - priority: {{ p.linux.altpriority }}
     - order: 10
     - watch:
-        - archive: prometheus-archive-install-{{ k }}-archive-extracted
+        - archive: prometheus-archive-install-{{ name }}-archive-extracted
     - require:
       - sls: {{ sls_archive_install }}
     - onlyif: {{ grains.os_family not in ('Suse',) }}
 
-prometheus-archive-alternatives-install-{{ k }}-home-alternatives-set:
+prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
   alternatives.set:
-    - name: prometheus-{{ k }}-home
-    - path: {{ dir }}
+    - name: prometheus-{{ name }}-home
+    - path: {{ p.dir.basedir }}/{{ bundle }}
     - require:
-      - cmd: prometheus-archive-alternatives-install-{{ k }}-home-cmd-run
-      - alternatives: prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install
+      - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
+      - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
     - onlyif: {{ grains.os_family not in ('Suse',) }}
 
+          {% for b in p.pkg[name]['binaries'] %}
 
-          {% for i in p.archive.binaries[k] %}
-
-prometheus-archive-alternatives-install-{{ k }}-alternatives-install-{{ i }}:
+prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
   cmd.run:
     - onlyif: {{ grains.os_family in ('Suse',) }}
-    - name: update-alternatives --install /usr/bin/{{i}} prometheus-{{ k }}-{{i}} {{ dir }}/{{i}} {{p.linux.altpriority}}
+    - name: update-alternatives --install /usr/local/bin/{{ b }} prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} {{ p.linux.altpriority }}
     - require:
-      - cmd: prometheus-archive-alternatives-install-{{ k }}-home-cmd-run
+      - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
   alternatives.install:
-    - name: prometheus-{{ k }}-{{ i }}
-    - link: /usr/bin/{{ i }}
-    - path: {{ dir }}/{{ i }}
+    - name: prometheus-{{ name }}-{{ b }}
+    - link: /usr/local/bin/{{ b }}
+    - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
     - priority: {{ p.linux.altpriority }}
     - order: 10
     - require:
-      - alternatives: prometheus-archive-alternatives-install-{{ k }}-home-alternatives-install
+      - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
     - onlyif: {{ grains.os_family not in ('Suse',) }}
 
-prometheus-archive-alternatives-install-{{ k }}-alternatives-set-{{ i }}:
+prometheus-archive-alternatives-install-{{ name }}-alternatives-set-{{ b }}:
   alternatives.set:
-    - name: prometheus-{{ k }}-{{ i }}
-    - path: {{ dir }}/{{ i }}
+    - name: prometheus-{{ name }}-{{ b }}
+    - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
     - require:
-      - alternatives: prometheus-archive-alternatives-install-{{ k }}-alternatives-install-{{ i }}
+      - alternatives: prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}
     - onlyif: {{ grains.os_family not in ('Suse',) }}
+
           {% endfor %}
-
-        {% endfor %}
+       {% endfor %}
     {%- endif %}

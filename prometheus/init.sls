@@ -6,6 +6,6 @@
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 
 include:
-  - {{ '.archive' if prometheus.pkg.use_upstream_archive else '.package' }}
+  - {{ '.archive' if prometheus.use_upstream_archive else '.package' }}
   - .config
   - .service

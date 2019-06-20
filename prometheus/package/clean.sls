@@ -9,10 +9,16 @@
 include:
   - {{ sls_config_clean }}
 
-prometheus-package-clean-pkg-removed:
+    {%- for name in prometheus.wanted %}
+        {%- if name in prometheus.pkg %}
+
+prometheus-package-clean-{{ name }}-removed:
   pkg.removed:
-    - name: {{ prometheus.pkg.name }}
-      {%- if 'config' in prometheus and prometheus.config %}
+    - name: {{ name }}
+            {%- if name in prometheus.service %}
     - require:
-      - sls: {{ sls_config_clean }}
-      {%- endif %}
+      - service: prometheus-service-clean-{{ name }}-service-dead
+            {%- endif %}
+
+        {%- endif %}
+    {%- endfor %}

@@ -7,45 +7,64 @@
 {%- from tplroot ~ "/jinja/macros.jinja" import format_kwargs with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 
-    {%- for k in p.archive.wanted %}
-        {%- set dir = p.archive.dir.opt + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch) %}
+prometheus-archive-install-file-directory:
+  file.directory:
+    - names:
+      - {{ p.dir.basedir }}
+      - {{ p.dir.etc }}
+      - {{ p.dir.var }}
+    - user: prometheus
+    - group: prometheus
+    - mode: 755
+    - makedirs: True
 
-prometheus-archive-install-{{ k }}-user-present:
+  {%- for name in p.wanted %}
+      {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
+
+prometheus-archive-install-{{ name }}-user-present:
   group.present:
-    - name: {{ k }}
+    - name: {{ name }}
     - require_in:
-      - user: prometheus-archive-install-{{ k }}-user-present
+      - user: prometheus-archive-install-{{ name }}-user-present
   user.present:
-    - name: {{ k }}
+    - name: {{ name }}
     - shell: /bin/false
     - createhome: false
     - groups:
-      - {{ k }}
+      - {{ name }}
     - require_in:
-      - archive: prometheus-archive-install-{{ k }}-archive-extracted
+      - archive: prometheus-archive-install-{{ name }}-archive-extracted
 
-prometheus-archive-install-{{ k }}-archive-extracted:
+prometheus-archive-install-{{ name }}-archive-extracted:
   archive.extracted:
-    - name: {{ p.archive.dir.opt }}
-    - source: {{ p.archive.uri + '/' + k + '/releases/download/v' + p.archive.versions[k]
-                 + '/' + k + '-%s.%s-%s'|format(p.archive.versions[k], p.kernel, p.arch)
-                 + '.' + p.archive.suffix }}
-    - source_hash: {{ p.archive.hashes[k] }} 
-    - user: {{ k }}
-    - group: {{ k }}
+    - name: {{ p.dir.basedir }}
+    - source: {{ p.archive.uri }}/{{ name }}/releases/download/v{{ p.pkg[name]['archive_version']
+                 + '/' + bundle + '.' + p.archive.suffix }}
+    - source_hash: {{ p.pkg[name]['archive_hash'] }} 
+    - user: {{ name }}
+    - group: {{ name }}
     {{- format_kwargs(p.archive.kwargs) }}
     - recurse:
         - user
         - group
-    - require_in:
-      - file: prometheus-archive-install-{{ k }}-managed-systemd_file
-      - file: prometheus-archive-install-file-directory
 
-prometheus-archive-install-{{ k }}-managed-systemd_file:
+      {%- if name in p.service %}
+         
+prometheus-archive-install-{{ name }}-file-directory:
+  file.directory:
+    - name: {{ p.dir.var }}/{{ name }}
+    - user: {{ name }}
+    - group: {{ name }}
+    - mode: 755
+    - makedirs: True
+    - require:
+      - archive: prometheus-archive-install-{{ name }}-archive-extracted
+
+prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
-    - name: {{ p.archive.systemd.dir }}/{{ k }}.service
+    - name: {{ p.dir.service }}/{{ name }}.service
     - source: {{ files_switch(['systemd.ini.jinja'],
-                              lookup='prometheus-archive-install-{{ k }}-managed-systemd_file'
+                              lookup='prometheus-archive-install-{{ name }}-managed-service'
                  )
               }}
     - mode: 644
@@ -54,25 +73,15 @@ prometheus-archive-install-{{ k }}-managed-systemd_file:
     - makedirs: True
     - template: jinja
     - context:
-        desc: prometheus - {{ k }} serice
-        name: {{ k }}
-        user: {{ k }}
-        group: {{ k }}
-        start: {{ dir }}/{{ k }} --config.file {{ p.archive.dir.etc }}/{{ k }}/{{ k }}.yml
-        stop: killall {{ dir }}/{{ k }}
-        after: {{ p.archive.systemd.after }}
-        wants: {{ p.archive.systemd.wants }}
+        desc: prometheus - {{ name }} service
+        name: {{ name }}
+        user: {{ name }}
+        group: {{ name }}
+        workdir: {{ p.dir.var }}/{{ name }}
+        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }} --config.file {{ p.dir.etc }}/{{ name }}.yml
+        stop: '' #not needed
+    - require:
+      - file: prometheus-archive-install-{{ name }}-file-directory
 
-    {%- endfor %}
-
-prometheus-archive-install-file-directory:
-  file.directory:
-    - names:
-      - {{ p.archive.dir.opt }}
-      - {{ p.archive.dir.etc }}
-      - {{ p.archive.dir.var }}
-    - user: prometheus
-    - group: prometheus
-    - mode: 755
-    - makedirs: True
-    ##do not recurse!!!
+      {%- endif %}
+  {%- endfor %}

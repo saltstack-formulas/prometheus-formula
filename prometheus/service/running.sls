@@ -3,29 +3,44 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_config_args = tplroot ~ '.config.args' %}
-{%- set sls_config_file = tplroot ~ '.config.file' %}
+{%- set sls_config_args = tplroot ~ '.config.args.install' %}
+{%- set sls_config_file = tplroot ~ '.config.file.install' %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 
 include:
   - {{ sls_config_args }}
   - {{ sls_config_file }}
 
-prometheus-service-running-service-unmasked:
-  service.unmasked:
-    - name: {{ prometheus.service.name }}
-    - onlyif: systemctl list-unit-files | grep {{ prometheus.service.name }} >/dev/null 2>&1
+    {%- for name in prometheus.wanted %}
+        {%- if name in prometheus.service %}
 
-prometheus-service-running-service-running:
-  service.running:
-    - name: {{ prometheus.service.name }}
-    - enable: True
-  {%- if 'config' in prometheus and prometheus.config %}
-    - watch:
-      - file: prometheus-config-file-file-managed-config_file
+prometheus-service-running-{{ name }}-service-unmasked:
+  service.unmasked:
+    - name: {{ name }}
     - require:
-      - service: prometheus-service-running-service-unmasked
       - sls: {{ sls_config_args }}
       - sls: {{ sls_config_file }}
-  {%- endif %}
-    - onlyif: systemctl list-unit-files | grep {{ prometheus.service.name }} >/dev/null 2>&1
+            {%- if grains.kernel|lower == 'linux' %}
+    - onlyif:
+       -  systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
+            {%- endif %}
+
+prometheus-service-running-{{ name }}-service-running:
+  service.running:
+    - name: {{ name }}
+    - enable: True
+          {%- if name in prometheus.config %}
+    - watch:
+      - file: prometheus-config-file-{{ name }}-file-managed
+           {%- endif %}
+    - require:
+      - service: prometheus-service-running-{{ name }}-service-unmasked
+      - sls: {{ sls_config_args }}
+      - sls: {{ sls_config_file }}
+            {%- if grains.kernel|lower == 'linux' %}
+    - onlyif: systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
+            {%- endif %}
+
+        {%- endif %}
+    {%- endfor %}
+

@@ -3,8 +3,8 @@
 # Your changes may be overwritten.
 ########################################################################
 
-{%- if prometheus.environ %}
-    {%- for item in prometheus.environ %}
+{%- if defaults %}
+    {%- for item in defaults %}
 {{ item }}
     {%- endfor %}
 {%- endif %}
