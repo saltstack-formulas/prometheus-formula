@@ -7,11 +7,14 @@ prometheus:
     - pushgateway
     - node_explorer
 
+  use_upstream_repo: False
   use_upstream_archive: True
+
   pkg:
     prometheus:
       archive_version: 2.10.0
       archive_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+      repo: {}
     alertmanager:
       archive_version: '0.17.0'
       archive_hash: ec171b13976baceace193461f8a1e61021ab9657df5ba45157cd0095aee7d569
@@ -148,4 +151,3 @@ prometheus:
   linux:
     #'Alternatives system' priority: zero disables (default)
     altpriority: 0
-

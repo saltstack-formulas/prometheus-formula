@@ -5,6 +5,8 @@ prometheus:
   rootgroup: root
   kernel: {{ grains.kernel | lower }}
   arch: {{ grains.osarch }}
+  use_upstream_repo: False
+  use_upstream_archive: False
 
   wanted:
     - prometheus
@@ -35,6 +37,13 @@ prometheus:
       binaries:
         - prometheus
         - promtool
+      repo:
+        humanname: prometheus
+        name: prometheus
+        comments:
+          - installed by salt
+        enabled: 1
+        gpgcheck: 1
     alertmanager:
       archive_version: '0.17.0'
       archive_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f 
@@ -87,7 +96,6 @@ prometheus:
       binaries:
         - statsd_exporter
 
-  use_upstream_archive: False
   archive:
     uri: https://github.com/prometheus
     suffix: tar.gz

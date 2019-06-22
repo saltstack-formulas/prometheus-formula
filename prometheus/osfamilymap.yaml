@@ -11,14 +11,19 @@
 # osfamilymap: {}
 ---
 {%- if grains.os == 'MacOS' %}
+  {% set macos_user = salt['cmd.run']("stat -f '%Su' /dev/console") %}
   {% set macos_group = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
 {%- endif %}
 
 Debian: {}
 
 RedHat:
-  ## remove when https://github.com/saltstack-formulas/prometheus-formula/pull/4 is merged
-  use_upstream_archive: True
+  pkg:
+    prometheus:
+      repo:
+        baseurl: 'https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch'
+        gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
+        metadata_expire: 300
 
 Suse: {}
 
@@ -109,6 +114,7 @@ Windows:
       archive_hash: 9362b7482e74792f111c4bb1a372b18a88f6354c78f24713bacfbcb050883556
 
 MacOS:
+  rootuser: {{ macos_user | d('') }}
   rootgroup: {{ macos_group | d('') }}
   kernel: darwin
   pkg:
