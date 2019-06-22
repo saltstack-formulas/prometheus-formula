@@ -21,7 +21,7 @@ prometheus-config-args-{{ name }}-data-dir:
   file.absent:
     - name: {{ args['storage.tsdb.path'] }}
     - require:
-      - sls: {{ sls_service_clean }}
+      - sls: '{{ sls_service_clean }}.*'
 
                 {%- if grains.os_family == 'FreeBSD' %}
 
@@ -51,6 +51,8 @@ prometheus-config-args-{{ name }}-file-absent:
     - name: {{ prometheus.dir.args }}/{{ name }}.sh
     - require:
       - service: prometheus-service-clean-{{ name }}-service-dead
+    - require_in:
+      - file: prometheus-config-file-args-file-absent
 
             {%- endif %}
         {%- endif %}

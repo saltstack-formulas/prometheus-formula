@@ -18,11 +18,12 @@ prometheus-config-file-basedir-file-directory:
     - group: prometheus
     - mode: 755
     - makedirs: True
-    # require:
-      # sls: {{ sls_users_install }}
+    - require:
+      - sls: '{{ sls_users_install }}.*'
 
   {%- for name in p.wanted %}
-      {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
+      {%- if name in p.pkg %}
+          {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
 
 prometheus-archive-install-{{ name }}-archive-extracted:
   archive.extracted:
@@ -39,7 +40,7 @@ prometheus-archive-install-{{ name }}-archive-extracted:
     - require:
       - file: prometheus-config-file-basedir-file-directory
 
-      {%- if name in p.service %}
+          {%- if name in p.service %}
          
 prometheus-archive-install-{{ name }}-file-directory:
   file.directory:
@@ -76,5 +77,6 @@ prometheus-archive-install-{{ name }}-managed-service:
       - file: prometheus-archive-install-{{ name }}-file-directory
       - file: prometheus-config-file-basedir-file-directory
 
+          {%- endif %}
       {%- endif %}
   {%- endfor %}

@@ -17,8 +17,6 @@ prometheus-archive-clean-{{ name }}-file-absent:
   file.absent:
     - names:
       - {{ p.dir.basedir }}/{{ name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) }}
-    - require:
-      - sls: {{ sls_alternatives_clean }}
 
 prometheus-archive-clean-{{ name }}-user-absent:
   user.absent:
@@ -27,13 +25,10 @@ prometheus-archive-clean-{{ name }}-user-absent:
     - name: {{ name }}
     - require:
       - user: prometheus-archive-clean-{{ name }}-user-absent
-      - sls: {{ sls_alternatives_clean }}
 
         {%- endfor %}
 
 prometheus-archive-clean-basedir-file-directory:
   file.absent:
     - name: {{ p.dir.basedir }}
-    - require:
-      - sls: {{ sls_alternatives_clean }}
 

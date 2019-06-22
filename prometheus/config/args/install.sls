@@ -5,12 +5,13 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 {%- from tplroot ~ "/map.jinja" import concat_args %}
-{%- set sls_config_install = tplroot ~ '.config' %}
-{%- set sls_service_install = tplroot ~ '.service' %}
+{%- set sls_config_users = tplroot ~ '.config.users' %}
+{%- set sls_archive_install = tplroot ~ '.archive' %}
+{%- set sls_package_install = tplroot ~ '.package' %}
 
 include:
-  - {{ sls_service_install }}
-  - {{ sls_config_install }}
+  - {{ sls_archive_install if prometheus.use_upstream_archive else sls_package_install }}
+  - {{ sls_config_users }}
 
 prometheus-config-file-args-file-directory:
   file.directory:
@@ -19,8 +20,8 @@ prometheus-config-file-args-file-directory:
     - group: prometheus
     - mode: 755
     - makedirs: True
-    # require:
-      # sls: {{ sls_config_install }}.users
+    - require:
+      - sls: '{{ sls_archive_install if prometheus.use_upstream_archive else sls_package_install }}.*'
 
     {%- for name in prometheus.wanted %}
         {%- if name in prometheus.config or name in prometheus.service %}
@@ -51,6 +52,8 @@ prometheus-config-args-args-web-listen-address:
     - value: {{ args.pop('web.listen-address') }}
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
                 {%- endif %}
                 {%- if 'collector.textfile.directory' in args.keys() %}
@@ -61,6 +64,8 @@ prometheus-config-args-{{ name }}-collector-textfile-directory:
     - value: {{ args.pop('collector.textfile.directory') }}
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
                 {%- endif %}
                 {%- if 'storage.tsdb.path' in args.keys() %}
@@ -71,6 +76,8 @@ prometheus-config-args-{{ name }}-{{ key }}:
     - value: {{ args.pop('storage.tsdb.path') }}
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
                 {%- endif %}
 
@@ -82,6 +89,8 @@ prometheus-config-args-{{ name }}-all:
     - value: "{{ concat_args(args) }} >/dev/null 2>&1"
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
             {%- elif grains.os_family != 'FreeBSD' %}
 
@@ -92,6 +101,8 @@ prometheus-config-args-{{ name }}-file-managed:
         ARGS="{{ concat_args(args) }}"
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
             {%- endif %}
         {%- endif %}

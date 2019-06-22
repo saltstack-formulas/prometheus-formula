@@ -18,7 +18,6 @@ prometheus:
     etc: /etc/prometheus
     var: /var/lib/prometheus
     args: /etc/default
-    default: /etc/default
     service: /usr/lib/systemd/system
 
   service:
@@ -29,6 +28,7 @@ prometheus:
 
   config:
     prometheus: {}
+    alertmanager: {}
 
   pkg:
     prometheus:
