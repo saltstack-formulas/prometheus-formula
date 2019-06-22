@@ -12,7 +12,7 @@ prometheus-exporters-node-service-dead:
 
 prometheus-exporters-node-pkg-removed:
   pkg.removed:
-    - name: {{ prometheus.exporters.node.pkg }}
+    - name: {{ prometheus.exporters.node.pkg.name }}
     - require:
       - service: prometheus-exporters-node-service-dead
 

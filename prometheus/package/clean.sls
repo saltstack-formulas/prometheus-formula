@@ -9,8 +9,13 @@
 include:
   - {{ sls_config_clean }}
 
+    {%- if prometheus.pkg.use_upstream_repo %}
+include:
+  - .repo.clean
+    {%- endif %}
+
 prometheus-package-clean-pkg-removed:
   pkg.removed:
-    - name: {{ prometheus.pkg }}
+    - name: {{ prometheus.pkg.name }}
     - require:
       - sls: {{ sls_config_clean }}
