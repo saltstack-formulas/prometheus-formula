@@ -53,6 +53,11 @@ starts the associated prometheus service.
 
 This state will install the prometheus from archive file only.
 
+``prometheus.archive.alternatives``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will install the prometheus linux alternatives for archives only.
+
 ``prometheus.package``
 ^^^^^^^^^^^^^^^^^^^^
 
@@ -106,6 +111,11 @@ This state will remove the prometheus package and has a depency on
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will uninstall the prometheus archive-extracted directory only.
+
+``prometheus.package.archive.alternatives.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will uninstall the prometheus linux alternatives for archives only.
 
 ``prometheus.package.repo.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^

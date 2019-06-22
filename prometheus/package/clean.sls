@@ -8,6 +8,9 @@
 
 include:
   - {{ sls_config_clean }}
+       {%- if prometheus.use_upstream_repo %}
+  - .repo.clean
+       {%- endif %}
 
     {%- for name in prometheus.wanted %}
         {%- if name in prometheus.pkg %}

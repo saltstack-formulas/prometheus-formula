@@ -9,8 +9,18 @@
 {%- set sls_service_install = tplroot ~ '.service' %}
 
 include:
-  - {{ sls_config_install }}
   - {{ sls_service_install }}
+  - {{ sls_config_install }}
+
+prometheus-config-file-args-file-directory:
+  file.directory:
+    - name: {{ prometheus.dir.args }}
+    - user: prometheus
+    - group: prometheus
+    - mode: 755
+    - makedirs: True
+    # require:
+      # sls: {{ sls_config_install }}.users
 
     {%- for name in prometheus.wanted %}
         {%- if name in prometheus.config or name in prometheus.service %}
@@ -28,6 +38,8 @@ prometheus-config-args-{{ name }}-data-dir:
     - makedirs: True
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
+    - require:
+      - file: prometheus-config-file-args-file-directory
 
             {%- endif %}
             {%- if args and grains.os_family == 'FreeBSD' %}
@@ -43,7 +55,7 @@ prometheus-config-args-args-web-listen-address:
                 {%- endif %}
                 {%- if 'collector.textfile.directory' in args.keys() %}
 
-prometheus-config-args-{{ name }}--collector-textfile-directory:
+prometheus-config-args-{{ name }}-collector-textfile-directory:
   sysrc.managed:
     - name: {{ name }}_textfile_dir
     - value: {{ args.pop('collector.textfile.directory') }}

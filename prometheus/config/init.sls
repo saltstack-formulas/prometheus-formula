@@ -2,5 +2,6 @@
 # vim: ft=sls
 
 include:
+  - .users
   - .args
   - .file

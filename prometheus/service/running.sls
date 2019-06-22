@@ -3,13 +3,23 @@
 
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- set sls_config_args = tplroot ~ '.config.args.install' %}
-{%- set sls_config_file = tplroot ~ '.config.file.install' %}
+{%- set sls_config_args = tplroot ~ '.config.args' %}
+{%- set sls_config_file = tplroot ~ '.config.file' %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
 
 include:
   - {{ sls_config_args }}
   - {{ sls_config_file }}
+
+prometheus-config-file-var-file-directory:
+  file.directory:
+    - name: {{ prometheus.dir.var }}
+    - user: prometheus
+    - group: prometheus
+    - mode: 755
+    - makedirs: True
+    - require:
+      - file: prometheus-config-file-etc-file-directory
 
     {%- for name in prometheus.wanted %}
         {%- if name in prometheus.service %}
@@ -18,8 +28,7 @@ prometheus-service-running-{{ name }}-service-unmasked:
   service.unmasked:
     - name: {{ name }}
     - require:
-      - sls: {{ sls_config_args }}
-      - sls: {{ sls_config_file }}
+      - file: prometheus-config-file-var-file-directory
             {%- if grains.kernel|lower == 'linux' %}
     - onlyif:
        -  systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
@@ -35,8 +44,7 @@ prometheus-service-running-{{ name }}-service-running:
            {%- endif %}
     - require:
       - service: prometheus-service-running-{{ name }}-service-unmasked
-      - sls: {{ sls_config_args }}
-      - sls: {{ sls_config_file }}
+      - file: prometheus-config-file-var-file-directory
             {%- if grains.kernel|lower == 'linux' %}
     - onlyif: systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
             {%- endif %}

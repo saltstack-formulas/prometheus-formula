@@ -4,19 +4,15 @@
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
- 
-    {%- if prometheus.use_upstream_repo %}
 
-include:
-  - .repo
-
-    {%- endif %}
     {%- for name in prometheus.wanted %}
-        {%- if name in prometheus.pkg %}
 
-prometheus-package-install-{{ name }}-installed:
-  pkg.installed:
+prometheus-config-user-clean-{{ name }}-user-absent:
+  user.absent:
     - name: {{ name }}
+  group.absent:
+    - name: {{ name }}
+    - require:
+      - user: prometheus-config-user-clean-{{ name }}-user-absent
 
-        {%- endif %}
     {%- endfor %}

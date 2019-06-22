@@ -55,3 +55,7 @@ prometheus-config-args-{{ name }}-file-absent:
             {%- endif %}
         {%- endif %}
     {%- endfor %}
+
+prometheus-config-file-args-file-absent:
+  file.absent:
+    - name: {{ prometheus.dir.args }}

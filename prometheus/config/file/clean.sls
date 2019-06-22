@@ -19,3 +19,7 @@ prometheus-config-file-{{ name }}-file-absent:
       - sls: {{ sls_service_clean }}
 
     {%- endfor %}
+
+prometheus-config-file-etc-file-absent:
+  file.absent:
+    - name: {{ prometheus.dir.etc }}

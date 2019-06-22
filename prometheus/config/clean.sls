@@ -4,3 +4,4 @@
 include:
   - .file.clean
   - .args.clean
+  - .users.clean

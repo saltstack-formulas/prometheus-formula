@@ -6,34 +6,23 @@
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- from tplroot ~ "/jinja/macros.jinja" import format_kwargs with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
+{%- set sls_users_install = tplroot ~ '.config.users' %}
 
-prometheus-archive-install-file-directory:
+include:
+  - {{ sls_users_install }}
+
+prometheus-config-file-basedir-file-directory:
   file.directory:
-    - names:
-      - {{ p.dir.basedir }}
-      - {{ p.dir.etc }}
-      - {{ p.dir.var }}
+    - name: {{ p.dir.basedir }}
     - user: prometheus
     - group: prometheus
     - mode: 755
     - makedirs: True
+    # require:
+      # sls: {{ sls_users_install }}
 
   {%- for name in p.wanted %}
       {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
-
-prometheus-archive-install-{{ name }}-user-present:
-  group.present:
-    - name: {{ name }}
-    - require_in:
-      - user: prometheus-archive-install-{{ name }}-user-present
-  user.present:
-    - name: {{ name }}
-    - shell: /bin/false
-    - createhome: false
-    - groups:
-      - {{ name }}
-    - require_in:
-      - archive: prometheus-archive-install-{{ name }}-archive-extracted
 
 prometheus-archive-install-{{ name }}-archive-extracted:
   archive.extracted:
@@ -47,6 +36,8 @@ prometheus-archive-install-{{ name }}-archive-extracted:
     - recurse:
         - user
         - group
+    - require:
+      - file: prometheus-config-file-basedir-file-directory
 
       {%- if name in p.service %}
          
@@ -59,6 +50,7 @@ prometheus-archive-install-{{ name }}-file-directory:
     - makedirs: True
     - require:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
+      - file: prometheus-config-file-basedir-file-directory
 
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
@@ -82,6 +74,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         stop: '' #not needed
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
+      - file: prometheus-config-file-basedir-file-directory
 
       {%- endif %}
   {%- endfor %}

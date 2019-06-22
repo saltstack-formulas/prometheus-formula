@@ -17,4 +17,9 @@ prometheus-service-clean-{{ name }}-service-dead:
             {%- endif %}
 
         {%- endif %}
+
     {%- endfor %}
+
+prometheus-config-file-var-file-absent:
+  file.absent:
+    - name: {{ prometheus.dir.var }}

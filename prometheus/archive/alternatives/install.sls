@@ -5,7 +5,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
-{%- set sls_archive_install = tplroot ~ '.archive.install' %}
+{%- set sls_archive_install = tplroot ~ '.archive' %}
 
     {%- if grains.kernel|lower in ('linux',) and p.linux.altpriority|int > 0 %}
 
@@ -21,8 +21,6 @@ prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
     - name: update-alternatives --install {{ p.dir.basedir }}/{{ bundle }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
     - watch:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
-    - require:
-      - sls: {{ sls_archive_install }}
 
 prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
   alternatives.install:
@@ -33,8 +31,6 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
     - order: 10
     - watch:
         - archive: prometheus-archive-install-{{ name }}-archive-extracted
-    - require:
-      - sls: {{ sls_archive_install }}
     - onlyif: {{ grains.os_family not in ('Suse',) }}
 
 prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:

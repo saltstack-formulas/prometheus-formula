@@ -6,6 +6,8 @@ prometheus:
     - prometheus
     - pushgateway
     - node_explorer
+    # no memcached_exporter in upstream repo - only archive
+    # memcached_exporter
 
   use_upstream_repo: False
   use_upstream_archive: True
