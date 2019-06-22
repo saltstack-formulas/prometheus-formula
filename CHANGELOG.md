@@ -1,5 +1,18 @@
 # Changelog
 
+# [2.0.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v1.2.0...v2.0.0) (2019-06-22)
+
+
+### Features
+
+* **repository:** add support for pkgrepo.managed ([907f9a6](https://github.com/saltstack-formulas/prometheus-formula/commit/907f9a6))
+
+
+### BREAKING CHANGES
+
+* **repository:** the variable 'pkg' was renamed 'pkg.name',
+  update your pillars
+
 # [1.2.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v1.1.0...v1.2.0) (2019-06-05)
 
 
