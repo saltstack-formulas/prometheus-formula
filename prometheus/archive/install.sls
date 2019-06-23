@@ -76,6 +76,10 @@ prometheus-archive-install-{{ name }}-managed-service:
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
       - file: prometheus-config-file-basedir-file-directory
+  cmd.run:
+    - name: systemctl daemon-reload
+    - require:
+      - file: prometheus-archive-install-{{ name }}-managed-service
 
           {%- endif %}
       {%- endif %}

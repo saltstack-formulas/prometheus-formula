@@ -38,10 +38,10 @@ prometheus-service-running-{{ name }}-service-running:
   service.running:
     - name: {{ name }}
     - enable: True
-          {%- if name in prometheus.config %}
+            {%- if name in prometheus.config %}
     - watch:
       - file: prometheus-config-file-{{ name }}-file-managed
-           {%- endif %}
+            {%- endif %}
     - require:
       - service: prometheus-service-running-{{ name }}-service-unmasked
       - file: prometheus-config-file-var-file-directory
