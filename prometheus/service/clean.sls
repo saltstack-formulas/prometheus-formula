@@ -15,9 +15,17 @@ prometheus-service-clean-{{ name }}-service-dead:
             {%- if grains.kernel|lower == 'linux' %}
     - onlyif: systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
             {%- endif %}
+  file.absent:
+    - name: {{ prometheus.dir.service }}/{{ name }}.service
+    - require:
+      - service: prometheus-service-clean-{{ name }}-service-dead
+  cmd.run:
+    - onlyif: {{ grains.kernel|lower == 'linux' }}
+    - name: systemctl daemon-reload
+    - require:
+      - file: prometheus-service-clean-{{ name }}-service-dead
 
         {%- endif %}
-
     {%- endfor %}
 
 prometheus-config-file-var-file-absent:

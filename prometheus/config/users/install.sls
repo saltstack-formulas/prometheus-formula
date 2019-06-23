@@ -18,5 +18,8 @@ prometheus-config-user-install-{{ name }}-user-present:
     - createhome: false
     - groups:
       - {{ name }}
+      {%- if grains.os_family == 'MacOS' %}
+    - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
+      {%- endif %}
 
   {%- endfor %}

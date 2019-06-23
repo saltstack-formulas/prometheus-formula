@@ -14,13 +14,15 @@ include:
 
        {%- for name in p.wanted %}
            {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
+           {%- if grains.os_family == 'Suse' %}
 
 prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
   cmd.run:
-    - onlyif: {{ grains.os_family in ('Suse',) }}
     - name: update-alternatives --install {{ p.dir.basedir }}/{{ bundle }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
     - watch:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
+
+           {%- else %}
 
 prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
   alternatives.install:
@@ -40,9 +42,9 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
     - require:
       - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
       - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
-    - onlyif: {{ grains.os_family not in ('Suse',) }}
 
-          {% for b in p.pkg[name]['binaries'] %}
+           {%- endif %}
+           {% for b in p.pkg[name]['binaries'] %}
 
 prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
   cmd.run:

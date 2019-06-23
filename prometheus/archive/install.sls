@@ -53,6 +53,8 @@ prometheus-archive-install-{{ name }}-file-directory:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
       - file: prometheus-config-file-basedir-file-directory
 
+              {%- if grains.os_family not in ('MacOS', 'FreeBSD', 'Windows') %}
+
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
     - name: {{ p.dir.service }}/{{ name }}.service
@@ -81,6 +83,7 @@ prometheus-archive-install-{{ name }}-managed-service:
     - require:
       - file: prometheus-archive-install-{{ name }}-managed-service
 
+              {%- endif %}
           {%- endif %}
       {%- endif %}
   {%- endfor %}

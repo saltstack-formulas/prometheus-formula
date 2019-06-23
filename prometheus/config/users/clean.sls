@@ -10,6 +10,9 @@
 prometheus-config-user-clean-{{ name }}-user-absent:
   user.absent:
     - name: {{ name }}
+      {%- if grains.os_family == 'MacOS' %}
+    - onlyif: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
+      {%- endif %}
   group.absent:
     - name: {{ name }}
     - require:

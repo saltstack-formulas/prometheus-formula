@@ -6,9 +6,11 @@
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_alternatives_clean = tplroot ~ '.archive.alternatives.clean' %}
 {%- set sls_users_clean = tplroot ~ '.config.users.clean' %}
+{%- set sls_service_clean = tplroot ~ '.service.clean' %}
 
 include:
   - {{ sls_users_clean }}
+  - {{ sls_service_clean }}
   - {{ sls_alternatives_clean }}
 
         {%- for name in p.wanted %}
@@ -31,4 +33,3 @@ prometheus-archive-clean-{{ name }}-user-absent:
 prometheus-archive-clean-basedir-file-directory:
   file.absent:
     - name: {{ p.dir.basedir }}
-

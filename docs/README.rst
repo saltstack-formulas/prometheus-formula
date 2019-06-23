@@ -13,7 +13,7 @@ prometheus-formula
    :alt: Semantic Release
    :scale: 100%
    :target: https://github.com/semantic-release/semantic-release
-Manage Prometheus.
+Manage Prometheus on MacOS, GNU/Linux and FreeBSD.
 
 .. contents:: **Table of Contents**
 
