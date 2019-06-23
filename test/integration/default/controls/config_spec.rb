@@ -3,8 +3,8 @@ control 'Prometheus configuration' do
 
   describe file('/etc/prometheus/prometheus.yml') do
     it { should be_file }
-    it { should be_owned_by 'root' }
-    it { should be_grouped_into 'root' }
+    it { should be_owned_by 'prometheus' }
+    it { should be_grouped_into 'prometheus' }
     its('mode') { should cmp '0644' }
     its('content') { should include 'File managed by Salt' }
     its('content') { should include 'Your changes may be overwritten.' }
