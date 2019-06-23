@@ -2,6 +2,45 @@
 Changelog
 =========
 
+`3.0.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v2.0.0...v3.0.0>`_ (2019-06-23)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **example:** fix pillar.example formatting (\ `a13dd03 <https://github.com/saltstack-formulas/prometheus-formula/commit/a13dd03>`_\ )
+* **repo:** use_upstream_repo corrections; separate users state (\ `eda47f7 <https://github.com/saltstack-formulas/prometheus-formula/commit/eda47f7>`_\ )
+* **service:** ensure service file is removed on clean (\ `c735a6d <https://github.com/saltstack-formulas/prometheus-formula/commit/c735a6d>`_\ )
+* **suse:** bypass salt alternatives.install errors (\ `1a890e5 <https://github.com/saltstack-formulas/prometheus-formula/commit/1a890e5>`_\ )
+* **systemd:** ensure systemd detects new service (\ `149dd81 <https://github.com/saltstack-formulas/prometheus-formula/commit/149dd81>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **archives:** support for archives file format (\ `1f86f4a <https://github.com/saltstack-formulas/prometheus-formula/commit/1f86f4a>`_\ )
+* **archives:** support for various prometheus archives (\ `3ec910e <https://github.com/saltstack-formulas/prometheus-formula/commit/3ec910e>`_\ )
+* **archives:** user managementX (\ `d43033a <https://github.com/saltstack-formulas/prometheus-formula/commit/d43033a>`_\ )
+* **linux:** alternatives support & updated unit tests (\ `36b3e62 <https://github.com/saltstack-formulas/prometheus-formula/commit/36b3e62>`_\ )
+
+Tests
+^^^^^
+
+
+* **centos:** verified on CentosOS (\ `731198d <https://github.com/saltstack-formulas/prometheus-formula/commit/731198d>`_\ )
+* **inspec:** expand unittests for archive format (\ `b074bd3 <https://github.com/saltstack-formulas/prometheus-formula/commit/b074bd3>`_\ )
+* **inspec:** fix tests (\ `4092fb4 <https://github.com/saltstack-formulas/prometheus-formula/commit/4092fb4>`_\ )
+
+BREAKING CHANGES
+^^^^^^^^^^^^^^^^
+
+
+* **repo:** The formula has been refactored to accomodate multiple packages,
+  archives, users, and repos. Update your pillars and top states
+* **archives:** the parameter ``pkg`` is now a dictionary. References
+  to ``prometheus.pkg`` should be changed to ``prometheus.pkg.name``.
+
 `2.0.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v1.2.0...v2.0.0>`_ (2019-06-22)
 ------------------------------------------------------------------------------------------------------------
 
