@@ -11,12 +11,44 @@ include:
   - {{ sls_config_args }}
   - {{ sls_config_file }}
 
-prometheus-service-running-service-running:
-  service.running:
-    - name: {{ prometheus.service.name }}
-    - enable: True
-    - watch:
-      - file: prometheus-config-file-file-managed
+prometheus-config-file-var-file-directory:
+  file.directory:
+    - name: {{ prometheus.dir.var }}
+    - user: prometheus
+    - group: prometheus
+    - mode: 755
+    - makedirs: True
     - require:
-      - sls: {{ sls_config_args }}
-      - sls: {{ sls_config_file }}
+      - file: prometheus-config-file-etc-file-directory
+
+    {%- for name in prometheus.wanted %}
+        {%- if name in prometheus.service %}
+            {%- if grains.kernel|lower == 'linux' %}
+
+prometheus-service-running-{{ name }}-service-unmasked:
+  service.unmasked:
+    - name: {{ name }}
+    - require:
+      - file: prometheus-config-file-var-file-directory
+    - onlyif:
+       -  systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
+            {%- endif %}
+
+prometheus-service-running-{{ name }}-service-running:
+  service.running:
+    - name: {{ name }}
+    - enable: True
+            {%- if name in prometheus.config %}
+    - watch:
+      - file: prometheus-config-file-{{ name }}-file-managed
+            {%- endif %}
+    - require:
+      - file: prometheus-config-file-var-file-directory
+            {%- if grains.kernel|lower == 'linux' %}
+      - service: prometheus-service-running-{{ name }}-service-unmasked
+    - onlyif: systemctl list-unit-files | grep {{ name }} >/dev/null 2>&1
+            {%- endif %}
+
+        {%- endif %}
+    {%- endfor %}
+

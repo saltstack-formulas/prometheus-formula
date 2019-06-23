@@ -8,14 +8,20 @@
 
 include:
   - {{ sls_config_clean }}
-
-    {%- if prometheus.pkg.use_upstream_repo %}
-include:
+       {%- if prometheus.use_upstream_repo %}
   - .repo.clean
-    {%- endif %}
+       {%- endif %}
 
-prometheus-package-clean-pkg-removed:
+    {%- for name in prometheus.wanted %}
+        {%- if name in prometheus.pkg %}
+
+prometheus-package-clean-{{ name }}-removed:
   pkg.removed:
-    - name: {{ prometheus.pkg.name }}
+    - name: {{ name }}
+            {%- if name in prometheus.service %}
     - require:
-      - sls: {{ sls_config_clean }}
+      - service: prometheus-service-clean-{{ name }}-service-dead
+            {%- endif %}
+
+        {%- endif %}
+    {%- endfor %}

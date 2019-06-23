@@ -1,6 +1,10 @@
 ########################################################################
 # File managed by Salt at <{{ source }}>.
-# Your changes will be overwritten.
+# Your changes may be overwritten.
 ########################################################################
 
-{{ config|yaml(False) }}
+{%- if defaults %}
+    {%- for item in defaults %}
+{{ item }}
+    {%- endfor %}
+{%- endif %}

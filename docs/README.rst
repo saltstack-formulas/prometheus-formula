@@ -13,7 +13,7 @@ prometheus-formula
    :alt: Semantic Release
    :scale: 100%
    :target: https://github.com/semantic-release/semantic-release
-Manage Prometheus.
+Manage Prometheus on MacOS, GNU/Linux and FreeBSD.
 
 .. contents:: **Table of Contents**
 
@@ -48,8 +48,23 @@ This installs the prometheus package,
 manages the prometheus configuration file and then
 starts the associated prometheus service.
 
+``prometheus.archive``
+^^^^^^^^^^^^^^^^^^^^
+
+This state will install the prometheus from archive file only.
+
+``prometheus.archive.alternatives``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will install the prometheus linux alternatives for archives only.
+
 ``prometheus.package``
 ^^^^^^^^^^^^^^^^^^^^
+
+This state will install the prometheus package only.
+
+``prometheus.package.repo``
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will install the prometheus package only.
 
@@ -91,6 +106,21 @@ dependency on ``prometheus.service.clean`` via include list.
 
 This state will remove the prometheus package and has a depency on
 ``prometheus.config.clean`` via include list.
+
+``prometheus.package.archive.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will uninstall the prometheus archive-extracted directory only.
+
+``prometheus.package.archive.alternatives.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will uninstall the prometheus linux alternatives for archives only.
+
+``prometheus.package.repo.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will uninstall the prometheus upstream package repository only.
 
 ``prometheus.exporters``
 ^^^^^^^^^^^^^^^^^^^^^^^^

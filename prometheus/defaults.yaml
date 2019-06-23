@@ -2,25 +2,112 @@
 # vim: ft=yaml
 ---
 prometheus:
-  pkg:
-    name: prometheus
-    use_upstream_repo: False
-    repo:
-      humanname: prometheus
-      name: prometheus
-      comments:
-        - installed by salt
-      enabled: 1
-      gpgcheck: 1
   rootgroup: root
-  config_file: /etc/prometheus/prometheus.yml
-  config: {}
+  kernel: {{ grains.kernel | lower }}
+  arch: {{ grains.osarch }}
+  use_upstream_repo: False
+  use_upstream_archive: False
+
+  wanted:
+    - prometheus
+    - alertmanager
+    - node_exporter
+
+  dir:
+    basedir: /opt/prometheus
+    etc: /etc/prometheus
+    var: /var/lib/prometheus
+    args: /etc/default
+    service: /usr/lib/systemd/system
+
   service:
-    name: prometheus
-    user: prometheus
-    group: prometheus
-  exporters:
-    node:
-      pkg:
-        name: prometheus-node-exporter
-      service: prometheus-node-exporter
+    prometheus:
+      args:
+        web.listen-address: 0.0.0.0:9090
+    alertmanager: {}
+
+  config:
+    prometheus: {}
+    alertmanager: {}
+
+  pkg:
+    prometheus:
+      archive_version: '2.10.0'
+      archive_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+      binaries:
+        - prometheus
+        - promtool
+      repo:
+        humanname: prometheus
+        name: prometheus
+        comments:
+          - installed by salt
+        enabled: 1
+        gpgcheck: 1
+    alertmanager:
+      archive_version: '0.17.0'
+      archive_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f 
+      binaries:
+        - amtool
+        - alertmanager
+    blackbox_exporter:
+      archive_version: '0.14.0'
+      archive_hash: a2918a059023045cafb911272c88a9eb83cdac9a8a5e8e74844b5d6d27f19117
+      binaries:
+        - blackbox_exporter
+    consul_exporter:
+      archive_version: '0.4.0'
+      archive_hash: ff77c03de67cf381f67480b5be6699901785a34145c518c3484ae3e5b8440d08
+      binaries:
+        - consul_exporter
+    graphite_exporter:
+      archive_version: '0.6.2'
+      archive_hash: 9b962bd06406ece4a865ad6947a6e652e48a92a0d77e496a0351c04e9c2c5e9e
+      binaries:
+        - graphite_exporter
+    haproxy_exporter:
+      archive_version: '0.10.0'
+      archive_hash: 08150728e281f813a8fcfff4b336f16dbfe4268a1c7510212c8cff2579b10468
+      binaries:
+        - haproxy_exporter
+    memcached_exporter:
+      archive_version: '0.5.0'
+      archive_hash: bb07f496ceb63dad9793ad4295205547a4bd20b90628476d64fa96c9a25a020f
+      binaries:
+        - memcached_exporter
+    mysqld_exporter:
+      archive_version: '0.11.0'
+      archive_hash: b53ad48ff14aa891eb6a959730ffc626db98160d140d9a66377394714c563acf
+      binaries:
+        - mysqld_exporter
+    node_exporter:
+      archive_version: '0.18.1'
+      archive_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
+      binaries:
+        - node_exporter
+    pushgateway:
+      archive_version: '0.8.0'
+      archive_hash: 6949866ba9ad0cb88d3faffd4281f17df79281398b4dbd0ec3aab300071681ca
+      binaries:
+        - pushgateway
+    statsd_exporter:
+      archive_version: '0.11.2'
+      archive_hash: 4632ad0c5552e271e84c376da3ffe3af8c265ec5c3035334b70e35756aca1906
+      binaries:
+        - statsd_exporter
+
+  archive:
+    uri: https://github.com/prometheus
+    suffix: tar.gz
+    kwargs:
+      trim_output: True
+      enforce_toplevel: True
+      archive_format: tar
+      retry:
+        attempts: 3
+        until: True
+        interval: 60
+        splay: 10
+
+  linux:
+    altpriority: 0   ##'Alternatives system' priority: zero disables (default)

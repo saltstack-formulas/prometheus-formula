@@ -42,7 +42,6 @@ provisioner:
     base:
       '*':
         - prometheus
-        - prometheus.exporters
   pillars:
     top.sls:
       base:

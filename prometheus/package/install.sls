@@ -5,11 +5,18 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus with context %}
  
-    {%- if prometheus.pkg.use_upstream_repo %}
+    {%- if prometheus.use_upstream_repo %}
+
 include:
   - .repo
-    {%- endif %}
 
-prometheus-package-install-pkg-installed:
+    {%- endif %}
+    {%- for name in prometheus.wanted %}
+        {%- if name in prometheus.pkg %}
+
+prometheus-package-install-{{ name }}-installed:
   pkg.installed:
-    - name: {{ prometheus.pkg.name }}
+    - name: {{ name }}
+
+        {%- endif %}
+    {%- endfor %}
