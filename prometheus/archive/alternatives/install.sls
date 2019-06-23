@@ -18,7 +18,7 @@ include:
 
 prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
   cmd.run:
-    - name: update-alternatives --install {{ p.dir.basedir }}/{{ bundle }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
+    - name: update-alternatives --install {{ p.dir.basedir }}/{{ name }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
     - watch:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
 
@@ -45,13 +45,18 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
 
            {%- endif %}
            {% for b in p.pkg[name]['binaries'] %}
+              {%- if grains.os_family == 'Suse' %}
 
-prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
+prometheus-archive-alternatives-install-{{ name }}-cmd-run-{{ b }}-alternative:
   cmd.run:
     - onlyif: {{ grains.os_family in ('Suse',) }}
     - name: update-alternatives --install /usr/local/bin/{{ b }} prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} {{ p.linux.altpriority }}
     - require:
       - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
+
+              {%- else %}
+
+prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
   alternatives.install:
     - name: prometheus-{{ name }}-{{ b }}
     - link: /usr/local/bin/{{ b }}
@@ -60,7 +65,6 @@ prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
     - order: 10
     - require:
       - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
-    - onlyif: {{ grains.os_family not in ('Suse',) }}
 
 prometheus-archive-alternatives-install-{{ name }}-alternatives-set-{{ b }}:
   alternatives.set:
@@ -68,8 +72,8 @@ prometheus-archive-alternatives-install-{{ name }}-alternatives-set-{{ b }}:
     - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
     - require:
       - alternatives: prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}
-    - onlyif: {{ grains.os_family not in ('Suse',) }}
 
+              {%- endif %}
           {% endfor %}
        {% endfor %}
     {%- endif %}

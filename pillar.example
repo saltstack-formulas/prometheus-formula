@@ -4,12 +4,14 @@
 prometheus:
   wanted:
     - prometheus
-    - pushgateway
+         {%- if grains.os_family not in ('Debian',) %}
+    - alertmanager
+         {%- endif %}
     - node_explorer
     # no memcached_exporter in upstream repo - only archive
     # memcached_exporter
 
-  use_upstream_archive: True
+  use_upstream_archive: False
      {%- if grains.os_family in ('CentOS',) %}
   use_upstream_repo: False
      {%- endif %}
@@ -26,10 +28,10 @@ prometheus:
     prometheus:
       args:
         web.listen-address: 0.0.0.0:9090
-    pushgateway:
-      args:
-        web.listen-address: ":9091"
-        web.telemetry-path: "/metrics"
+    #pushgateway:
+      #args:
+      #  web.listen-address: ":9091"
+      #  web.telemetry-path: "/metrics"
     node_exporter:
       args:
         web.listen-address: ":9110"
