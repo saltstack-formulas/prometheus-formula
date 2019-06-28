@@ -1,7 +1,7 @@
 name: prometheus
 os: FreeBSD
 os_family: FreeBSD
-version: 3.0.0
+version: 3.0.1
 release: 1
 minimum_version: 2016.11
 summary: Prometheus formula

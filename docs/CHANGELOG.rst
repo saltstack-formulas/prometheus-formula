@@ -2,6 +2,15 @@
 Changelog
 =========
 
+`3.0.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v3.0.0...v3.0.1>`_ (2019-06-28)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **alternatives:** fix requisite (\ `8c410d7 <https://github.com/saltstack-formulas/prometheus-formula/commit/8c410d7>`_\ )
+
 `3.0.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v2.0.0...v3.0.0>`_ (2019-06-23)
 ------------------------------------------------------------------------------------------------------------
 
