@@ -155,4 +155,4 @@ prometheus:
 
   linux:
     #'Alternatives system' priority: zero disables (default)
-    altpriority: 0
+    altpriority: {{ range(1, 9100000) | random }}

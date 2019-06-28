@@ -9,8 +9,6 @@
 
 include:
   - .install
-        {%- if grains.kernel|lower == 'linux' %}
   - .alternatives
-        {%- endif %}
 
     {%- endif %}

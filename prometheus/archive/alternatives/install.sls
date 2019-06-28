@@ -33,14 +33,12 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
     - order: 10
     - watch:
         - archive: prometheus-archive-install-{{ name }}-archive-extracted
-    - onlyif: {{ grains.os_family not in ('Suse',) }}
 
 prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
   alternatives.set:
     - name: prometheus-{{ name }}-home
     - path: {{ p.dir.basedir }}/{{ bundle }}
     - require:
-      - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
       - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
 
            {%- endif %}
@@ -49,7 +47,6 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
 
 prometheus-archive-alternatives-install-{{ name }}-cmd-run-{{ b }}-alternative:
   cmd.run:
-    - onlyif: {{ grains.os_family in ('Suse',) }}
     - name: update-alternatives --install /usr/local/bin/{{ b }} prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} {{ p.linux.altpriority }}
     - require:
       - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
