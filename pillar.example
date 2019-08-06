@@ -28,10 +28,10 @@ prometheus:
     prometheus:
       args:
         web.listen-address: 0.0.0.0:9090
-    #pushgateway:
-      #args:
-      #  web.listen-address: ":9091"
-      #  web.telemetry-path: "/metrics"
+    # pushgateway:
+    #   args:
+    #    web.listen-address: ":9091"
+    #    web.telemetry-path: "/metrics"
     node_exporter:
       args:
         web.listen-address: ":9110"
@@ -54,41 +54,45 @@ prometheus:
     # dirs:
     #   files: files_alt
     #   default: default_alt
-    # source_files:
-    #   prometheus-config-file-file-managed:
-    #     - 'example_alt.tmpl'
-    #     - 'example_alt.tmpl.jinja'
+    source_files:
+      prometheus-config-file-file-managed:
+        - 'alt_config.yml.jinja'
 
   # Pillar-based config
   config:
     prometheus:
+      # yamllint disable-line rule:line-length
       # ref https://raw.githubusercontent.com/prometheus/prometheus/release-2.10/config/testdata/conf.good.yml
       # my global config
       global:
-        scrape_interval:     15s # Set the scrape interval to every 15 seconds. Default is every 1 minute.
-        evaluation_interval: 15s # Evaluate rules every 15 seconds. The default is every 1 minute.
+        # Set the scrape interval to every 15 seconds. Default is every 1 minute.
+        scrape_interval: 15s
+        # Evaluate rules every 15 seconds. The default is every 1 minute.
+        evaluation_interval: 15s
         # scrape_timeout is set to the global default (10s).
 
       # Alertmanager configuration
       alerting:
         alertmanagers:
-        - static_configs:
-          - targets:
-            # - alertmanager:9093
+          - static_configs:
+              - targets:
+              #     - alertmanager:9093
 
-      # Load rules once and periodically evaluate them according to the global 'evaluation_interval'.
+      # Load rules once and periodically evaluate them according to the global
+      # 'evaluation_interval'.
       rule_files:
-        # - "first_rules.yml"
+        - "first_rules.yml"
         # - "second_rules.yml"
 
       # A scrape configuration containing exactly one endpoint to scrape:
       scrape_configs:
-        # The job name is added as a label `job=<job_name>` to any timeseries scraped from this config.
+        # The job name is added as a label `job=<job_name>` to any timeseries
+        # scraped from this config.
         - job_name: 'prometheus'
           # metrics_path defaults to '/metrics'
           # scheme defaults to 'http'.
           static_configs:
-          - targets: ['localhost:9090']
+            - targets: ['localhost:9090']
 
         - job_name: pushgateway
           scrape_interval: 5s
@@ -103,9 +107,9 @@ prometheus:
             module: [http_2xx]  # Look for a HTTP 200 response.
           static_configs:
             - targets:
-              - http://prometheus.io    # Target to probe with http.
-              - https://prometheus.io   # Target to probe with https.
-              - http://example.com:8080 # Target to probe with http on port 8080.
+                - http://prometheus.io     # Target to probe with http.
+                - https://prometheus.io    # Target to probe with https.
+                - http://example.com:8080  # Target to probe with http on port 8080.
           relabel_configs:
             - source_labels: [__address__]
               target_label: __param_target
@@ -115,6 +119,7 @@ prometheus:
               replacement: 127.0.0.1:9115  # The blackbox exporter's real hostname:port.
 
     alertmanager:
+      # yamllint disable-line rule:line-length
       # ref https://github.com/prometheus/alertmanager/blob/master/config/testdata/conf.good.yml
       global:
         smtp_smarthost: 'localhost:25'
@@ -136,13 +141,13 @@ prometheus:
               service: ^(foo1|foo2|baz)$
             receiver: team-X-mails
             routes:
-            - match:
-                severity: critical
-              receiver: team-X-mails
+              - match:
+                  severity: critical
+                receiver: team-X-mails
       receivers:
-      - name: 'team-X-mails'
-        email_configs:
-        - to: 'team-X+alerts@example.org'
+        - name: 'team-X-mails'
+          email_configs:
+            - to: 'team-X+alerts@example.org'
 
       inhibit_rules:
         - name: opsGenie-receiver
@@ -154,5 +159,6 @@ prometheus:
               image_url: 'http://some.img.com/img.png'
 
   linux:
-    #'Alternatives system' priority: zero disables (default)
+    # 'Alternatives system' priority: zero disables (default)
+    # yamllint disable-line rule:braces
     altpriority: {{ range(1, 9100000) | random }}
