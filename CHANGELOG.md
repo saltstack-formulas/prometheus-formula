@@ -1,5 +1,17 @@
 # Changelog
 
+# [3.1.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.0.1...v3.1.0) (2019-08-17)
+
+
+### Continuous Integration
+
+* **kitchen+travis:** modify matrix to include `develop` platform ([fc0f5b6](https://github.com/saltstack-formulas/prometheus-formula/commit/fc0f5b6))
+
+
+### Features
+
+* **yamllint:** include for this repo and apply rules throughout ([07dbfc8](https://github.com/saltstack-formulas/prometheus-formula/commit/07dbfc8))
+
 ## [3.0.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.0.0...v3.0.1) (2019-06-28)
 
 
