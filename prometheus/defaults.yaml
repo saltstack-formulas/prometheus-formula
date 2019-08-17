@@ -3,10 +3,12 @@
 ---
 prometheus:
   rootgroup: root
+  # yamllint disable rule:braces
   kernel: {{ grains.kernel | lower }}
   arch: {{ grains.osarch }}
-  use_upstream_repo: False
-  use_upstream_archive: False
+  # yamllint enable rule:braces
+  use_upstream_repo: false
+  use_upstream_archive: false
 
   wanted:
     - prometheus
@@ -46,7 +48,7 @@ prometheus:
         gpgcheck: 1
     alertmanager:
       archive_version: '0.17.0'
-      archive_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f 
+      archive_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f
       binaries:
         - amtool
         - alertmanager
@@ -100,14 +102,14 @@ prometheus:
     uri: https://github.com/prometheus
     suffix: tar.gz
     kwargs:
-      trim_output: True
-      enforce_toplevel: True
+      trim_output: true
+      enforce_toplevel: true
       archive_format: tar
       retry:
         attempts: 3
-        until: True
+        until: true
         interval: 60
         splay: 10
 
   linux:
-    altpriority: 0   ##'Alternatives system' priority: zero disables (default)
+    altpriority: 0   ## 'Alternatives system' priority: zero disables (default)

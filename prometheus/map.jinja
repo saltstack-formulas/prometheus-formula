@@ -21,6 +21,14 @@
 {#- Merge the prometheus pillar #}
 {%- set prometheus = salt['pillar.get']('prometheus', default=defaults, merge=True) %}
 
+{#- Post-processing for specific non-YAML customisations #}
+{%- if grains.os == 'MacOS' %}
+{%-   set macos_user = salt['cmd.run']("stat -f '%Su' /dev/console") %}
+{%-   set macos_group = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
+{%-   do prometheus.update({'rootuser': macos_user}) %}
+{%-   do prometheus.update({'rootgroup': macos_group}) %}
+{%- endif %}
+
 {#- Contactenate arguments #}
 {%- macro concat_args(args) %}
 {%-   set args = args|dictsort %}
