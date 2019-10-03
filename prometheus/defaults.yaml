@@ -127,3 +127,9 @@ prometheus:
           enable: false
           remove: false
           pkg: ipmitool
+        smartmon:
+          enable: false
+          remove: false
+          pkg: smartmontools
+          bash_pkg: bash
+          smartctl: /usr/sbin/smartctl
