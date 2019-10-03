@@ -46,9 +46,9 @@ prometheus-config-args-{{ name }}-all:
 
             {%- elif grains.os_family != 'FreeBSD' %}
               {%- if grains.os_family == 'Debian' %}
-                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}' %}
+                {%- set config_file_name = '{}/{}'.format(prometheus.dir.args, name) %}
               {%- else %}
-                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}.sh' %}
+                {%- set config_file_name = '{}/{}.sh'.format(prometheus.dir.args, name) %}
               {%- endif %}
 
 prometheus-config-args-{{ name }}-file-absent:
