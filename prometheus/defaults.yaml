@@ -122,4 +122,8 @@ prometheus:
   exporters:
     node_exporter:
       textfile_collectors_dependencies: []
-      textfile_collectors: {}
+      textfile_collectors:
+        ipmitool:
+          enable: false
+          remove: false
+          pkg: ipmitool
