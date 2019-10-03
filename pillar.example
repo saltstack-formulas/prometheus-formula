@@ -168,4 +168,8 @@ prometheus:
 
   exporters:
     node_exporter:
-      textfile_collectors: {}
+      textfile_collectors:
+        ipmitool:
+          # You must enable individual collectors
+          enable: true
+          # pkg: ipmitool
