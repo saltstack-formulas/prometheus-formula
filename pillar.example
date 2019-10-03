@@ -173,3 +173,8 @@ prometheus:
           # You must enable individual collectors
           enable: true
           # pkg: ipmitool
+        smartmon:
+          enable: true
+          # pkg: smartmontools
+          # bash_pkg: bash
+          # smartctl: /usr/sbin/smartctl
