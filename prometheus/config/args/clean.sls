@@ -48,7 +48,7 @@ prometheus-config-args-{{ name }}-all:
 
 prometheus-config-args-{{ name }}-file-absent:
   file.absent:
-    - name: {{ prometheus.dir.args }}/{{ name }}.sh
+    - name: {{ prometheus.dir.args }}/{{ name }}{{ '' if grains.os_family == 'Debian' else '.sh' }}
     - require:
       - service: prometheus-service-clean-{{ name }}-service-dead
     - require_in:
