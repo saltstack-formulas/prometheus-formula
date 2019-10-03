@@ -45,10 +45,15 @@ prometheus-config-args-{{ name }}-all:
       - service: prometheus-service-clean-{{ name }}-service-dead
 
             {%- elif grains.os_family != 'FreeBSD' %}
+              {%- if grains.os_family == 'Debian' %}
+                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}' %}
+              {%- else %}
+                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}.sh' %}
+              {%- endif %}
 
 prometheus-config-args-{{ name }}-file-absent:
   file.absent:
-    - name: {{ prometheus.dir.args }}/{{ name }}{{ '' if grains.os_family == 'Debian' else '.sh' }}
+    - name: {{ config_file_name }}
     - require:
       - service: prometheus-service-clean-{{ name }}-service-dead
     - require_in:

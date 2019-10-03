@@ -93,10 +93,15 @@ prometheus-config-args-{{ name }}-all:
       - file: prometheus-config-file-args-file-directory
 
             {%- elif grains.os_family != 'FreeBSD' %}
+              {%- if grains.os_family == 'Debian' %}
+                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}' %}
+              {%- else %}
+                {%- set config_file_name = '{{ prometheus.dir.args }}/{{ name }}.sh' %}
+              {%- endif %}
 
 prometheus-config-args-{{ name }}-file-managed:
   file.managed:
-    - name: {{ prometheus.dir.args }}/{{ name }}{{ '' if grains.os_family == 'Debian' else '.sh' }}
+    - name: {{ config_file_name }}
     - contents: |
         ARGS="{{ concat_args(args) }}"
     - watch_in:
