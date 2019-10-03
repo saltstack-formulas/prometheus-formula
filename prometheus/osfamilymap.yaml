@@ -18,6 +18,10 @@ Debian:
   service:
     node_exporter:
       name: prometheus-node-exporter
+  exporters:
+    node_exporter:
+      textfile_collectors_dependencies:
+        - cron
 
 RedHat:
   pkg:
