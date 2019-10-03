@@ -123,3 +123,9 @@ This state will uninstall the prometheus linux alternatives for archives only.
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will uninstall the prometheus upstream package repository only.
+
+``prometheus.config.node_exporter.textfile_collectors``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will manage the node exporter's textfile collectors
+according to Pillar ``prometheus:exporters:node_exporter:textfile_collectors``.
