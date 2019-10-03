@@ -96,7 +96,7 @@ prometheus-config-args-{{ name }}-all:
 
 prometheus-config-args-{{ name }}-file-managed:
   file.managed:
-    - name: {{ prometheus.dir.args }}/{{ name }}.sh
+    - name: {{ prometheus.dir.args }}/{{ name }}{{ '' if grains.os_family == 'Debian' else '.sh' }}
     - contents: |
         ARGS="{{ concat_args(args) }}"
     - watch_in:
