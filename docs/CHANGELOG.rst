@@ -2,6 +2,27 @@
 Changelog
 =========
 
+`3.1.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.0...v3.1.1>`_ (2019-10-07)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **config:** cope with aberrant service names (\ `0a33842 <https://github.com/saltstack-formulas/prometheus-formula/commit/0a33842>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* use ``dist: bionic`` & apply ``opensuse-leap-15`` SCP error workaround (\ `3dc6e12 <https://github.com/saltstack-formulas/prometheus-formula/commit/3dc6e12>`_\ )
+* **kitchen:** change ``log_level`` to ``debug`` instead of ``info`` (\ `af666db <https://github.com/saltstack-formulas/prometheus-formula/commit/af666db>`_\ )
+* **kitchen:** install required packages to bootstrapped ``opensuse`` [skip ci] (\ `3332493 <https://github.com/saltstack-formulas/prometheus-formula/commit/3332493>`_\ )
+* **kitchen:** use bootstrapped ``opensuse`` images until ``2019.2.2`` [skip ci] (\ `a624dd8 <https://github.com/saltstack-formulas/prometheus-formula/commit/a624dd8>`_\ )
+* **kitchen+travis:** replace EOL pre-salted images (\ `0895d81 <https://github.com/saltstack-formulas/prometheus-formula/commit/0895d81>`_\ )
+* **platform:** add ``arch-base-latest`` (commented out for now) [skip ci] (\ `6221888 <https://github.com/saltstack-formulas/prometheus-formula/commit/6221888>`_\ )
+* **yamllint:** add rule ``empty-values`` & use new ``yaml-files`` setting (\ `1784b34 <https://github.com/saltstack-formulas/prometheus-formula/commit/1784b34>`_\ )
+
 `3.1.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v3.0.1...v3.1.0>`_ (2019-08-17)
 ------------------------------------------------------------------------------------------------------------
 
