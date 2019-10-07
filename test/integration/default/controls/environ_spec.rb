@@ -1,7 +1,14 @@
 control 'prometheus configuration environment' do
   title 'should match desired lines'
 
-  describe file('/etc/default/prometheus.sh') do
+  args_file = case os[:family]
+  when 'debian'
+    '/etc/default/prometheus'
+  else
+    '/etc/default/prometheus.sh'
+  end
+
+  describe file(args_file) do
     it { should be_file }
     it { should be_owned_by 'root' }
     it { should be_grouped_into 'root' }
