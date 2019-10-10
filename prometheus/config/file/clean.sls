@@ -15,7 +15,7 @@ include:
 prometheus-config-file-{{ name }}-file-absent:
   file.absent:
     - name: {{ prometheus.dir.etc }}/{{ name }}.yml
-    - require_in: 
+    - require_in:
       - file: prometheus-config-file-etc-file-absent
 
     {%- endfor %}
@@ -23,5 +23,5 @@ prometheus-config-file-{{ name }}-file-absent:
 prometheus-config-file-etc-file-absent:
   file.absent:
     - name: {{ prometheus.dir.etc }}
-    - require: 
+    - require:
       - sls: {{ sls_service_clean }}

@@ -30,7 +30,7 @@ prometheus-archive-install-{{ name }}-archive-extracted:
     - name: {{ p.dir.basedir }}
     - source: {{ p.archive.uri }}/{{ name }}/releases/download/v{{ p.pkg[name]['archive_version']
                  + '/' + bundle + '.' + p.archive.suffix }}
-    - source_hash: {{ p.pkg[name]['archive_hash'] }} 
+    - source_hash: {{ p.pkg[name]['archive_hash'] }}
     - user: {{ name }}
     - group: {{ name }}
     {{- format_kwargs(p.archive.kwargs) }}
@@ -41,7 +41,7 @@ prometheus-archive-install-{{ name }}-archive-extracted:
       - file: prometheus-config-file-basedir-file-directory
 
           {%- if name in p.service %}
-         
+
 prometheus-archive-install-{{ name }}-file-directory:
   file.directory:
     - name: {{ p.dir.var }}/{{ name }}

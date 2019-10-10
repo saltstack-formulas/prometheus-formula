@@ -18,7 +18,10 @@ include:
 
 prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
   cmd.run:
-    - name: update-alternatives --install {{ p.dir.basedir }}/{{ name }} prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} {{p.linux.altpriority}}
+    - name: |
+        update-alternatives --install {{ p.dir.basedir }}/{{ name }} \
+        prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} \
+        {{ p.linux.altpriority }}
     - watch:
       - archive: prometheus-archive-install-{{ name }}-archive-extracted
 
@@ -47,7 +50,10 @@ prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
 
 prometheus-archive-alternatives-install-{{ name }}-cmd-run-{{ b }}-alternative:
   cmd.run:
-    - name: update-alternatives --install /usr/local/bin/{{ b }} prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} {{ p.linux.altpriority }}
+    - name: |
+        update-alternatives --install /usr/local/bin/{{ b }} \
+        prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} \
+        {{ p.linux.altpriority }}
     - require:
       - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
 
