@@ -2,6 +2,24 @@
 Changelog
 =========
 
+`3.1.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.1...v3.1.2>`_ (2019-10-10)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **clean.sls:** fix ``salt-lint`` errors (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/8056339>`_\ )
+* **install.sls:** fix ``salt-lint`` errors (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/51f5485>`_\ )
+* **install.sls:** fix ``salt-lint`` errors (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/173bc4f>`_\ )
+* **install.sls:** fix ``salt-lint`` errors (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/85c7fce>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* merge travis matrix, add ``salt-lint`` & ``rubocop`` to ``lint`` job (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/569328b>`_\ )
+
 `3.1.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.0...v3.1.1>`_ (2019-10-07)
 ------------------------------------------------------------------------------------------------------------
 
