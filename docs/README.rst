@@ -31,7 +31,9 @@ See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/dev
 Contributing to this repo
 -------------------------
 
-Please see https://github.com/saltstack-formulas/prometheus-formula/blob/master/docs/CONTRIBUTING.rst
+**Commit message formatting is significant!!**
+
+Please see `How to contribute <https://github.com/saltstack-formulas/.github/blob/master/CONTRIBUTING.rst>`_ for more details.
 
 Available states
 ----------------
