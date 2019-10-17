@@ -1,5 +1,35 @@
 # Changelog
 
+# [3.2.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.2...v3.2.0) (2019-10-17)
+
+
+### Bug Fixes
+
+* **args:** allow boolean arguments ([](https://github.com/saltstack-formulas/prometheus-formula/commit/39dacf0))
+* **examples:** fixed pillar.example ([](https://github.com/saltstack-formulas/prometheus-formula/commit/464a186))
+* **node_exporter:** allow standalone use of node_exporter ([](https://github.com/saltstack-formulas/prometheus-formula/commit/a0d8ad4))
+* **package:** use correct node exporter package name in Debian ([](https://github.com/saltstack-formulas/prometheus-formula/commit/a4fd589))
+* **readme:** removed already gone prometheus.exporters from README.rst ([](https://github.com/saltstack-formulas/prometheus-formula/commit/07d6209))
+
+
+### Continuous Integration
+
+* merge travis matrix, add `salt-lint` & `rubocop` to `lint` job ([](https://github.com/saltstack-formulas/prometheus-formula/commit/9def915))
+
+
+### Documentation
+
+* **contributing:** remove to use org-level file instead [skip ci] ([](https://github.com/saltstack-formulas/prometheus-formula/commit/fabcc4a))
+* **readme:** update link to `CONTRIBUTING` [skip ci] ([](https://github.com/saltstack-formulas/prometheus-formula/commit/da2a5aa))
+
+
+### Features
+
+* **freebsd:** support for FreeBSD ([](https://github.com/saltstack-formulas/prometheus-formula/commit/871da35))
+* **textfile_collectors:** added IPMI textfile collector ([](https://github.com/saltstack-formulas/prometheus-formula/commit/d731309))
+* **textfile_collectors:** added smartmon textfile collector ([](https://github.com/saltstack-formulas/prometheus-formula/commit/7b2f5ce))
+* **textfile_collectors:** added support for textfile collectors ([](https://github.com/saltstack-formulas/prometheus-formula/commit/930552d))
+
 ## [3.1.2](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.1...v3.1.2) (2019-10-10)
 
 
