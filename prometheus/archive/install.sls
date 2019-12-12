@@ -59,7 +59,7 @@ prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
     - name: {{ p.dir.service }}/{{ name }}.service
     - source: {{ files_switch(['systemd.ini.jinja'],
-                              lookup='prometheus-archive-install-{{ name }}-managed-service'
+                              lookup='prometheus-archive-install-' + name + '-managed-service'
                  )
               }}
     - mode: 644
