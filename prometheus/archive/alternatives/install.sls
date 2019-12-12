@@ -4,7 +4,6 @@
 {#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
-{%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
 {%- set sls_archive_install = tplroot ~ '.archive' %}
 
     {%- if grains.kernel|lower in ('linux',) and p.linux.altpriority|int > 0 %}

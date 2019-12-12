@@ -30,7 +30,7 @@ prometheus-config-file-{{ name }}-file-managed:
   file.managed:
     - name: {{ prometheus.dir.etc }}/{{ name }}.yml
     - source: {{ files_switch(['config.yml.jinja'],
-                              lookup='prometheus-config-file-{{ name }}-file-managed'
+                              lookup='prometheus-config-file-file-managed'
                  )
               }}
     - mode: 644
