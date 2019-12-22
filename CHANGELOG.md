@@ -1,5 +1,39 @@
 # Changelog
 
+# [3.3.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.2.0...v3.3.0) (2019-12-22)
+
+
+### Bug Fixes
+
+* **pillar.example:** reset `use_upstream_archive` to get tests passing [skip ci] ([978ccc2](https://github.com/saltstack-formulas/prometheus-formula/commit/978ccc208045136dddea44dc59754872f688a9cb))
+* test fix for bug 24 ([341fff3](https://github.com/saltstack-formulas/prometheus-formula/commit/341fff36ead5fce94c25c0ba8011a15d76f26de6))
+* **release.config.js:** use full commit hash in commit link [skip ci] ([cab6e29](https://github.com/saltstack-formulas/prometheus-formula/commit/cab6e29d8b29c700035694c35b20e8250ecb2ef1))
+
+
+### Continuous Integration
+
+* **gemfile:** restrict `train` gem version until upstream fix [skip ci] ([a51e532](https://github.com/saltstack-formulas/prometheus-formula/commit/a51e532992b69571a1f5ffa486f98aed4ddf87e0))
+* **kitchen:** use `debian-10-master-py3` instead of `develop` [skip ci] ([6ee835c](https://github.com/saltstack-formulas/prometheus-formula/commit/6ee835cab4a1dca30c9b7888587c68368c53dee1))
+* **kitchen:** use `develop` image until `master` is ready (`amazonlinux`) [skip ci] ([42ee683](https://github.com/saltstack-formulas/prometheus-formula/commit/42ee683c44d1bc7035b9ce325e8ad7d0c35b45da))
+* **kitchen+travis:** upgrade matrix after `2019.2.2` release [skip ci] ([044553e](https://github.com/saltstack-formulas/prometheus-formula/commit/044553ea8f51fc3af64fe3fd4b9fca8c3b58f2df))
+* **travis:** apply changes from build config validation [skip ci] ([bf4022e](https://github.com/saltstack-formulas/prometheus-formula/commit/bf4022ec1ac489dc875c02e84a547a7a6c245cb8))
+* **travis:** opt-in to `dpl v2` to complete build config validation [skip ci] ([0867508](https://github.com/saltstack-formulas/prometheus-formula/commit/086750884d14bc07ae466dd8247b99c01dbc1766))
+* **travis:** quote pathspecs used with `git ls-files` [skip ci] ([d9c9386](https://github.com/saltstack-formulas/prometheus-formula/commit/d9c93860385303ae89025431da7a83d48c5a6adf))
+* **travis:** run `shellcheck` during lint job [skip ci] ([7ea6967](https://github.com/saltstack-formulas/prometheus-formula/commit/7ea6967ca7d6c41f99ef4831715b894d9c7c751d))
+* **travis:** update `salt-lint` config for `v0.0.10` [skip ci] ([1415c13](https://github.com/saltstack-formulas/prometheus-formula/commit/1415c137854f19e34e4a79d74f1bb2b25770ee0c))
+* **travis:** use `major.minor` for `semantic-release` version [skip ci] ([9b4d5af](https://github.com/saltstack-formulas/prometheus-formula/commit/9b4d5aff64b0657303c7186c5f5a49d02039f35f))
+* **travis:** use build config validation (beta) [skip ci] ([0d0af0d](https://github.com/saltstack-formulas/prometheus-formula/commit/0d0af0df317c67924d0b8dc75d9dbf8e7a3a9535))
+
+
+### Features
+
+* **osfamilymap.yaml:** add Gentoo support ([b87e8f4](https://github.com/saltstack-formulas/prometheus-formula/commit/b87e8f437c51c81bb7543ad27b49dea48ff36203))
+
+
+### Performance Improvements
+
+* **travis:** improve `salt-lint` invocation [skip ci] ([36ccdc4](https://github.com/saltstack-formulas/prometheus-formula/commit/36ccdc4416d58952865ef60e7b94d122f09c6cde))
+
 # [3.2.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.1.2...v3.2.0) (2019-10-17)
 
 
