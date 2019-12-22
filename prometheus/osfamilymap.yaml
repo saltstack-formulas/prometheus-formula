@@ -35,7 +35,33 @@ RedHat:
 
 Suse: {}
 
-Gentoo: {}
+Gentoo:
+  dir:
+    args: false
+    args_setting: command_args
+    textfile_collectors: /var/lib/node_exporter/
+  pkg:
+    prometheus:
+      name: app-metrics/prometheus
+      args_file: /etc/conf.d/prometheus
+    node_exporter:
+      name: app-metrics/node_exporter
+      args_file: /etc/conf.d/node_exporter
+    alertmanager:
+      name: app-metrics/alertmanager
+      args_file: /etc/conf.d/alertmanager
+  service:
+    node_exporter:
+      args:
+        collector.textfile.directory: /var/lib/node_exporter
+    alertmanager:
+      args:
+        config.file: /etc/prometheus/alertmanager.yml
+        storage.path: /var/lib/alertmanager
+    prometheus:
+      args:
+        config.file: /etc/prometheus/prometheus.yml
+        storage.tsdb.path: /var/lib/prometheus/data
 
 Arch: {}
 
