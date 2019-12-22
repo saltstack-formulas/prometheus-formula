@@ -109,7 +109,7 @@ prometheus-config-args-{{ name }}-file-managed:
   file.managed:
     - name: {{ args_file }}
     - contents: |
-        ARGS="{{ concat_args(args) }}"
+        {{ prometheus.dir.args_setting }}="{{ concat_args(args) }}"
     - watch_in:
       - service: prometheus-service-running-{{ name }}-service-running
                 {%- if prometheus.dir.args %}
