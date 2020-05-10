@@ -12,6 +12,7 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
+  prometheus/osfamilymap.yaml
 
 yaml-files:
   # Default settings
