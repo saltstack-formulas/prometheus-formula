@@ -17,6 +17,7 @@ services:
 
 ## Script to run for the test stage
 script:
+  - bin/kitchen list
   - bin/kitchen verify "${INSTANCE}"
 
 ## Stages and jobs matrix
@@ -60,9 +61,9 @@ jobs:
     # the `platforms` defined in `kitchen.yml`
     - env: INSTANCE=default-debian-10-master-py3
     # - env: INSTANCE=default-ubuntu-1804-master-py3
-    - env: INSTANCE=default-centos-8-master-py3
-    - env: INSTANCE=default-fedora-31-master-py3
-    - env: INSTANCE=default-opensuse-leap-151-master-py3
+    - env: INSTANCE=archive-centos-8-master-py3
+    - env: INSTANCE=archive-fedora-31-master-py3
+    - env: INSTANCE=archive-opensuse-leap-151-master-py3
     # - env: INSTANCE=default-amazonlinux-2-master-py3
     # - env: INSTANCE=default-debian-10-3000-2-py3
     # - env: INSTANCE=default-debian-9-3000-2-py3
@@ -86,7 +87,7 @@ jobs:
     # - env: INSTANCE=default-amazonlinux-2-2019-2-py3
     # - env: INSTANCE=default-centos-6-2019-2-py2
     # - env: INSTANCE=default-amazonlinux-1-2019-2-py2
-    - env: INSTANCE=arch-arch-base-latest-2019-2-py2
+    - env: INSTANCE=archive-arch-base-latest-2019-2-py2
 
     ## Define the release stage that runs `semantic-release`
     - stage: 'release'

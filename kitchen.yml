@@ -158,3 +158,19 @@ suites:
     verifier:
       inspec_tests:
         - path: test/integration/default
+  - name: archive
+    provisioner:
+      state_top:
+        base:
+          '*':
+            - prometheus
+      pillars:
+        top.sls:
+          base:
+            '*':
+              - prometheus
+      pillars_from_files:
+        prometheus.sls: pillar.example
+    verifier:
+      inspec_tests:
+        - path: test/integration/archive

@@ -9,6 +9,7 @@ control 'prometheus configuration environment' do
               else
                 '/etc/default/prometheus.sh'
               end
+
   describe file(args_file) do
     it { should be_file }
     it { should be_owned_by 'root' }
