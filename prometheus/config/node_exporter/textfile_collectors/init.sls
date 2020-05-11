@@ -34,7 +34,7 @@ prometheus-node_exporter-textfile-dir:
 {%- endfor %}
 
 
-{%- if states|length > 0 %}
+{%- if states|length > 0 and prometheus.exporters.node_exporter.textfile_collectors_dependencies %}
 prometheus-node_exporter-textfile-dependencies:
   pkg.installed:
     - pkgs: {{ prometheus.exporters.node_exporter.textfile_collectors_dependencies }}
