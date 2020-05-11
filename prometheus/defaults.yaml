@@ -8,7 +8,7 @@ prometheus:
   arch: {{ grains.osarch }}
   # yamllint enable rule:braces
   use_upstream_repo: false
-  use_upstream_archive: false
+  use_upstream_archive: true
 
   wanted:
     - prometheus
