@@ -12,6 +12,10 @@ ignore: |
   node_modules/
   test/**/states/**/*.sls
   .kitchen/
+  bin/kitchen
+  prometheus/osfamilymap.yaml
+  prometheus/osfingermap.yaml
+  pillar.example
 
 yaml-files:
   # Default settings

@@ -1,12 +1,8 @@
 # https://help.github.com/en/github/creating-cloning-and-archiving-repositories/about-code-owners
 
 # SECTION: Owner(s) for everything in the repo, unless a later match takes precedence
-#          **************************************************************************
-#          ***                    NO GLOBAL OWNER(S) SPECIFIED                    ***
-#          ***  Ideally this will be defined for a healthy, well-maintained repo  ***
-#          **************************************************************************
 # FILE PATTERN                              OWNER(S)
-*                                           @NONE
+*                                           @noelmcloughlin
 
 # SECTION: Owner(s) for specific directories
 # FILE PATTERN                              OWNER(S)
@@ -19,7 +15,7 @@
 /docs/CHANGELOG.rst                         @saltstack-formulas/ssf
 /docs/TOFS_pattern.rst                      @saltstack-formulas/ssf
 /prometheus/libsaltcli.jinja                @saltstack-formulas/ssf
-/prometheus/libtofs.jinja                   @saltstack-formulas/ssf
+/rstuodio/libtofs.jinja                     @saltstack-formulas/ssf
 /test/integration/**/inspec.yml             @saltstack-formulas/ssf
 /test/integration/**/README.md              @saltstack-formulas/ssf
 /.gitignore                                 @saltstack-formulas/ssf
