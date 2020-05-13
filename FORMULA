@@ -1,9 +1,9 @@
 name: prometheus
-os: FreeBSD
-os_family: FreeBSD
-version: 3.3.0
+os: Debian, Ubuntu, Raspbian, RedHat, Fedora, CentOS, Amazon, Suse, openSUSE, Gentoo, Funtoo, Arch, Manjaro, Alpine, FreeBSD, OpenBSD, Solaris, SmartOS, Windows, MacOS
+os_family: Debian, RedHat, Suse, Gentoo, Arch, Alpine, FreeBSD, OpenBSD, Solaris, Windows, MacOS
+version: 0.2.2
 release: 1
-minimum_version: 2016.11
-summary: Prometheus formula
-description: Formula to set up Prometheus
+minimum_version: 2019.2
+summary: prometheus formula
+description: Formula to install prometheus and configure it
 top_level_dir: prometheus

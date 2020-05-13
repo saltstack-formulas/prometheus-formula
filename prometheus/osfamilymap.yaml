@@ -10,14 +10,29 @@
 # you will need to provide at least an empty dict in this file, e.g.
 # osfamilymap: {}
 ---
+{%- if grains.os == 'MacOS' %}
+    {%- set macos_rootuser = salt['cmd.run']("stat -f '%Su' /dev/console") %}
+    {%- set macos_rootgroup = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
+{%- endif %}
+
+Arch: {}
+
+Alpine: {}
+
 Debian:
   pkg:
-    node_exporter:
-      name: prometheus-node-exporter
-      args_file: /etc/default/prometheus-node-exporter
-  service:
-    node_exporter:
-      name: prometheus-node-exporter
+    deps:
+      - cron
+    use_upstream_repo: true
+    use_upstream_package: false
+    use_upstream_archive: false
+    repo:
+      humanname: prometheus repository
+      key_url: 'https://s3-eu-west-1.amazonaws.com/deb.robustperception.io/41EFC99D.gpg'
+      file: /etc/apt/sources.list.d/prometheus.list
+    component:
+      node_exporter:
+        args_file: /etc/default/prometheus-node-exporter
   exporters:
     node_exporter:
       textfile_collectors_dependencies:
@@ -25,75 +40,74 @@ Debian:
 
 RedHat:
   pkg:
-    prometheus:
-      repo:
-        # yamllint disable rule:line-length
-        baseurl: 'https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch'
-        gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
-        # yamllint enable rule:line-length
-        metadata_expire: 300
+    use_upstream_repo: false   # not working on cent8
+    use_upstream_archive: false
+    component:
+      prometheus:
+        name: prometheus2
+    repo:
+      # https://akai-tsuki.hatenablog.com/entry/2017/12/03/000000
+      # yamllint disable rule:line-length
+      baseurl: 'https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch'
+      gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
+      # yamllint enable rule:line-length
+      sslverify: 1
+      sslcacert: /etc/pki/tls/certs/ca-bundle.crt
+      metadata_expire: 300
 
 Suse: {}
 
 Gentoo:
-  dir:
-    args: false
-    args_setting: command_args
-    textfile_collectors: /var/lib/node_exporter/
   pkg:
-    prometheus:
-      name: app-metrics/prometheus
-      args_file: /etc/conf.d/prometheus
-    node_exporter:
-      name: app-metrics/node_exporter
-      args_file: /etc/conf.d/node_exporter
-    alertmanager:
-      name: app-metrics/alertmanager
-      args_file: /etc/conf.d/alertmanager
-  service:
-    node_exporter:
-      args:
-        collector.textfile.directory: /var/lib/node_exporter
-    alertmanager:
-      args:
-        config.file: /etc/prometheus/alertmanager.yml
-        storage.path: /var/lib/alertmanager
-    prometheus:
-      args:
-        config.file: /etc/prometheus/prometheus.yml
-        storage.tsdb.path: /var/lib/prometheus/data
-
-Arch: {}
-
-Alpine: {}
+    component:
+      alertmanager:
+        name: app-metrics/alertmanager
+        args_file: /etc/conf.d/alertmanager
+      node_exporter:
+        name: app-metrics/node_exporter
+        args_file: /etc/conf.d/node_exporter
+      prometheus:
+        name: app-metrics/prometheus
+        args_file: /etc/conf.d/prometheus
 
 FreeBSD:
-  rootgroup: wheel
+  identity:
+    rootgroup: wheel
   dir:
-    args: false
     etc: /usr/local/etc/prometheus
   pkg:
-    prometheus:
-      archive_hash: 94a63f14baeadab2f17b5ae0bbeda6688e6d06f964ef4e32c2954a0ecf3996a1
-    alertmanager:
-      archive_hash: ec171b13976baceace193461f8a1e61021ab9657df5ba45157cd0095aee7d569
-    blackbox_exporter:
-      archive_hash: 2b92752decf2cf1883ce4f72301e4f911dab79efbd87db4df23dc9771e53e4af
-    consul_exporter:
-      archive_hash: 62e16c2f1acb9bf9411126478caccb5962da203cfb58d8c97f54b9c0add5171c
-    graphite_exporter:
-      archive_hash: ff424b923733d8247314353ba4d13a1c4b06450c35f005bfd6c3b6ff60b047fd
-    haproxy_exporter:
-      archive_hash: f32d158f9e3314828dc155a30a1f4c858876e1ea8ff543a4000afcbc7e923505
-    memcached_exporter:
-      archive_hash: 8fd53b9aede6b78e0530b159ccd0a437cf2f100da1ddc586681f389d804f5f19
-    mysqld_exporter:
-      archive_hash: 9bcbbd8b3568818fd4c95d255c6f93c357ea25aed3364d7428f4ff9c89cd489a
-    node_exporter: {}
-    pushgateway:
-      archive_hash: ebcd21dc25e439eed64559e89cd7da9a94073d5ff321a8a3a4214ac2ebe04e34
-    statsd_exporter:
-      archive_hash: f345dff6311501f09bb5b6ba1128e925d504c6325ee97ad91a975f2be0d44da9
+    component:
+      prometheus:
+        archive:
+          source_hash: 94a63f14baeadab2f17b5ae0bbeda6688e6d06f964ef4e32c2954a0ecf3996a1
+      alertmanager:
+        archive:
+          source_hash: ec171b13976baceace193461f8a1e61021ab9657df5ba45157cd0095aee7d569
+      blackbox_exporter:
+        archive:
+          source_hash: 2b92752decf2cf1883ce4f72301e4f911dab79efbd87db4df23dc9771e53e4af
+      consul_exporter:
+        archive:
+          source_hash: 62e16c2f1acb9bf9411126478caccb5962da203cfb58d8c97f54b9c0add5171c
+      graphite_exporter:
+        archive:
+          source_hash: ff424b923733d8247314353ba4d13a1c4b06450c35f005bfd6c3b6ff60b047fd
+      haproxy_exporter:
+        archive:
+          source_hash: f32d158f9e3314828dc155a30a1f4c858876e1ea8ff543a4000afcbc7e923505
+      memcached_exporter:
+        archive:
+          source_hash: 8fd53b9aede6b78e0530b159ccd0a437cf2f100da1ddc586681f389d804f5f19
+      mysqld_exporter:
+        archive:
+          source_hash: 9bcbbd8b3568818fd4c95d255c6f93c357ea25aed3364d7428f4ff9c89cd489a
+      node_exporter: {}
+      pushgateway:
+        archive:
+          source_hash: ebcd21dc25e439eed64559e89cd7da9a94073d5ff321a8a3a4214ac2ebe04e34
+      statsd_exporter:
+        archive:
+          source_hash: f345dff6311501f09bb5b6ba1128e925d504c6325ee97ad91a975f2be0d44da9
   exporters:
     node_exporter:
       textfile_collectors:
@@ -101,29 +115,41 @@ FreeBSD:
           smartctl: /usr/local/sbin/smartctl
 
 OpenBSD:
-  rootgroup: wheel
+  identity:
+    rootgroup: wheel
   kernel: openbsd
   pkg:
-    prometheus:
-      archive_hash: c3c69919b359f00a84ef12f7ed6a956111790d64a71bd94990572baaf63377ce
-    alertmanager:
-      archive_hash: 88ce1b3f11bb28f24b98235994277b2c31aa03b2b2609e0058c04efa0cc5596f
-    blackbox_exporter:
-      archive_hash: 0dee97d1204bac925bde919958ae890730d87386a816ed0b248c8038ee43794d
-    consul_exporter:
-      archive_hash: b53ee2bd0e670907eac894387e286b0dd11eb3149fcd4e19ed586006d3de741a
-    graphite_exporter:
-      archive_hash: 98cbd7176f1c61023892de64ad26edc3cd7895037e3cc282c4edec53dded7156
-    haproxy_exporter:
-      archive_hash: bc2b222f6a08232ef643cd6dcda3264f3bd7388a5bee25365cef137c7dea17e8
-    memcached_exporter:
-      archive_hash: 21db1bffc561d47b4490ccb2cde721244d00e95f504cdcfee618bc4bb877e731
-    mysqld_exporter:
-      archive_hash: b37d6fe68e2c884540ea41c5efcfb16d0bc5da517fe3ba713144504df1ba635d
-    pushgateway:
-      archive_hash: 0bce168e4b19234df9e954393a2102c91e4d62336b2721ed882f2003a4445d51
-    statsd_exporter:
-      archive_hash: c89acb365b75af03ce612873d8b20226e3882c0177752ea0ce17a9f5e41eb5b4
+    component:
+      prometheus:
+        archive:
+          source_hash: c3c69919b359f00a84ef12f7ed6a956111790d64a71bd94990572baaf63377ce
+      alertmanager:
+        archive:
+          source_hash: 88ce1b3f11bb28f24b98235994277b2c31aa03b2b2609e0058c04efa0cc5596f
+      blackbox_exporter:
+        archive:
+          source_hash: 0dee97d1204bac925bde919958ae890730d87386a816ed0b248c8038ee43794d
+      consul_exporter:
+        archive:
+          source_hash: b53ee2bd0e670907eac894387e286b0dd11eb3149fcd4e19ed586006d3de741a
+      graphite_exporter:
+        archive:
+          source_hash: 98cbd7176f1c61023892de64ad26edc3cd7895037e3cc282c4edec53dded7156
+      haproxy_exporter:
+        archive:
+          source_hash: bc2b222f6a08232ef643cd6dcda3264f3bd7388a5bee25365cef137c7dea17e8
+      memcached_exporter:
+        archive:
+          source_hash: 21db1bffc561d47b4490ccb2cde721244d00e95f504cdcfee618bc4bb877e731
+      mysqld_exporter:
+        archive:
+          source_hash: b37d6fe68e2c884540ea41c5efcfb16d0bc5da517fe3ba713144504df1ba635d
+      pushgateway:
+        archive:
+          source_hash: 0bce168e4b19234df9e954393a2102c91e4d62336b2721ed882f2003a4445d51
+      statsd_exporter:
+        archive:
+          source_hash: c89acb365b75af03ce612873d8b20226e3882c0177752ea0ce17a9f5e41eb5b4
 
 Solaris: {}
 
@@ -132,49 +158,77 @@ Windows:
   dir:
     opt: C:\\Program Files
   pkg:
-    prometheus:
-      archive_hash: eb138082a4d5e4d5b1e3ca838fa508f053474d46bca76e87ab0834f0d8b110db
-    alertmanager:
-      archive_hash: 512dbed02a3cc7e3f06d737f56179e458c462762b3427063b89c62a54d9645c6
-    blackbox_exporter:
-      archive_hash: 21ea148870631310002cbd48be54ca45e8d300da5a902b0aec052f1a64316d93
-    consul_exporter:
-      archive_hash: 54579bc5dfa6a238e310a1874b0a362027661dfa1754535e74610dc8ef6163b1
-    graphite_exporter:
-      archive_hash: f83fad71bad99ccac145d65f82bf9d17fa37168a5dcce6415c6350e79a84e638
-    haproxy_exporter:
-      archive_hash: 044118feb98b74eb921e27bd4b511732b553896c672c19bdd3418445dc030794
-    memcached_exporter:
-      archive_hash: 9e83c00c9d249c942f65b6a48112e6bd6e28a3d15b8a1d35e935621657b3d837
-    mysqld_exporter:
-      archive_hash: 38605ae648f8def07a0f412d81a30a6c48c0d20a6981468d25b91c8aa529e599
-    pushgateway:
-      archive_hash: 506b555e7a13cabf3d85ec0dbe1bc6bc3a2444c0cc468baa8d31e7fc2fe18dd1
-    statsd_exporter:
-      archive_hash: 9362b7482e74792f111c4bb1a372b18a88f6354c78f24713bacfbcb050883556
+    component:
+      prometheus:
+        archive:
+          source_hash: eb138082a4d5e4d5b1e3ca838fa508f053474d46bca76e87ab0834f0d8b110db
+      alertmanager:
+        archive:
+          source_hash: 512dbed02a3cc7e3f06d737f56179e458c462762b3427063b89c62a54d9645c6
+      blackbox_exporter:
+        archive:
+          source_hash: 21ea148870631310002cbd48be54ca45e8d300da5a902b0aec052f1a64316d93
+      consul_exporter:
+        archive:
+          source_hash: 54579bc5dfa6a238e310a1874b0a362027661dfa1754535e74610dc8ef6163b1
+      graphite_exporter:
+        archive:
+          source_hash: f83fad71bad99ccac145d65f82bf9d17fa37168a5dcce6415c6350e79a84e638
+      haproxy_exporter:
+        archive:
+          source_hash: 044118feb98b74eb921e27bd4b511732b553896c672c19bdd3418445dc030794
+      memcached_exporter:
+        archive:
+          source_hash: 9e83c00c9d249c942f65b6a48112e6bd6e28a3d15b8a1d35e935621657b3d837
+      mysqld_exporter:
+        archive:
+          source_hash: 38605ae648f8def07a0f412d81a30a6c48c0d20a6981468d25b91c8aa529e599
+      pushgateway:
+        archive:
+          source_hash: 506b555e7a13cabf3d85ec0dbe1bc6bc3a2444c0cc468baa8d31e7fc2fe18dd1
+      statsd_exporter:
+        archive:
+          source_hash: 9362b7482e74792f111c4bb1a372b18a88f6354c78f24713bacfbcb050883556
 
 MacOS:
+  dir:
+    default: /etc/defaults
+  identity:
+    rootuser: {{ macos_rootuser | d('') }}
+    rootgroup: {{ macos_rootgroup | d('') }}
   kernel: darwin
   pkg:
-    prometheus:
-      archive_hash: 740e36bcacc0c5d4495f5341fcfa8b7e0dc623d12e8b07ac291052ea0a681325
-    alertmanager:
-      archive_hash: efeebaa8e51c521ecb3440345fb65962533cae022d71dff8b127911e893ded2a
-    blackbox_exporter:
-      archive_hash: a371d0496adb5d62368d6606928c5effd318d1387f6b9a9998f8d0333492645a
-    consul_exporter:
-      archive_hash: 75641783938967c11c18d6d340028ff2dce7ad0ae5e300fa631b813cc6ea9647
-    graphite_exporter:
-      archive_hash: f9c0aa745502c0ab01fdcca29181801810202e0aed512a9aa9a37bb4be88a919
-    haproxy_exporter:
-      archive_hash: 8fdb8bb182586c57e5892816a02846bae0998916765d22bb81b2c444a3565862
-    memcached_exporter:
-      archive_hash: e10685cca5ffd8a3a7574b3dc096dc7418f34906abd399f881be06dd38be62cb
-    mysqld_exporter:
-      archive_hash: 8e0a7d8847790d6dcdcf392e6dd227458a7bcaa1e0890cc6326fdf956421f2a7
-    node_exporter:
-      archive_hash: 20fadb3108de0a9cc70a1333394e5be90416b4f91025f9fc66f5736335e94398
-    pushgateway:
-      archive_hash: 25399a4c6600c1931f9d9bd5294700c2b53f964188b1c6003f9d12a2e176aac1
-    statsd_exporter:
-      archive_hash: 15132494523c2b6a89e09b2da63452c8fe587fb82fcc3fd21cc75a4aa2766644
+    component:
+      prometheus:
+        archive:
+          source_hash: 740e36bcacc0c5d4495f5341fcfa8b7e0dc623d12e8b07ac291052ea0a681325
+      alertmanager:
+        archive:
+          source_hash: efeebaa8e51c521ecb3440345fb65962533cae022d71dff8b127911e893ded2a
+      blackbox_exporter:
+        archive:
+          source_hash: a371d0496adb5d62368d6606928c5effd318d1387f6b9a9998f8d0333492645a
+      consul_exporter:
+        archive:
+          source_hash: 75641783938967c11c18d6d340028ff2dce7ad0ae5e300fa631b813cc6ea9647
+      graphite_exporter:
+        archive:
+          source_hash: f9c0aa745502c0ab01fdcca29181801810202e0aed512a9aa9a37bb4be88a919
+      haproxy_exporter:
+        archive:
+          source_hash: 8fdb8bb182586c57e5892816a02846bae0998916765d22bb81b2c444a3565862
+      memcached_exporter:
+        archive:
+          source_hash: e10685cca5ffd8a3a7574b3dc096dc7418f34906abd399f881be06dd38be62cb
+      mysqld_exporter:
+        archive:
+          source_hash: 8e0a7d8847790d6dcdcf392e6dd227458a7bcaa1e0890cc6326fdf956421f2a7
+      node_exporter:
+        archive:
+          source_hash: 20fadb3108de0a9cc70a1333394e5be90416b4f91025f9fc66f5736335e94398
+      pushgateway:
+        archive:
+          source_hash: 25399a4c6600c1931f9d9bd5294700c2b53f964188b1c6003f9d12a2e176aac1
+      statsd_exporter:
+        archive:
+          source_hash: 15132494523c2b6a89e09b2da63452c8fe587fb82fcc3fd21cc75a4aa2766644

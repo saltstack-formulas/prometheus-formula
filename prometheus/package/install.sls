@@ -1,22 +1,25 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-    {%- if prometheus.use_upstream_repo %}
+{%- set sls_service_running = tplroot ~ '.service.running' %}
+{%- set sls_repo_install = tplroot ~ '.package.repo.install' %}
 
 include:
-  - .repo
+  - {{ sls_service_running }}
+  - {{ sls_repo_install }}
 
-    {%- endif %}
-    {%- for name in prometheus.wanted %}
-        {%- if name in prometheus.pkg %}
+    {%- for name in p.wanted.component %}
 
 prometheus-package-install-{{ name }}-installed:
   pkg.installed:
-    - name: {{ prometheus.pkg.get(name, {}).get('name', name) }}
+    - name: {{ p.pkg.component[name].get('name', name) }}
+    - require:
+      - sls: {{ sls_repo_install }}
+    - require_in:
+      - sls: {{ sls_service_running }}
+    - reload_modules: true
 
-        {%- endif %}
     {%- endfor %}

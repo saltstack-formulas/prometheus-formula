@@ -1,35 +1,43 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_alternatives_clean = tplroot ~ '.archive.alternatives.clean' %}
-{%- set sls_users_clean = tplroot ~ '.config.users.clean' %}
 {%- set sls_service_clean = tplroot ~ '.service.clean' %}
 
 include:
-  - {{ sls_users_clean }}
   - {{ sls_service_clean }}
   - {{ sls_alternatives_clean }}
 
-        {%- for name in p.wanted %}
+prometheus-archive-clean-prerequisites:
+  file.absent:
+    - name: {{ p.dir.var }}
 
-prometheus-archive-clean-{{ name }}-file-absent:
+    {%- for name in p.wanted.component %}
+
+prometheus-archive-clean-{{ name }}:
+  file.absent:
+  - name: {{ p.pkg.component[name]['path'] }}
+
+        {%- if p.linux.altpriority|int <= 0 or grains.os_family|lower in ('macos', 'arch') %}
+            {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
+                {%- for cmd in p.pkg.component[name]['commands'] %}
+
+prometheus-archive-clean-{{ name }}-file-symlink-{{ cmd }}:
   file.absent:
     - names:
-      - {{ p.dir.basedir }}/{{ name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) }}
-
-prometheus-archive-clean-{{ name }}-user-absent:
-  user.absent:
-    - name: {{ name }}
-  group.absent:
-    - name: {{ name }}
+      - {{ p.dir.symlink }}/bin/{{ cmd }}
+      - {{ p.dir.symlink }}/sbin/{{ cmd }}
+      - {{ p.dir.var }}/{{ name }}
+      - {{ p.dir.service }}/{{ name }}.service
     - require:
-      - user: prometheus-archive-clean-{{ name }}-user-absent
+      - sls: {{ sls_alternatives_clean }}
+      - sls: {{ sls_service_clean }}
+    - require_in:
+      - user: prometheus-archive-clean-{{ name }}-user-group
 
-        {%- endfor %}
-
-prometheus-archive-clean-basedir-file-directory:
-  file.absent:
-    - name: {{ p.dir.basedir }}
+                {%- endfor %}
+            {%- endif %}
+        {%- endif %}
+    {%- endfor %}

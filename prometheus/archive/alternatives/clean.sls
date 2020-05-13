@@ -1,29 +1,26 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-    {%- if grains.kernel|lower == 'linux' and p.linux.altpriority|int > 0 %}
+  {%- if grains.kernel|lower == 'linux' and p.linux.altpriority|int > 0 and grains.os_family != 'Arch' %}
+      {%- if 'wanted' in p and p.wanted and 'component' in p.wanted and p.wanted.component %}
 
-       {%- for name in p.wanted %}
-           {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
+          {%- for name in p.wanted.component %}
+              {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
+                  {%- for cmd in p.pkg.component[name]['commands'] %}
 
-prometheus-archive-remove-{{ name }}-home-alternatives-remove:
+prometheus-server-alternatives-clean-{{ name }}-{{ cmd }}:
   alternatives.remove:
-    - name: prometheus-{{ name }}-home
-    - path: {{ p.dir.basedir }}/{{ bundle }}
-    - onlyif: update-alternatives --get-selections |grep ^prometheus-{{ name }}-home
+    - unless: {{ p.pkg.use_upstream_repo }}
+    - name: link-prometheus-{{ name }}-{{ cmd }}
+    - path: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
+    - onlyif: update-alternatives --get-selections |grep ^prometheus-{{ name }}-{{ cmd }}
 
-            {% for b in p.pkg[name]['binaries'] %}
+                  {%- endfor %}
+              {%- endif %}
+          {%- endfor %}
 
-prometheus-archive-remove-{{ name }}-alternatives-remove-{{ b }}:
-  alternatives.remove:
-    - name: prometheus-{{ name }}-{{ b }}
-    - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
-    - onlyif: update-alternatives --get-selections |grep ^prometheus-{{ name }}-{{ b }}
-
-            {% endfor %}
-        {% endfor %}
-    {%- endif %}
+      {%- endif %}
+  {%- endif %}

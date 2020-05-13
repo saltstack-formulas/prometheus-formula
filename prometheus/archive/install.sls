@@ -1,70 +1,99 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
-{%- from tplroot ~ "/jinja/macros.jinja" import format_kwargs with context %}
+{%- from tplroot ~ "/files/macros.jinja" import format_kwargs with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
-{%- set sls_users_install = tplroot ~ '.config.users' %}
+{%- set sls_config_users = tplroot ~ '.config.users' %}
 
 include:
-  - {{ sls_users_install }}
+  - {{ sls_config_users }}
 
-prometheus-config-file-basedir-file-directory:
+prometheus-archive-install-prerequisites:
+  pkg.installed:
+    - names: {{ p.pkg.deps|json }}
   file.directory:
-    - name: {{ p.dir.basedir }}
+    - name: {{ p.dir.var }}
     - user: prometheus
     - group: prometheus
     - mode: 755
     - makedirs: True
     - require:
-      - sls: '{{ sls_users_install }}.*'
+      - sls: {{ sls_config_users }}
 
-  {%- for name in p.wanted %}
-      {%- if name in p.pkg %}
-          {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
+    {%- for name in p.wanted.component %}
 
-prometheus-archive-install-{{ name }}-archive-extracted:
-  archive.extracted:
-    - name: {{ p.dir.basedir }}
-    - source: {{ p.archive.uri }}/{{ name }}/releases/download/v{{ p.pkg[name]['archive_version']
-                 + '/' + bundle + '.' + p.archive.suffix }}
-    - source_hash: {{ p.pkg[name]['archive_hash'] }}
-    - user: {{ name }}
-    - group: {{ name }}
-    {{- format_kwargs(p.archive.kwargs) }}
+prometheus-archive-install-{{ name }}:
+  file.directory:
+    - name: {{ p.pkg.component[name]['path'] }}
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
+    - mode: '0755'
+    - makedirs: True
+    - require:
+      - file: prometheus-archive-install-prerequisites
+    - require_in:
+      - archive: prometheus-archive-install-{{ name }}
     - recurse:
         - user
         - group
+        - mode
+  archive.extracted:
+    {{- format_kwargs(p.pkg.component[name]['archive']) }}
+    - trim_output: true
+    - enforce_toplevel: false
+    - options: --strip-components=1
+    - retry: {{ p.retry_option|json }}
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
     - require:
-      - file: prometheus-config-file-basedir-file-directory
+      - file: prometheus-archive-install-{{ name }}
 
-          {%- if name in p.service %}
+        {%- if p.linux.altpriority|int <= 0 or grains.os_family|lower in ('macos', 'arch') %}
+            {%- if 'commands' in p.pkg.component[name]  and p.pkg.component[name]['commands'] is iterable %}
+                {%- for cmd in p.pkg.component[name]['commands'] %}
+
+prometheus-archive-install-{{ name }}-file-symlink-{{ cmd }}:
+  file.symlink:
+                    {%- if 'service' in p.pkg.component[name] %}
+    - name: {{ p.dir.symlink }}/sbin/{{ cmd }}
+                    {%- else %}
+    - name: {{ p.dir.symlink }}/bin/{{ cmd }}
+                    {% endif %}
+    - target: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
+    - force: True
+    - require:
+      - archive: prometheus-archive-install-{{ name }}
+
+                {%- endfor %}
+            {%- endif %}
+        {%- endif %}
+        {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] is mapping %}
 
 prometheus-archive-install-{{ name }}-file-directory:
   file.directory:
     - name: {{ p.dir.var }}/{{ name }}
     - user: {{ name }}
     - group: {{ name }}
-    - mode: 755
+    - mode: '0755'
     - makedirs: True
     - require:
-      - archive: prometheus-archive-install-{{ name }}-archive-extracted
-      - file: prometheus-config-file-basedir-file-directory
+      - user: prometheus-config-user-install-{{ name }}-user-present
+      - group: prometheus-config-user-install-{{ name }}-user-present
 
-              {%- if grains.os_family not in ('MacOS', 'FreeBSD', 'Windows') %}
+            {%- if grains.kernel|lower == 'linux' and 'config_file' in p.pkg.component[name] %}
 
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
     - name: {{ p.dir.service }}/{{ name }}.service
     - source: {{ files_switch(['systemd.ini.jinja'],
-                              lookup='prometheus-archive-install-managed-service'
+                              lookup='prometheus-archive-install-' ~  name ~ '-managed-service'
                  )
               }}
-    - mode: 644
-    - user: root
-    - group: {{ p.rootgroup }}
+    - mode: '0644'
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
     - makedirs: True
     - template: jinja
     - context:
@@ -73,17 +102,22 @@ prometheus-archive-install-{{ name }}-managed-service:
         user: {{ name }}
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
-        start: {{ p.dir.basedir }}/{{ bundle }}/{{ name }} --config.file {{ p.dir.etc }}/{{ name }}.yml
-        stop: '' #not needed
+        stop: ''
+               {%- if name in ('node_exporter',) %}
+        start: {{ p.pkg.component[name]['path'] }}/{{ name }}
+               {%- else %}
+        start: {{ p.pkg.component[name]['path'] }}/{{ name }} --config.file {{ p.pkg.component[name]['config_file'] }}  # noqa 204
+               {%- endif %}
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
-      - file: prometheus-config-file-basedir-file-directory
+      - archive: prometheus-archive-install-{{ name }}
+      - user: prometheus-config-user-install-{{ name }}-user-present
+      - group: prometheus-config-user-install-{{ name }}-user-present
   cmd.run:
     - name: systemctl daemon-reload
     - require:
-      - file: prometheus-archive-install-{{ name }}-managed-service
+      - archive: prometheus-archive-install-{{ name }}
 
-              {%- endif %}
-          {%- endif %}
-      {%- endif %}
-  {%- endfor %}
+            {%- endif %}
+        {%- endif %}
+    {%- endfor %}
