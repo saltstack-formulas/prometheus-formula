@@ -2,8 +2,7 @@
 
 # SECTION: Owner(s) for everything in the repo, unless a later match takes precedence
 # FILE PATTERN                              OWNER(S)
-*                                           @alxwr
-*                                           @noelmcloughlin
+*                                           @alxwr @noelmcloughlin
 
 # SECTION: Owner(s) for specific directories
 # FILE PATTERN                              OWNER(S)
