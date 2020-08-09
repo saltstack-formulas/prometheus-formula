@@ -1,7 +1,9 @@
 .. _readme:
 
 prometheus-formula
-================
+==================
+
+Formula to manage Prometheus on GNU/Linux and MacOS.
 
 |img_travis| |img_sr|
 
@@ -13,30 +15,32 @@ prometheus-formula
    :alt: Semantic Release
    :scale: 100%
    :target: https://github.com/semantic-release/semantic-release
-Manage Prometheus on MacOS, GNU/Linux and FreeBSD.
+
 
 .. contents:: **Table of Contents**
+   :depth: 1
 
 General notes
 -------------
 
 See the full `SaltStack Formulas installation and usage instructions
-<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html>`_.  If you are interested in writing or contributing to formulas, please pay attention to the `Writing Formula Section
+<https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#writing-formulas>`_. If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``, which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.  See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
 
-If you want to use this formula, please pay attention to the ``FORMULA`` file and/or ``git tag``,
-which contains the currently released version. This formula is versioned according to `Semantic Versioning <http://semver.org/>`_.
+Special notes
+-------------
 
-See `Formula Versioning Section <https://docs.saltstack.com/en/latest/topics/development/conventions/formulas.html#versioning>`_ for more details.
+None.
 
 Contributing to this repo
 -------------------------
 
 **Commit message formatting is significant!!**
 
-Please see `How to contribute <https://github.com/saltstack-formulas/.github/blob/master/CONTRIBUTING.rst>`_ for more details.
+Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
 
-Available states
-----------------
+Available metastates
+--------------------
 
 .. contents::
    :local:
@@ -46,86 +50,112 @@ Available states
 
 *Meta-state (This is a state that includes other states)*.
 
-This installs the prometheus package,
-manages the prometheus configuration file and then
-starts the associated prometheus service.
+This installs from prometheus solution.
+
 
 ``prometheus.archive``
 ^^^^^^^^^^^^^^^^^^^^
 
-This state will install the prometheus from archive file only.
+This state will install prometheus components on MacOS and GNU/Linux from archive.
 
-``prometheus.archive.alternatives``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``prometheus.clientlibs``
+^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will install the prometheus linux alternatives for archives only.
+This state will install prometheus client libraries on MacOS and GNU/Linux from archive.
 
 ``prometheus.package``
 ^^^^^^^^^^^^^^^^^^^^
 
-This state will install the prometheus package only.
-
-``prometheus.package.repo``
-^^^^^^^^^^^^^^^^^^^^^^^^^
-
-This state will install the prometheus package only.
+This state will install prometheus component packages from GNU/Linux.
 
 ``prometheus.config``
 ^^^^^^^^^^^^^^^^^^^
 
-This state will configure the prometheus service and has a dependency on ``prometheus.install``
-via include list.
+This state will apply prometheus service configuration (files).
 
 ``prometheus.service``
 ^^^^^^^^^^^^^^^^^^^^
 
-This state will start the prometheus service and has a dependency on ``prometheus.config``
-via include list.
+This state will start prometheus component services.
 
-``prometheus.clean``
-^^^^^^^^^^^^^^^^^^
+``prometheus.exporters``
+^^^^^^^^^^^^^^^^^^^^^^
 
-*Meta-state (This is a state that includes other states)*.
+This state will apply prometheus exporters configuration.
 
-this state will undo everything performed in the ``prometheus`` meta-state in reverse order, i.e.
-stops the service,
-removes the configuration file and
-then uninstalls the package.
+``prometheus.exporters.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+This state will remove prometheus exporters configuration.
 
 ``prometheus.service.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will stop the prometheus service and disable it at boot time.
+This state will stop prometheus component services.
 
 ``prometheus.config.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the configuration of the prometheus service and has a
-dependency on ``prometheus.service.clean`` via include list.
+This state will remove prometheus service configuration (files).
 
 ``prometheus.package.clean``
 ^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will remove the prometheus package and has a depency on
-``prometheus.config.clean`` via include list.
+This state will uninstall prometheus component packages from GNU/Linux.
 
-``prometheus.package.archive.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``prometheus.clientlibs.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will uninstall the prometheus archive-extracted directory only.
+This state will uninstall prometheus client libraries.
 
-``prometheus.package.archive.alternatives.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+``prometheus.archive.clean``
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will uninstall the prometheus linux alternatives for archives only.
+This state will remove prometheus component archive (directories).
 
-``prometheus.package.repo.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^
 
-This state will uninstall the prometheus upstream package repository only.
+Testing
+-------
 
-``prometheus.config.node_exporter.textfile_collectors``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Linux testing is done with ``kitchen-salt``.
 
-This state will manage the node exporter's textfile collectors
-according to Pillar ``prometheus:exporters:node_exporter:textfile_collectors``.
+Requirements
+^^^^^^^^^^^^
+
+* Ruby
+* Docker
+
+.. code-block:: bash
+
+   $ gem install bundler
+   $ bundle install
+   $ bin/kitchen test [platform]
+
+Where ``[platform]`` is the platform name defined in ``kitchen.yml``,
+e.g. ``debian-9-2019-2-py3``.
+
+``bin/kitchen converge``
+^^^^^^^^^^^^^^^^^^^^^^^^
+
+Creates the docker instance and runs the ``prometheus`` main state, ready for testing.
+
+``bin/kitchen verify``
+^^^^^^^^^^^^^^^^^^^^^^
+
+Runs the ``inspec`` tests on the actual instance.
+
+``bin/kitchen destroy``
+^^^^^^^^^^^^^^^^^^^^^^^
+
+Removes the docker instance.
+
+``bin/kitchen test``
+^^^^^^^^^^^^^^^^^^^^
+
+Runs all of the stages above in one go: i.e. ``destroy`` + ``converge`` + ``verify`` + ``destroy``.
+
+``bin/kitchen login``
+^^^^^^^^^^^^^^^^^^^^^
+
+Gives you SSH access to the instance for manual testing.
+

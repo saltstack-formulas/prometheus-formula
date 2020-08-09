@@ -1,27 +1,24 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
+
 {%- set sls_config_clean = tplroot ~ '.config.clean' %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- set sls_service_clean = tplroot ~ '.service.clean' %}
+{%- set sls_repo_clean = tplroot ~ '.package.repo.clean' %}
 
 include:
   - {{ sls_config_clean }}
-       {%- if prometheus.use_upstream_repo %}
-  - .repo.clean
-       {%- endif %}
+  - {{ sls_service_clean }}
 
-    {%- for name in prometheus.wanted %}
-        {%- if name in prometheus.pkg %}
+    {%- for name in p.wanted.component %}
 
 prometheus-package-clean-{{ name }}-removed:
   pkg.removed:
-    - name: {{ name }}
-            {%- if name in prometheus.service %}
+    - name: {{ p.pkg.component[name].get('name', name) }}
     - require:
-      - service: prometheus-service-clean-{{ name }}-service-dead
-            {%- endif %}
+      - sls: {{ sls_config_clean }}
+      - sls: {{ sls_service_clean }}
 
-        {%- endif %}
     {%- endfor %}

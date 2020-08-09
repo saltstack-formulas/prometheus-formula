@@ -1,81 +1,58 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
-{%- set sls_archive_install = tplroot ~ '.archive' %}
 
-    {%- if grains.kernel|lower in ('linux',) and p.linux.altpriority|int > 0 %}
+  {%- if grains.kernel|lower == 'linux' and p.linux.altpriority|int > 0 and grains.os_family != 'Arch' %}
+      {%- set sls_archive_install = tplroot ~ '.archive.install' %}
 
 include:
   - {{ sls_archive_install }}
 
-       {%- for name in p.wanted %}
-           {%- set bundle = name + '-%s.%s-%s'|format(p.pkg[name]['archive_version'], p.kernel, p.arch) %}
-           {%- if grains.os_family == 'Suse' %}
+      {%- if 'wanted' in p and p.wanted and 'component' in p.wanted and p.wanted.component %}
+          {%- for name in p.wanted.component %}
+              {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
+                  {%- set dir_symlink = p.dir.symlink ~ '/bin' %}
+                  {%- if 'service' in p.pkg.component[name] %}
+                      {%- set dir_symlink = p.dir.symlink ~ '/sbin' %}
+                  {%- endif %}
+                  {%- for cmd in p.pkg.component[name]['commands'] %}
 
-prometheus-archive-alternatives-install-{{ name }}-home-cmd-run:
+prometheus-server-alternatives-install-{{ name }}-{{ cmd }}:
   cmd.run:
-    - name: |
-        update-alternatives --install {{ p.dir.basedir }}/{{ name }} \
-        prometheus-{{ name }}-home {{ p.dir.basedir }}/{{ bundle }} \
-        {{ p.linux.altpriority }}
-    - watch:
-      - archive: prometheus-archive-install-{{ name }}-archive-extracted
-
-           {%- else %}
-
-prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install:
-  alternatives.install:
-    - name: prometheus-{{ name }}-home
-    - link: {{ p.dir.basedir }}/{{ name }}
-    - path: {{ p.dir.basedir }}/{{ bundle }}
-    - priority: {{ p.linux.altpriority }}
-    - order: 10
-    - watch:
-        - archive: prometheus-archive-install-{{ name }}-archive-extracted
-
-prometheus-archive-alternatives-install-{{ name }}-home-alternatives-set:
-  alternatives.set:
-    - name: prometheus-{{ name }}-home
-    - path: {{ p.dir.basedir }}/{{ bundle }}
+    - name: update-alternatives --install {{ dir_symlink }}/{{ cmd }} link-prometheus-{{ name }}-{{ cmd }} {{ p.pkg.component[name]['path'] }}/{{ cmd }} {{ p.linux.altpriority }}  # noqa 204
+    - unless:
+      -  {{ grains.os_family not in ('Suse',) }}
+      - {{ p.pkg.use_upstream_repo }}
     - require:
-      - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
-
-           {%- endif %}
-           {% for b in p.pkg[name]['binaries'] %}
-              {%- if grains.os_family == 'Suse' %}
-
-prometheus-archive-alternatives-install-{{ name }}-cmd-run-{{ b }}-alternative:
-  cmd.run:
-    - name: |
-        update-alternatives --install /usr/local/bin/{{ b }} \
-        prometheus-{{ name }}-{{ b }} {{ p.dir.basedir }}/{{ bundle }}/{{ b }} \
-        {{ p.linux.altpriority }}
-    - require:
-      - cmd: prometheus-archive-alternatives-install-{{ name }}-home-cmd-run
-
-              {%- else %}
-
-prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}:
+      - sls: {{ sls_archive_install }}
   alternatives.install:
-    - name: prometheus-{{ name }}-{{ b }}
-    - link: /usr/local/bin/{{ b }}
-    - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
+    - name: link-prometheus-{{ name }}-{{ cmd }}
+    - link: {{ dir_symlink }}/{{ cmd }}
+    - path: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
     - priority: {{ p.linux.altpriority }}
     - order: 10
     - require:
-      - alternatives: prometheus-archive-alternatives-install-{{ name }}-home-alternatives-install
+      - sls: {{ sls_archive_install }}
+    - unless:
+      - {{ grains.os_family in ('Suse',) }}
+      - {{ p.pkg.use_upstream_repo }}
 
-prometheus-archive-alternatives-install-{{ name }}-alternatives-set-{{ b }}:
+prometheus-server-alternatives-set-{{ name }}-{{ cmd }}:
   alternatives.set:
-    - name: prometheus-{{ name }}-{{ b }}
-    - path: {{ p.dir.basedir }}/{{ bundle }}/{{ b }}
+    - name: link-prometheus-{{ name }}-{{ cmd }}
+    - path: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
     - require:
-      - alternatives: prometheus-archive-alternatives-install-{{ name }}-alternatives-install-{{ b }}
+      - alternatives: prometheus-server-alternatives-install-{{ name }}-{{ cmd }}
+      - sls: {{ sls_archive_install }}
+    - unless:
+      - {{ grains.os_family in ('Suse',) }}
+      - {{ p.pkg.use_upstream_repo }}
 
+                  {%- endfor %}
               {%- endif %}
-          {% endfor %}
-       {% endfor %}
-    {%- endif %}
+          {%- endfor %}
+      {%- endif %}
+
+  {%- endif %}

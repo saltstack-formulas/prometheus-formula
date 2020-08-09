@@ -2,135 +2,286 @@
 # vim: ft=yaml
 ---
 prometheus:
-  rootgroup: root
-  # yamllint disable rule:braces
-  kernel: {{ grains.kernel | lower }}
-  arch: {{ grains.osarch }}
-  # yamllint enable rule:braces
-  use_upstream_repo: false
-  use_upstream_archive: false
-
   wanted:
-    - prometheus
-    - alertmanager
-    - node_exporter
-
+    clientlibs:
+      - golang
+    component:
+      - prometheus
+      - alertmanager
+      - node_exporter
+      # memcached_exporter    # only available as archive
+    firewall: false           # disabled for travis ci
   dir:
-    basedir: /opt/prometheus
+    default: /etc/default
+    archive: /opt/prometheus
     etc: /etc/prometheus
-    var: /var/lib/prometheus
-    args: /etc/default
-    args_setting: ARGS
     service: /usr/lib/systemd/system
-    textfile_collectors: /opt/prometheus/textfile_collectors
-
-  service:
-    prometheus:
-      args:
-        web.listen-address: 0.0.0.0:9090
-    alertmanager: {}
-    node_exporter:
-      args:
-        collector.textfile.directory: /var/tmp/node_exporter
-
-  config:
-    prometheus: {}
-    alertmanager: {}
-    node_exporter: {}
+    symlink: /usr/local
+    tmp: /tmp/prometheus
+    var: /var/lib/prometheus
 
   pkg:
-    prometheus:
-      archive_version: '2.10.0'
-      archive_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
-      binaries:
-        - prometheus
-        - promtool
-      repo:
-        humanname: prometheus
-        name: prometheus
-        comments:
-          - installed by salt
-        enabled: 1
-        gpgcheck: 1
-    alertmanager:
-      archive_version: '0.17.0'
-      archive_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f
-      binaries:
-        - amtool
-        - alertmanager
-    blackbox_exporter:
-      archive_version: '0.14.0'
-      archive_hash: a2918a059023045cafb911272c88a9eb83cdac9a8a5e8e74844b5d6d27f19117
-      binaries:
-        - blackbox_exporter
-    consul_exporter:
-      archive_version: '0.4.0'
-      archive_hash: ff77c03de67cf381f67480b5be6699901785a34145c518c3484ae3e5b8440d08
-      binaries:
-        - consul_exporter
-    graphite_exporter:
-      archive_version: '0.6.2'
-      archive_hash: 9b962bd06406ece4a865ad6947a6e652e48a92a0d77e496a0351c04e9c2c5e9e
-      binaries:
-        - graphite_exporter
-    haproxy_exporter:
-      archive_version: '0.10.0'
-      archive_hash: 08150728e281f813a8fcfff4b336f16dbfe4268a1c7510212c8cff2579b10468
-      binaries:
-        - haproxy_exporter
-    memcached_exporter:
-      archive_version: '0.5.0'
-      archive_hash: bb07f496ceb63dad9793ad4295205547a4bd20b90628476d64fa96c9a25a020f
-      binaries:
-        - memcached_exporter
-    mysqld_exporter:
-      archive_version: '0.11.0'
-      archive_hash: b53ad48ff14aa891eb6a959730ffc626db98160d140d9a66377394714c563acf
-      binaries:
-        - mysqld_exporter
-    node_exporter:
-      archive_version: '0.18.1'
-      archive_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
-      binaries:
-        - node_exporter
-    pushgateway:
-      archive_version: '0.8.0'
-      archive_hash: 6949866ba9ad0cb88d3faffd4281f17df79281398b4dbd0ec3aab300071681ca
-      binaries:
-        - pushgateway
-    statsd_exporter:
-      archive_version: '0.11.2'
-      archive_hash: 4632ad0c5552e271e84c376da3ffe3af8c265ec5c3035334b70e35756aca1906
-      binaries:
-        - statsd_exporter
-
-  archive:
     uri: https://github.com/prometheus
-    suffix: tar.gz
-    kwargs:
-      trim_output: true
-      enforce_toplevel: true
-      archive_format: tar
-      retry:
-        attempts: 3
-        until: true
-        interval: 60
-        splay: 10
+    use_upstream_repo: false
+    use_upstream_package: true
+    use_upstream_archive: false
+    deps:
+      - gzip
+      - tar
+    repo:
+      humanname: prometheus
+      name: prometheus
+      comments:
+        - installed by salt
+      enabled: 1
+      gpgcheck: 1
 
+    component:
+      alertmanager:
+        version: v0.17.0
+        config_file: /etc/prometheus/alertmanager.yml
+        config: {}
+        environ_file: /etc/default/prometheus-alertmanager.sh
+        environ: {}
+        service:
+          name: alertmanager
+          args:
+            config.file: /etc/prometheus/alertmanager.yml
+            storage.path: /var/lib/alertmanager
+        firewall:
+          ports:
+            - tcp/9093
+            # tcp/9094
+        archive:
+          source_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f
+        commands:
+          - amtool
+          - alertmanager
+      blackbox_exporter:
+        version: v0.14.0
+        config_file: /etc/prometheus/blackbox_exporter.yml
+        config: {}
+        archive:
+          source_hash: a2918a059023045cafb911272c88a9eb83cdac9a8a5e8e74844b5d6d27f19117
+        commands:
+          - blackbox_exporter
+        firewall:
+          ports:
+            - tcp/9110
+      consul_exporter:
+        version: v0.4.0
+        archive:
+          source_hash: ff77c03de67cf381f67480b5be6699901785a34145c518c3484ae3e5b8440d08
+        commands:
+          - consul_exporter
+        firewall:
+          ports:
+            - tcp/9107
+      graphite_exporter:
+        version: v0.6.2
+        archive:
+          source_hash: 9b962bd06406ece4a865ad6947a6e652e48a92a0d77e496a0351c04e9c2c5e9e
+        commands:
+          - graphite_exporter
+        firewall:
+          ports:
+            - tcp/9108
+      haproxy_exporter:
+        version: v0.10.0
+        archive:
+          source_hash: 08150728e281f813a8fcfff4b336f16dbfe4268a1c7510212c8cff2579b10468
+        commands:
+          - haproxy_exporter
+        firewall:
+          ports:
+            - tcp/9101
+      memcached_exporter:
+        version: v0.5.0
+        archive:
+          source_hash: bb07f496ceb63dad9793ad4295205547a4bd20b90628476d64fa96c9a25a020f
+        commands:
+          - memcached_exporter
+        firewall:
+          ports:
+            - tcp/9150
+      mysqld_exporter:
+        version: v0.11.0
+        archive:
+          source_hash: b53ad48ff14aa891eb6a959730ffc626db98160d140d9a66377394714c563acf
+        commands:
+          - mysqld_exporter
+        firewall:
+          ports:
+            - tcp/9207
+      node_exporter:
+        version: v0.18.1
+        environ_file: /etc/default/prometheus-node-exporter.sh
+        environ: {}
+        config_file: /etc/prometheus/node_exporter.yml
+        config: {}
+        service:
+          name: prometheus-node-exporter
+          args:
+            collector.textfile.directory: /var/tmp/node_exporter
+        archive:
+          source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
+        commands:
+          - node_exporter
+        firewall:
+          ports:
+            - tcp/9100
+      prometheus:
+        name: prometheus
+        version: v2.10.0
+        config_file: /etc/prometheus/prometheus.yml
+        config: {}
+        environ_file: /etc/default/prometheus.sh
+        environ: {}
+        service:
+          name: prometheus
+          args:
+            config.file: /etc/prometheus/prometheus.yml
+            storage.tsdb.path: /var/lib/prometheus/data
+        commands:
+          - prometheus
+          - promtool
+        archive:
+          source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+        firewall:
+          ports:
+            - tcp/9090
+      pushgateway:
+        version: v0.8.0
+        environ_file: /etc/default/prometheus-pushgateway.sh
+        environ: {}
+        config_file: /etc/prometheus/pushgateway.yml
+        config: {}
+        service: {}
+        archive:
+          source_hash: 6949866ba9ad0cb88d3faffd4281f17df79281398b4dbd0ec3aab300071681ca
+        commands:
+          - pushgateway
+        firewall:
+          ports:
+            - tcp/9091
+      statsd_exporter:
+        version: v0.11.2
+        archive:
+          source_hash: 4632ad0c5552e271e84c376da3ffe3af8c265ec5c3035334b70e35756aca1906
+        commands:
+          - statsd_exporter
+        firewall:
+          ports:
+            - tcp/9102
+
+    clientlibs:
+      # https://prometheus.io/docs/instrumenting/clientlibs
+      # no bash & perl client tarballs are available
+      golang:
+        version: v1.6.0
+        archive:
+          uri: https://github.com/prometheus/client_golang/archive
+          skip_verify: true
+      java:
+        version: vparent-0.9.0
+        archive:
+          uri: https://github.com/prometheus/client_java/archive
+          skip_verify: true
+      python:
+        version: v0.7.1
+        archive:
+          uri: https://github.com/prometheus/client_python/archive
+          skip_verify: true
+      ruby:
+        version: v2.0.0
+        archive:
+          uri: https://github.com/prometheus/client_ruby/archive
+          skip_verify: true
+      c:
+        version: v0.1.1
+        archive:
+          uri: https://github.com/digitalocean/prometheus-client-c/archive
+          skip_verify: true
+      cpp:
+        version: v0.9.0
+        archive:
+          uri: https://github.com/jupp0r/prometheus-cpp/archive
+          skip_verify: true
+      clisp:
+        version: v0.4.1
+        archive:
+          uri: https://github.com/deadtrickster/prometheus.cl/archive
+          skip_verify: true
+      dart:
+        version: v0.4.0+4
+        archive:
+          uri: https://github.com/tentaclelabs/prometheus_client/archive
+          skip_verify: true
+      elixir:
+        version: v2.0.0
+        archive:
+          uri: https://github.com/deadtrickster/prometheus.ex/archive
+          skip_verify: true
+      erlang:
+        version: v4.4.0
+        archive:
+          uri: https://github.com/deadtrickster/prometheus.erl/archive
+          skip_verify: true
+      haskell:
+        version: prometheus-proc-0.1.2.0
+        archive:
+          uri: https://github.com/fimad/prometheus-haskell/archive
+          skip_verify: true
+      nginx-lua:
+        version: v0.20200420
+        archive:
+          uri: https://github.com/knyar/nginx-lua-prometheus/archive
+          skip_verify: true
+      tarantool-lua:
+        version: v1.0.4
+        archive:
+          uri: https://github.com/tarantool/prometheus/archive
+          skip_verify: true
+      net:
+        version: v3.5.0
+        archive:
+          uri: https://github.com/prometheus-net/prometheus-net/archive
+          skip_verify: true
+      node:
+        version: v12.0.0
+        archive:
+          uri: https://github.com/siimon/prom-client/archive
+          skip_verify: true
+      php:
+        version: v1.0.2
+        archive:
+          uri: https://github.com/endclothing/prometheus_client_php/archive
+          skip_verify: true
+      r:
+        version: v1.0.1
+        archive:
+          uri: https://github.com/cfmack/pRometheus/archive
+          skip_verify: true
+      rust:
+        version: v0.8.0
+        archive:
+          uri: https://github.com/tikv/rust-prometheus/archive
+          skip_verify: true
+
+  # Just here for testing
+  added_in_defaults: defaults_value
+  winner: defaults
+
+  identity:
+    rootuser: root
+    rootgroup: root
+
+  retry_option:
+    # https://docs.saltstack.com/en/latest/ref/states/requisites.html#retrying-states
+    attempts: 3
+    until: true
+    interval: 60
+    splay: 10
   linux:
-    altpriority: 0   ## 'Alternatives system' priority: zero disables (default)
-
-  exporters:
-    node_exporter:
-      textfile_collectors_dependencies: []
-      textfile_collectors:
-        ipmitool:
-          enable: false
-          remove: false
-          pkg: ipmitool
-        smartmon:
-          enable: false
-          remove: false
-          pkg: smartmontools
-          bash_pkg: bash
-          smartctl: /usr/sbin/smartctl
+    altpriority: 0
+  kernel: linux

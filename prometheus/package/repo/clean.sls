@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{#- Get the `tplroot` from `tpldir` #}
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-  {%- for name in prometheus.wanted %}
-      {%- if name in prometheus.pkg and 'repo' in prometheus.pkg[name] and prometheus.pkg[name]['repo'] %}
+    {%- if p.pkg.use_upstream_repo and 'repo' in p.pkg and p.pkg.repo %}
 
-prometheus-package-repo-clean-{{ name }}-pkgrepo-absent:
+prometheus-package-repo-clean-pkgrepo-managed:
   pkgrepo.absent:
-    - name: {{ prometheus.pkg[name]['repo']['name'] }}
+    - name: {{ p.pkg['repo']['name'] }}
 
-      {%- endif %}
-  {%- endfor %}
+    {%- endif %}
