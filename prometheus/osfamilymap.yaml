@@ -23,11 +23,11 @@ Debian:
   pkg:
     deps:
       - cron
-    use_upstream_repo: true
+    use_upstream_repo: false
     use_upstream_package: false
-    use_upstream_archive: false
+    use_upstream_archive: true
     repo:
-      humanname: prometheus repository
+      humanname: 'prometheus repository'
       key_url: 'https://s3-eu-west-1.amazonaws.com/deb.robustperception.io/41EFC99D.gpg'
       file: /etc/apt/sources.list.d/prometheus.list
     component:
