@@ -50,6 +50,8 @@ prometheus:
             storage.path: /var/lib/alertmanager
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9093
             # tcp/9094
         archive:
@@ -67,6 +69,8 @@ prometheus:
           - blackbox_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9110
       consul_exporter:
         version: v0.4.0
@@ -76,6 +80,8 @@ prometheus:
           - consul_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9107
       graphite_exporter:
         version: v0.6.2
@@ -85,6 +91,8 @@ prometheus:
           - graphite_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9108
       haproxy_exporter:
         version: v0.10.0
@@ -94,6 +102,8 @@ prometheus:
           - haproxy_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9101
       memcached_exporter:
         version: v0.5.0
@@ -103,6 +113,8 @@ prometheus:
           - memcached_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9150
       mysqld_exporter:
         version: v0.11.0
@@ -112,6 +124,8 @@ prometheus:
           - mysqld_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9207
       node_exporter:
         version: v0.18.1
@@ -129,6 +143,8 @@ prometheus:
           - node_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9100
       prometheus:
         name: prometheus
@@ -149,6 +165,8 @@ prometheus:
           source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9090
       pushgateway:
         version: v0.8.0
@@ -163,6 +181,8 @@ prometheus:
           - pushgateway
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9091
       statsd_exporter:
         version: v0.11.2
@@ -172,6 +192,8 @@ prometheus:
           - statsd_exporter
         firewall:
           ports:
+            - tcp/4505
+            - tcp/4506
             - tcp/9102
 
     clientlibs:
