@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.0.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.0...v4.0.1) (2020-08-17)
+
+
+### Bug Fixes
+
+* **ubuntu:** pkgrepo cannot be used ([](https://github.com/saltstack-formulas/prometheus-formula/commit/fd2ff5f))
+
 # [4.0.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v3.3.0...v4.0.0) (2020-08-09)
 
 
