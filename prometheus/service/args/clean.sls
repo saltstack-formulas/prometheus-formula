@@ -4,7 +4,9 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- from tplroot ~ "/libtofs.jinja" import files_switch with context %}
-{%- set sls_service_clean = tplroot ~ '.service.clean' %}
+
+{%- if grains.os_family in ('FreeBSD',) %}
+    {%- set sls_service_clean = tplroot ~ '.service.clean' %}
 
 include:
   - {{ sls_service_clean }}
@@ -36,3 +38,4 @@ prometheus-service-args-clean-{{ name }}:
 
         {%- endif %}
     {%- endfor %}
+{%- endif %}

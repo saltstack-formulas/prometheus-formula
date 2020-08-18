@@ -5,10 +5,8 @@
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_config_file = tplroot ~ '.config.file' %}
 {%- set sls_config_environ = tplroot ~ '.config.environ' %}
-{%- set sls_service_args = tplroot ~ '.service.args.install' %}
 
 include:
-  - {{ sls_service_args }}
   - {{ sls_config_file }}
   - {{ sls_config_environ }}
 
@@ -25,7 +23,6 @@ prometheus-service-running-{{ name }}-unmasked:
     - require_in:
       - service: prometheus-service-running-{{ name }}
     - require:
-      - sls: {{ sls_service_args }}
       - sls: {{ sls_config_file }}
       - file: prometheus-config-file-etc-file-directory
 
@@ -43,7 +40,6 @@ prometheus-service-running-{{ name }}:
             {%- endif %}
     - enable: True
     - require:
-      - sls: {{ sls_service_args }}
       - sls: {{ sls_config_file }}
             {%- if p.wanted.firewall %}
   firewalld.present:
