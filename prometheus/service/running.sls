@@ -30,28 +30,24 @@ prometheus-service-running-{{ name }}-unmasked:
       - file: prometheus-config-file-etc-file-directory
 
 prometheus-service-running-{{ name }}:
+            {%- if p.wanted.firewall and grains.kernel|lower == 'linux' %}
   pkg.installed:
     - name: firewalld
     - reload_modules: true
-    - onlyif: {{ grains.kernel|lower == 'linux' }}
-  service.running:
-    - names:
-      - {{ service_name }}
-            {%- if grains.kernel|lower == 'linux' %}
-      - firewalld
-    - onlyif: systemctl list-units | grep {{ service_name }} >/dev/null 2>&1
             {%- endif %}
+  service.running:
+    - onlyif: systemctl list-units | grep {{ service_name }} >/dev/null 2>&1
     - enable: True
     - require:
       - sls: {{ sls_service_args }}
       - sls: {{ sls_config_file }}
-            {%- if p.wanted.firewall %}
+    - names:
+      - {{ service_name }}
+            {%- if p.wanted.firewall and grains.kernel|lower == 'linux' %}
+      - firewalld
   firewalld.present:
     - name: public
     - ports: {{ p.pkg.component[name]['firewall']['ports']|json }}
-    - onlyif:
-      - {{ p.wanted.firewall }}
-      - {{ grains.kernel|lower == 'linux' }}
     - require:
       - service: prometheus-service-running-{{ name }}
             {%- endif %}
