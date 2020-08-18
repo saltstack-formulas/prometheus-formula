@@ -15,8 +15,8 @@ prometheus-archive-install-prerequisites:
     - names: {{ p.pkg.deps|json }}
   file.directory:
     - name: {{ p.dir.var }}
-    - user: prometheus
-    - group: prometheus
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
     - mode: 755
     - makedirs: True
     - require:

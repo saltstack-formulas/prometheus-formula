@@ -26,7 +26,6 @@ control 'prometheus components' do
   end
   describe directory('/var/lib/prometheus') do
     it { should exist }
-    its('group') { should eq 'prometheus' }
   end
   describe directory('/opt/prometheus/prometheus-v2.10.0') do
     it { should exist }
