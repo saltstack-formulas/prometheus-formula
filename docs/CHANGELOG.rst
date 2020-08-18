@@ -2,6 +2,16 @@
 Changelog
 =========
 
+`4.0.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.1...v4.0.2>`_ (2020-08-18)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **linux:** service.args is freebsd (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/ceb9863>`_\ )
+* **permissions:** correct basedir user/group (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/d65858a>`_\ )
+
 `4.0.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.0...v4.0.1>`_ (2020-08-17)
 ------------------------------------------------------------------------------------------------------------
 
