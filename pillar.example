@@ -8,8 +8,10 @@ prometheus:
       - haskell
       - rust
     component:
+      # List components (ie, exporters) using underscores and
+      # removing the 'prometheus' prefix
       - prometheus
-      - alertmanager          # not in debian repo, only archive
+      - alertmanager
       - node_exporter
       # - memcached_exporter  # not in upstream repo, only archive
 
@@ -37,6 +39,14 @@ prometheus:
       golang:
         version: v1.6.0
     component:
+      # If you use OS packages in Debian's family, components should have
+      # a 'name' variable stating the name of the package (it's generally
+      # something like `prometheus-component-with-dashes-replacing-underscores`
+      # ie,
+      # node_exporter:
+      #   name: prometheus-node-exporter
+      #
+      # See prometheus/osfamilymap.yaml for more examples
       alertmanager:
         config:
           # yamllint disable-line rule:line-length
