@@ -25,14 +25,73 @@ Debian:
       - cron
     use_upstream_repo: false
     use_upstream_package: false
-    use_upstream_archive: true
-    repo:
-      humanname: 'prometheus repository'
-      key_url: 'https://s3-eu-west-1.amazonaws.com/deb.robustperception.io/41EFC99D.gpg'
-      file: /etc/apt/sources.list.d/prometheus.list
+    use_upstream_archive: false
     component:
+      prometheus:
+        name: prometheus
+      alertmanager:
+        name: prometheus-alertmanager
+      apache_exporter:
+        name: prometheus-apache-exporter
+      bind_exporter:
+        name: prometheus-bind-exporter
+      bird_exporter:
+        name: prometheus-bird-exporter
+      blackbox_exporter:
+        name: prometheus-blackbox-exporter
+      hacluster_exporter:
+        name: prometheus-hacluster-exporter
+      haproxy_exporter:
+        name: prometheus-haproxy-exporter
+      homeplug_exporter:
+        name: prometheus-homeplug-exporter
+      ipmi_exporter:
+        name: prometheus-ipmi-exporter
+      libvirt_exporter:
+        name: prometheus-libvirt-exporter
+      mailexporter:
+        name: prometheus-mailexporter
+      mongodb_exporter:
+        name: prometheus-mongodb-exporter
+      mysqld_exporter:
+        name: prometheus-mysqld-exporter
+      nginx_exporter:
+        name: prometheus-nginx-exporter
+      nginx_vts_exporter:
+        name: prometheus-nginx-vts-exporter
       node_exporter:
+        name: prometheus-node-exporter
         args_file: /etc/default/prometheus-node-exporter
+      node_exporter_collectors:
+        name: prometheus-node-exporter-collectors
+      openstack_exporter:
+        name: prometheus-openstack-exporter
+      pgbouncer_exporter:
+        name: prometheus-pgbouncer-exporter
+      postfix_exporter:
+        name: prometheus-postfix-exporter
+      postgres_exporter:
+        name: prometheus-postgres-exporter
+      process_exporter:
+        name: prometheus-process-exporter
+      pushgateway:
+        name: prometheus-pushgateway
+      snmp_exporter:
+        name: prometheus-snmp-exporter
+      sql_exporter:
+        name: prometheus-sql-exporter
+      squid_exporter:
+        name: prometheus-squid-exporter
+      tplink_plug_exporter:
+        name: prometheus-tplink-plug-exporter
+      trafficserver_exporter:
+        name: prometheus-trafficserver-exporter
+      varnish_exporter:
+        name: prometheus-varnish-exporter
+      xmpp_alerts:
+        name: prometheus-xmpp-alerts
+
+
   exporters:
     node_exporter:
       textfile_collectors_dependencies:
