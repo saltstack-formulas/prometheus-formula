@@ -2,6 +2,33 @@
 Changelog
 =========
 
+`4.1.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.2...v4.1.0>`_ (2020-08-21)
+------------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **travis,kitchen:** update matrix (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/1eeda22>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **pillar.example:** add some comments (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/68aaa34>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **debian:** allow to install using OS packages (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/3014494>`_\ )
+
+Tests
+^^^^^
+
+
+* **packages:** check when using repo or archives (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/c5ad857>`_\ )
+
 `4.0.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.1...v4.0.2>`_ (2020-08-18)
 ------------------------------------------------------------------------------------------------------------
 
