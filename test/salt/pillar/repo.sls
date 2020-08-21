@@ -9,8 +9,9 @@ prometheus:
       - rust
     component:
       - prometheus
-      - alertmanager          # not in debian repo, only archive
+      - alertmanager
       - node_exporter
+      - blackbox_exporter
       # - memcached_exporter  # not in upstream repo, only archive
 
   exporters:
@@ -29,7 +30,7 @@ prometheus:
           smartctl: /usr/sbin/smartctl
 
   pkg:
-    use_upstream_repo: true
+    use_upstream_repo: {{ false if grains.os_family|lower in ('debian',) else true }}
     use_upstream_archive: false
 
     clientlibs:

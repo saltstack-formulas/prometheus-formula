@@ -1,11 +1,13 @@
 # -*- coding: utf-8 -*-
 # vim: ft=sls
 
-{%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
+{%- if grains.os_family == 'RedHat' %}
 
-    {%- if p.pkg.use_upstream_repo and 'repo' in p.pkg and p.pkg.repo %}
-        {%- from tplroot ~ "/files/macros.jinja" import format_kwargs with context %}
+  {%- set tplroot = tpldir.split('/')[0] %}
+  {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
+
+  {%- if p.pkg.use_upstream_repo and 'repo' in p.pkg and p.pkg.repo %}
+    {%- from tplroot ~ "/files/macros.jinja" import format_kwargs with context %}
 
 prometheus-package-repo-install-pkgrepo-managed:
   pkgrepo.managed:
@@ -16,6 +18,15 @@ prometheus-package-repo-install-pkgrepo-managed:
     - pattern: ' gpgkey2='
     - repl: '\n       '
     - ignore_if_missing: True
-    - onlyif: {{ grains.os_family == 'RedHat' }}
+  {%- endif %}
 
-    {%- endif %}
+{%- else %}
+
+prometheus-package-repo-install-pkgrepo-managed:
+  test.show_notification:
+    - name: Skipping repository configuration
+    - text: |
+        At the moment, there's no repo for {{ grains['os'] }}
+        See https://prometheus.io/download/
+
+{%- endif %}

@@ -30,9 +30,9 @@
             {%- set uri = '%s/%s/releases/download/%s/%s'|format(p.pkg.uri, name, v.version, name) %}
             {%- set url = '%s-%s.%s-%s.tar.gz'|format(uri, v.version|replace('v',''), p.kernel, p.arch) %}
             {%- set dir = '%s-%s'|format(name, v.version) %}
-        {%- endif %}
         {%- do p.pkg.component[name].update({'path': p.dir.archive ~ '/' + dir }) %}
         {%- do p.pkg.component[name]['archive'].update({'name': p.dir.archive + '/' + dir, 'source': url}) %}
+        {%- endif %}
     {%- endfor %}
 {%- endif %}
 

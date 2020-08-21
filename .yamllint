@@ -10,7 +10,7 @@ extends: default
 # 3. Any YAML files under directory `.kitchen/`, introduced during local testing
 ignore: |
   node_modules/
-  test/**/states/**/*.sls
+  test/**/*.sls
   .kitchen/
   bin/kitchen
   prometheus/osfamilymap.yaml
@@ -24,7 +24,6 @@ yaml-files:
   - .yamllint
   # SaltStack Formulas additional settings
   - '*.example'
-  - test/**/*.sls
 
 rules:
   empty-values:
