@@ -3,7 +3,15 @@
 control 'prometheus services' do
   title 'should be running'
 
-  describe service('prometheus-node-exporter') do
+  service =
+    case platform[:family]
+    when 'redhat'
+      'node_exporter'
+    else
+      'prometheus-node-exporter'
+    end
+
+  describe service(service) do
     it { should be_enabled }
     it { should be_running }
   end
