@@ -12,14 +12,14 @@ include:
 
     {%- for name in p.wanted.component %}
         {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] %}
-            {%- set service_name = p.pkg.component[name]['service']['get'](name, {}).get('name', name) %}
+            {%- set service_name = p.pkg.component[name]['service'].get('name', name) %}
 
 prometheus-service-running-{{ name }}-unmasked:
   service.unmasked:
     - name: {{ service_name }}
     - onlyif:
        - {{ grains.kernel|lower == 'linux' }}
-       - systemctl list-units | grep {{ service_name }} >/dev/null 2>&1
+       - systemctl list-unit-files | grep {{ service_name }} >/dev/null 2>&1
     - require_in:
       - service: prometheus-service-running-{{ name }}
     - require:
@@ -33,7 +33,7 @@ prometheus-service-running-{{ name }}:
     - reload_modules: true
             {%- endif %}
   service.running:
-    - onlyif: systemctl list-units | grep {{ service_name }} >/dev/null 2>&1
+    - onlyif: systemctl list-unit-files | grep {{ service_name }} >/dev/null 2>&1
     - enable: True
     - require:
       - sls: {{ sls_config_file }}

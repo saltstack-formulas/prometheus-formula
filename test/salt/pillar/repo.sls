@@ -81,15 +81,22 @@ prometheus:
                 - channel: '#my-channel'
                   image_url: 'http://some.img.com/img.png'
 
+        {% if grains['os_family'] == 'Debian' %}
+        service:
+          name: prometheus-alertmanager
+        {% endif %}
+
       node_exporter:
         version: v0.18.1
         archive:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
         service:
-          name: prometheus-node-exporter
           args:
             web.listen-address: ":9110"
             # collector.textfile.directory: /var/tmp/node_exporter
+          {% if grains['os_family'] == 'Debian' %}
+          name: prometheus-node-exporter
+          {% endif %}
 
       prometheus:
         service:
