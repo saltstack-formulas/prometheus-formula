@@ -12,7 +12,7 @@ include:
 
     {%- for name in p.wanted.component %}
         {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] %}
-            {%- set service_name = p.pkg.component[name]['service']['get'](name, {}).get('name', name) %}
+            {%- set service_name = p.pkg.component[name]['service'].get('name', name) %}
 
 prometheus-service-running-{{ name }}-unmasked:
   service.unmasked:
