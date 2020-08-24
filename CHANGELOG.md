@@ -1,5 +1,12 @@
 # Changelog
 
+## [4.1.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v4.1.0...v4.1.1) (2020-08-24)
+
+
+### Bug Fixes
+
+* **osfamilymap.yaml:** add gentoo exporters and remove loose go install ([](https://github.com/saltstack-formulas/prometheus-formula/commit/e0aecdb))
+
 # [4.1.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v4.0.2...v4.1.0) (2020-08-21)
 
 
