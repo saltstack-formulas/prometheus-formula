@@ -93,7 +93,7 @@ prometheus:
         archive:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
         service:
-          # name: prometheus-node-exporter
+          name: node_exporter
           args:
             web.listen-address: ":9110"
             # collector.textfile.directory: /var/tmp/node_exporter

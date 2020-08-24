@@ -3,6 +3,14 @@
 control 'prometheus components' do
   title 'should be installed'
 
+  service_dir =
+    case platform[:family]
+    when 'debian'
+      '/lib/systemd/system'
+    else
+      '/usr/lib/systemd/system'
+    end
+
   # describe package('cron') do
   #   it { should be_installed }  # not available on amazonlinux?
   # end
@@ -39,7 +47,7 @@ control 'prometheus components' do
     it { should exist }
     its('group') { should eq 'prometheus' }
   end
-  describe file('/usr/lib/systemd/system/prometheus.service') do
+  describe file("#{service_dir}/prometheus.service") do
     it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
@@ -56,7 +64,7 @@ control 'prometheus components' do
     it { should exist }
     its('group') { should eq 'alertmanager' }
   end
-  describe file('/usr/lib/systemd/system/alertmanager.service') do
+  describe file("#{service_dir}/alertmanager.service") do
     it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
@@ -73,7 +81,7 @@ control 'prometheus components' do
     it { should exist }
     its('group') { should eq 'node_exporter' }
   end
-  describe file('/usr/lib/systemd/system/node_exporter.service') do
+  describe file("#{service_dir}/node_exporter.service") do
     it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
