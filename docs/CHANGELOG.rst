@@ -2,6 +2,25 @@
 Changelog
 =========
 
+`5.0.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.1.1...v5.0.0>`_ (2020-08-24)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **defaults:** set clientlibs defaults to an empty list (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/cdd2e6d>`_\ )
+
+BREAKING CHANGES
+^^^^^^^^^^^^^^^^
+
+
+* **defaults:** The golang clientib is not required for
+  the regular use of this formula but, if you already expected it to be
+  installed by default, you'll need to update your pillars to do so.
+  Running this version of the formula over previous ones won't break the
+  minions, only skip clientlibs.
+
 `4.1.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.1.0...v4.1.1>`_ (2020-08-24)
 ------------------------------------------------------------------------------------------------------------
 
