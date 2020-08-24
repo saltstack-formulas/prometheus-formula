@@ -2,6 +2,29 @@
 Changelog
 =========
 
+`5.0.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.0...v5.0.1>`_ (2020-08-24)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **pillar:** fix service name in archive mode (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/b03a1cc>`_\ )
+* **service:** pick up the right service name in pillars (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/0169c89>`_\ )
+* **service:** service is not reloaded because of failing if (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/deb9cd2>`_\ )
+* **test:** add tests on node_exporter service (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/4e8c69f>`_\ )
+* **test:** add tests on prometheus-node-exporter (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/6010cc3>`_\ )
+* **test:** fix alertmanager service name in repo mode test (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/41da7cc>`_\ )
+* **test:** fix test pillars (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/910a06d>`_\ )
+* **test:** fix tests for RedHat OSes in repo mode (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/49e6fa5>`_\ )
+* **test:** test Salt 3001 with Debian 9 and 10 (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/890bfc1>`_\ )
+
+Styles
+^^^^^^
+
+
+* **test:** improve Ruby style (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/461ce4f>`_\ )
+
 `5.0.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v4.1.1...v5.0.0>`_ (2020-08-24)
 ------------------------------------------------------------------------------------------------------------
 
