@@ -117,17 +117,63 @@ RedHat:
 Suse: {}
 
 Gentoo:
+  wanted:
+    clientlibs: []
   pkg:
+    use_upstream_repo: false
+    use_upstream_archive: false
     component:
       alertmanager:
         name: app-metrics/alertmanager
         args_file: /etc/conf.d/alertmanager
-      node_exporter:
-        name: app-metrics/node_exporter
-        args_file: /etc/conf.d/node_exporter
       prometheus:
         name: app-metrics/prometheus
         args_file: /etc/conf.d/prometheus
+      node_exporter:
+        name: app-metrics/node_exporter
+        args_file: /etc/conf.d/node_exporter
+      bind_exporter:
+        name: app-metrics/bind_exporter
+      blackbox_exporter:
+        name: app-metrics/blackbox_exporter
+      burrow_exporter:
+        name: app-metrics/burrow_exporter
+      consul_exporter:
+        name: app-metrics/consul_exporter
+      dnsmasq_exporter:
+        name: app-metrics/dnsmasq_exporter
+      elasticsearch_exporter:
+        name: app-metrics/elasticsearch_exporter
+      github_exporter:
+        name: app-metrics/github-exporter
+      grok_exporter:
+        name: app-metrics/grok_exporter
+      memcached_exporter:
+        name: app-metrics/memcached_exporter
+      mongodb_exporter:
+        name: app-metrics/mongodb_exporter
+      mysqld_exporter:
+        name: app-metrics/mysqld_exporter
+      nginx_vts_exporter:
+        name: app-metrics/nginx-vts-exporter
+      openvpn_exporter:
+        name: app-metrics/openvpn_exporter
+      postfix_exporter:
+        name: app-metrics/postfix_exporter
+      postgres_exporter:
+        name: app-metrics/postgres_exporter
+      process_exporter:
+        name: app-metrics/process-exporter
+      rabbitmq_exporter:
+        name: app-metrics/rabbitmq_exporter
+      redis_exporter:
+        name: app-metrics/redis_exporter
+      snmp_exporter:
+        name: app-metrics/snmp_exporter
+      uwsgi_exporter:
+        name: app-metrics/uwsgi_exporter
+      vault_exporter:
+        name: app-metrics/vault_exporter
 
 FreeBSD:
   identity:
