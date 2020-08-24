@@ -80,6 +80,8 @@ prometheus:
               slack_configs:
                 - channel: '#my-channel'
                   image_url: 'http://some.img.com/img.png'
+        service:
+          name: prometheus-alertmanager
 
       node_exporter:
         version: v0.18.1
