@@ -3,8 +3,7 @@
 ---
 prometheus:
   wanted:
-    clientlibs:
-      - golang
+    clientlibs: []
     component:
       - prometheus
       - alertmanager
