@@ -82,11 +82,9 @@ prometheus-archive-install-{{ name }}-file-directory:
       - user: prometheus-config-user-install-{{ name }}-user-present
       - group: prometheus-config-user-install-{{ name }}-user-present
 
-            {%- if grains.kernel|lower == 'linux' and 'config_file' in p.pkg.component[name] %}
-
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
-    - name: {{ p.dir.service }}/{{ name }}.service
+    - name: {{ p.dir.service }}/{{ p.pkg.component[name]['service'].get('name', name) }}.service
     - source: {{ files_switch(['systemd.ini.jinja'],
                               lookup='prometheus-archive-install-' ~  name ~ '-managed-service'
                  )
@@ -103,7 +101,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
-               {%- if name in ('node_exporter',) %}
+               {%- if name in ('node_exporter', 'consul_exporter') %}
         start: {{ p.pkg.component[name]['path'] }}/{{ name }}
                {%- else %}
         start: {{ p.pkg.component[name]['path'] }}/{{ name }} --config.file {{ p.pkg.component[name]['config_file'] }}  # noqa 204
@@ -118,6 +116,5 @@ prometheus-archive-install-{{ name }}-managed-service:
     - require:
       - archive: prometheus-archive-install-{{ name }}
 
-            {%- endif %}
         {%- endif %}
     {%- endfor %}
