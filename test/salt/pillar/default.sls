@@ -81,15 +81,6 @@ prometheus:
               email_configs:
                 - to: 'team-X+alerts@example.org'
 
-          inhibit_rules:
-            - name: opsGenie-receiver
-              opsgenie_configs:
-                - api_key: mysecret
-            - name: slack-receiver
-              slack_configs:
-                - channel: '#my-channel'
-                  image_url: 'http://some.img.com/img.png'
-
       node_exporter:
         version: v0.18.1
         archive:

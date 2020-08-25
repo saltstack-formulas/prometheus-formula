@@ -7,9 +7,11 @@ control 'prometheus components' do
   when 'debian'
     service_dir = '/lib/systemd/system'
     alert_manager_service = 'prometheus-alertmanager'
+    node_exporter_service = 'prometheus-node-exporter'
   else
     service_dir = '/usr/lib/systemd/system'
     alert_manager_service = 'alertmanager'
+    node_exporter_service = 'node_exporter'
   end
 
   # describe package('cron') do
@@ -82,7 +84,7 @@ control 'prometheus components' do
     it { should exist }
     its('group') { should eq 'node_exporter' }
   end
-  describe file("#{service_dir}/node_exporter.service") do
+  describe file("#{service_dir}/#{node_exporter_service}.service") do
     it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }

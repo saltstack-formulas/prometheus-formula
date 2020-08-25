@@ -103,7 +103,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
-               {%- if name in ('node_exporter', 'consul_exporter') %}
+               {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
         start: {{ p.pkg.component[name]['path'] }}/{{ name }}
                {%- else %}
         start: {{ p.pkg.component[name]['path'] }}/{{ name }} --config.file {{ p.pkg.component[name]['config_file'] }}  # noqa 204
