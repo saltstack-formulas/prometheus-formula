@@ -12,7 +12,6 @@ prometheus:
       - alertmanager
       - node_exporter
       - blackbox_exporter
-      # - memcached_exporter  # not in upstream repo, only archive
 
   exporters:
     node_exporter:
@@ -72,20 +71,6 @@ prometheus:
               email_configs:
                 - to: 'team-X+alerts@example.org'
 
-          inhibit_rules:
-            - name: opsGenie-receiver
-              opsgenie_configs:
-                - api_key: mysecret
-            - name: slack-receiver
-              slack_configs:
-                - channel: '#my-channel'
-                  image_url: 'http://some.img.com/img.png'
-
-        {% if grains['os_family'] == 'Debian' %}
-        service:
-          name: prometheus-alertmanager
-        {% endif %}
-
       node_exporter:
         version: v0.18.1
         archive:
@@ -94,9 +79,11 @@ prometheus:
           args:
             web.listen-address: ":9110"
             # collector.textfile.directory: /var/tmp/node_exporter
-          {% if grains['os_family'] == 'Debian' %}
-          name: prometheus-node-exporter
-          {% endif %}
+
+      blackbox_exporter:
+        service:
+          args:
+            web.listen-address: ":9115"
 
       prometheus:
         service:

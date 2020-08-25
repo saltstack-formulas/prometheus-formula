@@ -82,6 +82,8 @@ prometheus-archive-install-{{ name }}-file-directory:
       - user: prometheus-config-user-install-{{ name }}-user-present
       - group: prometheus-config-user-install-{{ name }}-user-present
 
+            {%- if grains.kernel|lower == 'linux' %}
+
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
     - name: {{ p.dir.service }}/{{ p.pkg.component[name]['service'].get('name', name) }}.service
@@ -116,5 +118,6 @@ prometheus-archive-install-{{ name }}-managed-service:
     - require:
       - archive: prometheus-archive-install-{{ name }}
 
+            {%- endif %}
         {%- endif %}
     {%- endfor %}
