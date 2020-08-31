@@ -2,6 +2,24 @@
 Changelog
 =========
 
+`5.0.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.1...v5.0.2>`_ (2020-08-31)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **archive:** add config file to service only if defined (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/a5b44c8>`_\ )
+* **archive:** service name needs to use pillar values (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/219250a>`_\ )
+* **debian:** add some valid defaults (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/844a77f>`_\ )
+
+Tests
+^^^^^
+
+
+* **archive:** add tests to check service names (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/a5d4d03>`_\ )
+* **services:** fix path for debian family (\ ` <https://github.com/saltstack-formulas/prometheus-formula/commit/7c1cdb8>`_\ )
+
 `5.0.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.0...v5.0.1>`_ (2020-08-24)
 ------------------------------------------------------------------------------------------------------------
 
