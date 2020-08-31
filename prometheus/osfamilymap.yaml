@@ -20,6 +20,8 @@ Arch: {}
 Alpine: {}
 
 Debian:
+  dir:
+    service: /lib/systemd/system
   pkg:
     deps:
       - cron
@@ -31,66 +33,108 @@ Debian:
         name: prometheus
       alertmanager:
         name: prometheus-alertmanager
+        service:
+          name: prometheus-alertmanager
+        args_file: /etc/default/prometheus-alertmanager
       apache_exporter:
         name: prometheus-apache-exporter
+        service:
+          name: prometheus-apache-exporter
+        args_file: /etc/default/prometheus-apache-exporter
       bind_exporter:
         name: prometheus-bind-exporter
+        args_file: /etc/default/prometheus-bind-exporter
       bird_exporter:
         name: prometheus-bird-exporter
+        args_file: /etc/default/prometheus-bird-exporter
       blackbox_exporter:
         name: prometheus-blackbox-exporter
+        service:
+          name: prometheus-blackbox-exporter
+        config_file: /etc/prometheus/blackbox.yml
       hacluster_exporter:
         name: prometheus-hacluster-exporter
+        args_file: /etc/default/prometheus-hacluster-exporter
       haproxy_exporter:
         name: prometheus-haproxy-exporter
+        args_file: /etc/default/prometheus-haproxy-exporter
       homeplug_exporter:
         name: prometheus-homeplug-exporter
+        args_file: /etc/default/prometheus-homeplug-exporter
       ipmi_exporter:
         name: prometheus-ipmi-exporter
+        args_file: /etc/default/prometheus-ipmi-exporter
       libvirt_exporter:
         name: prometheus-libvirt-exporter
+        args_file: /etc/default/prometheus-libvirt-exporter
       mailexporter:
         name: prometheus-mailexporter
+        args_file: /etc/default/prometheus-mailexporter
       mongodb_exporter:
         name: prometheus-mongodb-exporter
+        args_file: /etc/default/prometheus-mongodb-exporter
       mysqld_exporter:
         name: prometheus-mysqld-exporter
+        service:
+          name: prometheus-mysqld-exporter
+        args_file: /etc/default/prometheus-mysqld-exporter
       nginx_exporter:
         name: prometheus-nginx-exporter
+        service:
+          name: prometheus-nginx-exporter
+        args_file: /etc/default/prometheus-nginx-exporter
       nginx_vts_exporter:
         name: prometheus-nginx-vts-exporter
+        args_file: /etc/default/prometheus-nginx-vts-exporter
       node_exporter:
         name: prometheus-node-exporter
+        service:
+          name: prometheus-node-exporter
         args_file: /etc/default/prometheus-node-exporter
       node_exporter_collectors:
         name: prometheus-node-exporter-collectors
+        args_file: /etc/default/prometheus-node-exporter-collectors
       openstack_exporter:
         name: prometheus-openstack-exporter
+        args_file: /etc/default/prometheus-openstack-exporter
       pgbouncer_exporter:
         name: prometheus-pgbouncer-exporter
+        args_file: /etc/default/prometheus-pgbouncer-exporter
       postfix_exporter:
         name: prometheus-postfix-exporter
+        args_file: /etc/default/prometheus-postfix-exporter
       postgres_exporter:
         name: prometheus-postgres-exporter
+        service:
+          name: prometheus-postgres-exporter
+        args_file: /etc/default/prometheus-postgres-exporter
       process_exporter:
         name: prometheus-process-exporter
+        args_file: /etc/default/prometheus-process-exporter
       pushgateway:
         name: prometheus-pushgateway
+        args_file: /etc/default/prometheus-pushgateway
       snmp_exporter:
         name: prometheus-snmp-exporter
+        args_file: /etc/default/prometheus-snmp-exporter
       sql_exporter:
         name: prometheus-sql-exporter
+        args_file: /etc/default/prometheus-sql-exporter
       squid_exporter:
         name: prometheus-squid-exporter
+        args_file: /etc/default/prometheus-squid-exporter
       tplink_plug_exporter:
         name: prometheus-tplink-plug-exporter
+        args_file: /etc/default/prometheus-tplink-plug-exporter
       trafficserver_exporter:
         name: prometheus-trafficserver-exporter
+        args_file: /etc/default/prometheus-trafficserver-exporter
       varnish_exporter:
         name: prometheus-varnish-exporter
+        args_file: /etc/default/prometheus-varnish-exporter
       xmpp_alerts:
         name: prometheus-xmpp-alerts
-
+        args_file: /etc/default/prometheus-xmpp-alerts
 
   exporters:
     node_exporter:

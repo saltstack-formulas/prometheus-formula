@@ -3,17 +3,29 @@
 control 'prometheus services' do
   title 'should be running'
 
-  service =
+  services =
     case platform[:family]
     when 'redhat'
-      'node_exporter'
+      %w[
+        node_exporter
+        prometheus
+        blackbox_exporter
+        alertmanager
+      ]
     else
-      'prometheus-node-exporter'
+      %w[
+        prometheus
+        prometheus-node-exporter
+        prometheus-blackbox-exporter
+        prometheus-alertmanager
+      ]
     end
 
-  describe service(service) do
-    it { should be_enabled }
-    it { should be_running }
+  services.each do |service|
+    describe service(service) do
+      it { should be_enabled }
+      it { should be_running }
+    end
   end
 
   # prometheus-node-exporter port

@@ -13,6 +13,8 @@ prometheus:
       - prometheus
       - alertmanager
       - node_exporter
+      - blackbox_exporter
+      - consul_exporter
       # - memcached_exporter  # not in upstream repo, only archive
 
   exporters:
@@ -79,24 +81,25 @@ prometheus:
               email_configs:
                 - to: 'team-X+alerts@example.org'
 
-          inhibit_rules:
-            - name: opsGenie-receiver
-              opsgenie_configs:
-                - api_key: mysecret
-            - name: slack-receiver
-              slack_configs:
-                - channel: '#my-channel'
-                  image_url: 'http://some.img.com/img.png'
-
       node_exporter:
         version: v0.18.1
         archive:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
         service:
-          # name: prometheus-node-exporter
           args:
             web.listen-address: ":9110"
             # collector.textfile.directory: /var/tmp/node_exporter
+
+      blackbox_exporter:
+        service:
+          args:
+            web.listen-address: ":9115"
+        config_file: /opt/prometheus/blackbox_exporter-v0.14.0/blackbox.yml
+
+      consul_exporter:
+        service:
+          # This is to test that any fancy name we use, will work in archive mode
+          name: my-fancy-consul-exporter-service
 
       prometheus:
         service:
