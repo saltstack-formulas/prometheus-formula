@@ -10,11 +10,9 @@ extends: default
 # 3. Any YAML files under directory `.kitchen/`, introduced during local testing
 ignore: |
   node_modules/
-  test/**/*.sls
+  test/**/states/**/*.sls
   .kitchen/
-  bin/kitchen
   prometheus/osfamilymap.yaml
-  pillar.example
 
 yaml-files:
   # Default settings
@@ -24,6 +22,7 @@ yaml-files:
   - .yamllint
   # SaltStack Formulas additional settings
   - '*.example'
+  - test/**/*.sls
 
 rules:
   empty-values:
@@ -32,7 +31,7 @@ rules:
   line-length:
     # Increase from default of `80`
     # Based on https://github.com/PyCQA/flake8-bugbear#opinionated-warnings (`B950`)
-    max: 98
+    max: 88
   octal-values:
     forbid-implicit-octal: true
     forbid-explicit-octal: true

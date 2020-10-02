@@ -29,6 +29,7 @@ prometheus:
           smartctl: /usr/sbin/smartctl
 
   pkg:
+    # yamllint disable-line rule:braces rule:commas
     use_upstream_repo: {{ false if grains.os_family|lower in ('debian',) else true }}
     use_upstream_archive: false
 

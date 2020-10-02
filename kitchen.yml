@@ -42,14 +42,6 @@ platforms:
     driver:
       image: saltimages/salt-master-py3:amazonlinux-2
 
-  ## SALT `3001`
-  - name: debian-10-3001-py3
-    driver:
-      image: saltimages/salt-3001-py3:debian-10
-  - name: debian-9-3001-py3
-    driver:
-      image: saltimages/salt-3001-py3:debian-9
-
   ## SALT `3000.3`
   - name: debian-10-3000-3-py3
     driver:
@@ -163,7 +155,6 @@ suites:
       state_top:
         base:
           '*':
-            # prometheus.clean
             - prometheus
       pillars:
         top.sls:
@@ -182,7 +173,6 @@ suites:
       state_top:
         base:
           '*':
-            # prometheus.clean
             - prometheus
       pillars:
         top.sls:
