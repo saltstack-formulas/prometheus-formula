@@ -10,7 +10,7 @@ prometheus-exporters-clean-{{ name }}-textfile_collectors-smartmon:
     - name: {{ p.exporters[name]['textfile_collectors']['smartmon']['pkg'] }}
   file.absent:
     - names:
-      - {{ p.dir.archive ~ '/textfile_collectors/smartmon.sh' }}
-      - {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}/smartmon.prom
+      - {{ p.dir.archive ~ p.div ~ 'textfile_collectors' ~ p.div ~ 'smartmon.sh' }}
+      - {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}{{ p.div }}smartmon.prom
   cron.absent:
     - identifier: prometheus-exporters-{{ name }}-textfile_collectors-smartmon-cronjob

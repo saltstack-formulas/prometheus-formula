@@ -20,7 +20,7 @@ prometheus-archive-clean-{{ name }}:
   file.absent:
   - name: {{ p.pkg.component[name]['path'] }}
 
-        {%- if p.linux.altpriority|int <= 0 or grains.os_family|lower in ('macos', 'arch') %}
+        {%- if (grains.kernel|lower == 'linux' and p.linux.altpriority|int <= 0) or grains.os_family|lower in ('macos', 'arch') %}
             {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
                 {%- for cmd in p.pkg.component[name]['commands'] %}
 

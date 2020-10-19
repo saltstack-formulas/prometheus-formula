@@ -13,12 +13,14 @@ prometheus-config-user-install-{{ name }}-user-present:
       - user: prometheus-config-user-install-{{ name }}-user-present
   user.present:
     - name: {{ name }}
-    - shell: /bin/false
-    - createhome: false
     - groups:
       - {{ name }}
-              {%- if grains.os_family == 'MacOS' %}
+              {%- if grains.os != 'Windows' %}
+    - shell: /bin/false
+                  {%- if grains.kernel|lower == 'linux' %}
+    - createhome: false
+                  {%- elif grains.os_family == 'MacOS' %}
     - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
+                  {%- endif %}
               {%- endif %}
-
   {%- endfor %}

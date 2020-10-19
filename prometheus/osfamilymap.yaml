@@ -301,9 +301,14 @@ OpenBSD:
 Solaris: {}
 
 Windows:
+  div: '\\'
   kernel: windows
   dir:
-    opt: C:\\Program Files
+    archive: C:\\prometheus
+    etc: C:\\prometheus\\etc
+    tmp: C:\\temp\\prometheus-salt-tmp
+    var: C:\\prometheus\var
+
   pkg:
     component:
       prometheus:
@@ -338,6 +343,7 @@ Windows:
           source_hash: 9362b7482e74792f111c4bb1a372b18a88f6354c78f24713bacfbcb050883556
 
 MacOS:
+  div: '/'
   dir:
     default: /etc/defaults
   identity:

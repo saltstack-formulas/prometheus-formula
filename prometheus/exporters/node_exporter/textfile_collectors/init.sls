@@ -9,7 +9,6 @@ include:
   - {{ sls_config_users }}
 
 {%- set states = [] %}
-
 {%- set name = 'node_exporter' %}
 {%- if name in p.wanted.component and 'service' in p.pkg.component[name] %}
 
@@ -17,9 +16,11 @@ include:
 prometheus-exporters-{{ name }}-collector-textfile-dir:
   file.directory:
     - name: {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+        {%- if grains.os != 'Windows' %}
     - mode: 755
     - user: {{ name }}
     - group: {{ name }}
+        {%- endif %}
     - makedirs: True
     - requre:
       - user: prometheus-config-user-install-{{ name }}-user-present

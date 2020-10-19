@@ -22,11 +22,13 @@ prometheus-config-install-{{ name }}-environ_file:
                               lookup='prometheus-config-install-' ~ name ~ '-environ_file'
                  )
               }}
+    - makedirs: True
+    - template: jinja
+                {%- if grains.os != 'Windows' %}
     - mode: 640
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
-    - makedirs: True
-    - template: jinja
+                {%- endif %}
     - contents: |
        command_args="{{ concat_environ(environ) }}"
     - watch_in:
