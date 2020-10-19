@@ -21,17 +21,26 @@
 
 {%- set p = salt['grains.filter_by']( {'defaults': defaults}, default='defaults', merge=_config) %}
 
-{# ## components ## #}
-{%- if 'component' in p.pkg and p.pkg.component is mapping %}
-    {%- for name,v in p.pkg.component.items() %}
+## Legacy pillars support ('component' renamed to 'comp) ##
+{%- if 'component' in p.wanted and p.wanted.component %}
+    {%- do p.wanted.update({'comp': p.wanted.component }) %}
+{%- endif %}
+{%- if 'component' in p.pkg and p.pkg.component %}
+    {%- do p.pkg.update({'comp': p.pkg.component }) %}
+{%- endif %}
+## Legacy (remove me after 31/4/21) ##
+
+{# ## comps ## #}
+{%- if 'comp' in p.pkg and p.pkg.comp is mapping %}
+    {%- for name,v in p.pkg.comp.items() %}
         {%- set url = None %}
         {%- set dir = name %}
         {%- if 'version' in v and v.version and 'archive' in v and v.archive and 'uri' in p.pkg %}
             {%- set uri = '%s/%s/releases/download/%s/%s'|format(p.pkg.uri, name, v.version, name) %}
             {%- set url = '%s-%s.%s-%s.tar.gz'|format(uri, v.version|replace('v',''), p.kernel, p.arch) %}
             {%- set dir = '%s-%s'|format(name, v.version) %}
-        {%- do p.pkg.component[name].update({'path': p.dir.archive ~ '/' + dir }) %}
-        {%- do p.pkg.component[name]['archive'].update({'name': p.dir.archive + '/' + dir, 'source': url}) %}
+        {%- do p.pkg.comp[name].update({'path': p.dir.archive ~ '/' + dir }) %}
+        {%- do p.pkg.comp[name]['archive'].update({'name': p.dir.archive + '/' + dir, 'source': url}) %}
         {%- endif %}
     {%- endfor %}
 {%- endif %}

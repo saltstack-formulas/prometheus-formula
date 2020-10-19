@@ -11,6 +11,6 @@ prometheus-exporters-clean-{{ name }}-textfile_collectors-ipmitool:
   file.absent:
     - names:
       - {{ p.dir.archive ~ '/textfile_collectors/ipmitool' }}
-      - {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}/ipmitool.prom
+      - {{ p.pkg.comp[name]['service']['args']['collector.textfile.directory'] }}/ipmitool.prom
   cron.absent:
     - identifier: prometheus-exporters-{{ name }}-textfile_collectors-ipmitool-cronjob

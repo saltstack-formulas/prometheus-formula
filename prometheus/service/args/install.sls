@@ -17,9 +17,9 @@ include:
   - {{ sls_config_users }}
   - {{ sls_service_running }}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'service' in p.pkg.component[name] and 'args' in p.pkg.component[name]['service'] %}
-            {%- set args = p.pkg.component[name]['service']['args'] %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'service' in p.pkg.comp[name] and 'args' in p.pkg.comp[name]['service'] %}
+            {%- set args = p.pkg.comp[name]['service']['args'] %}
             {%- if 'storage.tsdb.path' in args.keys() %}
 
 prometheus-service-args-{{ name }}-data-dir:

@@ -10,18 +10,18 @@
 include:
   - {{ sls_archive_install }}
 
-      {%- if 'wanted' in p and p.wanted and 'component' in p.wanted and p.wanted.component %}
-          {%- for name in p.wanted.component %}
-              {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
+      {%- if 'wanted' in p and p.wanted and 'comp' in p.wanted and p.wanted.comp %}
+          {%- for name in p.wanted.comp %}
+              {%- if 'commands' in p.pkg.comp[name] and p.pkg.comp[name]['commands'] is iterable %}
                   {%- set dir_symlink = p.dir.symlink ~ '/bin' %}
-                  {%- if 'service' in p.pkg.component[name] %}
+                  {%- if 'service' in p.pkg.comp[name] %}
                       {%- set dir_symlink = p.dir.symlink ~ '/sbin' %}
                   {%- endif %}
-                  {%- for cmd in p.pkg.component[name]['commands'] %}
+                  {%- for cmd in p.pkg.comp[name]['commands'] %}
 
 prometheus-server-alternatives-install-{{ name }}-{{ cmd }}:
   cmd.run:
-    - name: update-alternatives --install {{ dir_symlink }}/{{ cmd }} link-prometheus-{{ name }}-{{ cmd }} {{ p.pkg.component[name]['path'] }}/{{ cmd }} {{ p.linux.altpriority }}  # noqa 204
+    - name: update-alternatives --install {{ dir_symlink }}/{{ cmd }} link-prometheus-{{ name }}-{{ cmd }} {{ p.pkg.comp[name]['path'] }}/{{ cmd }} {{ p.linux.altpriority }}  # noqa 204
     - unless:
       -  {{ grains.os_family not in ('Suse',) }}
       - {{ p.pkg.use_upstream_repo }}
@@ -30,7 +30,7 @@ prometheus-server-alternatives-install-{{ name }}-{{ cmd }}:
   alternatives.install:
     - name: link-prometheus-{{ name }}-{{ cmd }}
     - link: {{ dir_symlink }}/{{ cmd }}
-    - path: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
+    - path: {{ p.pkg.comp[name]['path'] }}/{{ cmd }}
     - priority: {{ p.linux.altpriority }}
     - order: 10
     - require:
@@ -42,7 +42,7 @@ prometheus-server-alternatives-install-{{ name }}-{{ cmd }}:
 prometheus-server-alternatives-set-{{ name }}-{{ cmd }}:
   alternatives.set:
     - name: link-prometheus-{{ name }}-{{ cmd }}
-    - path: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
+    - path: {{ p.pkg.comp[name]['path'] }}/{{ cmd }}
     - require:
       - alternatives: prometheus-server-alternatives-install-{{ name }}-{{ cmd }}
       - sls: {{ sls_archive_install }}

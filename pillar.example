@@ -7,8 +7,8 @@ prometheus:
       - golang
       - haskell
       - rust
-    component:
-      # List components (ie, exporters) using underscores and
+    comp:
+      # List comps (ie, exporters) using underscores and
       # removing the 'prometheus' prefix
       - prometheus
       - alertmanager
@@ -38,10 +38,10 @@ prometheus:
       # no bash & perl client tarballs are available
       golang:
         version: v1.6.0
-    component:
-      # If you use OS packages in Debian's family, components should have
+    comp:
+      # If you use OS packages in Debian's family, comps should have
       # a 'name' variable stating the name of the package (it's generally
-      # something like `prometheus-component-with-dashes-replacing-underscores`
+      # something like `prometheus-comp-with-dashes-replacing-underscores`
       # ie,
       # node_exporter:
       #   name: prometheus-node-exporter

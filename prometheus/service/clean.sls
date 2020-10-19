@@ -4,9 +4,9 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] %}
-            {%- set service_name = p.pkg.component[name]['service']['get'](name, {}).get('name', name) %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'service' in p.pkg.comp[name] and p.pkg.comp[name]['service'] %}
+            {%- set service_name = p.pkg.comp[name]['service']['get'](name, {}).get('name', name) %}
 
 prometheus-service-clean-{{ name }}:
   service.dead:

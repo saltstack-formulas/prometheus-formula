@@ -23,8 +23,8 @@ prometheus-config-file-etc-file-directory:
     - require:
       - sls: {{ sls_archive_install if p.pkg.use_upstream_archive else sls_package_install }}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'config' in p.pkg.component[name] and p.pkg.component[name]['config'] %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'config' in p.pkg.comp[name] and p.pkg.comp[name]['config'] %}
 
 prometheus-config-file-{{ name }}-file-managed:
   file.managed:
@@ -39,7 +39,7 @@ prometheus-config-file-{{ name }}-file-managed:
     - makedirs: True
     - template: jinja
     - context:
-        config: {{ p.pkg.component[name]['config']|json }}
+        config: {{ p.pkg.comp[name]['config']|json }}
     - require:
       - file: prometheus-config-file-etc-file-directory
       - user: prometheus-config-user-install-{{ name }}-user-present

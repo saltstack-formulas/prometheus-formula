@@ -6,7 +6,7 @@
 
 {%- set name = 'node_exporter' %}
 {%- set config = p.exporters[name]['textfile_collectors']['smartmon'] %}
-{%- set dir = {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+{%- set dir = {{ p.pkg.comp[name]['service']['args']['collector.textfile.directory'] }}
 {%- set script = p.dir.archive ~ '/textfile_collectors/smartmon.sh' %}
 
 prometheus-exporters-install-{{ name }}-textfile_collectors-smartmon:

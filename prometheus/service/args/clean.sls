@@ -11,15 +11,15 @@
 include:
   - {{ sls_service_clean }}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'service' in p.pkg.comp[name] and p.pkg.comp[name]['service'] %}
 
 prometheus-service-args-clean-{{ name }}:
   file.absent:
     - names:
       - /tmp/dummy-{{ name }}-dummy
-            {%- if 'storage.tsdb.path' in p.pkg.component[name]['service']['args'] %}
-      - {{ p.pkg.component[name]['service']['args']['storage.tsdb.path'] }}
+            {%- if 'storage.tsdb.path' in p.pkg.comp[name]['service']['args'] %}
+      - {{ p.pkg.comp[name]['service']['args']['storage.tsdb.path'] }}
             {%- endif %}
     - require:
       - sls: {{ sls_service_clean }}

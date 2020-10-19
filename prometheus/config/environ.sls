@@ -11,13 +11,13 @@
 include:
   - {{ sls_archive_install if p.pkg.use_upstream_archive else sls_package_install }}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'environ' in p.pkg.component[name] and p.pkg.component[name]['environ'] %}
-            {%- if 'environ_file' in p.pkg.component[name] and p.pkg.component[name]['environ_file'] %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'environ' in p.pkg.comp[name] and p.pkg.comp[name]['environ'] %}
+            {%- if 'environ_file' in p.pkg.comp[name] and p.pkg.comp[name]['environ_file'] %}
 
 prometheus-config-install-{{ name }}-environ_file:
   file.managed:
-    - name: {{ p.pkg.component[name]['environ_file'] }}
+    - name: {{ p.pkg.comp[name]['environ_file'] }}
     - source: {{ files_switch(['environ.sh.jinja'],
                               lookup='prometheus-config-install-' ~ name ~ '-environ_file'
                  )
@@ -41,7 +41,7 @@ prometheus-config-environ-{{ name }}-all:
     - name: {{ name }}_environ
     # service prometheus restart tends to hang on FreeBSD
     # https://github.com/saltstack/salt/issues/44848#issuecomment-487016414
-    - value: "{{ concat_environ(p.pkg.component[name]['environ']) }} >/dev/null 2>&1"
+    - value: "{{ concat_environ(p.pkg.comp[name]['environ']) }} >/dev/null 2>&1"
     - watch_in:
       - service: prometheus-service-running-{{ name }}
 

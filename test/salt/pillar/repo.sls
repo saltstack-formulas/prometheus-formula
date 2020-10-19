@@ -7,7 +7,7 @@ prometheus:
       - golang
       - haskell
       - rust
-    component:
+    comp:
       - prometheus
       - alertmanager
       - node_exporter
@@ -39,7 +39,7 @@ prometheus:
       golang:
         version: v1.6.0
 
-    component:
+    comp:
       alertmanager:
         config:
           # yamllint disable-line rule:line-length

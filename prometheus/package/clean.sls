@@ -12,11 +12,11 @@ include:
   - {{ sls_config_clean }}
   - {{ sls_service_clean }}
 
-    {%- for name in p.wanted.component %}
+    {%- for name in p.wanted.comp %}
 
 prometheus-package-clean-{{ name }}-removed:
   pkg.removed:
-    - name: {{ p.pkg.component[name].get('name', name) }}
+    - name: {{ p.pkg.comp[name].get('name', name) }}
     - require:
       - sls: {{ sls_config_clean }}
       - sls: {{ sls_service_clean }}

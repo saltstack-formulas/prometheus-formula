@@ -14,15 +14,15 @@ prometheus-archive-clean-prerequisites:
   file.absent:
     - name: {{ p.dir.var }}
 
-    {%- for name in p.wanted.component %}
+    {%- for name in p.wanted.comp %}
 
 prometheus-archive-clean-{{ name }}:
   file.absent:
-  - name: {{ p.pkg.component[name]['path'] }}
+  - name: {{ p.pkg.comp[name]['path'] }}
 
         {%- if p.linux.altpriority|int <= 0 or grains.os_family|lower in ('macos', 'arch') %}
-            {%- if 'commands' in p.pkg.component[name] and p.pkg.component[name]['commands'] is iterable %}
-                {%- for cmd in p.pkg.component[name]['commands'] %}
+            {%- if 'commands' in p.pkg.comp[name] and p.pkg.comp[name]['commands'] is iterable %}
+                {%- for cmd in p.pkg.comp[name]['commands'] %}
 
 prometheus-archive-clean-{{ name }}-file-symlink-{{ cmd }}:
   file.absent:

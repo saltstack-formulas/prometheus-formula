@@ -22,11 +22,11 @@ prometheus-archive-install-prerequisites:
     - require:
       - sls: {{ sls_config_users }}
 
-    {%- for name in p.wanted.component %}
+    {%- for name in p.wanted.comp %}
 
 prometheus-archive-install-{{ name }}:
   file.directory:
-    - name: {{ p.pkg.component[name]['path'] }}
+    - name: {{ p.pkg.comp[name]['path'] }}
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
     - mode: '0755'
@@ -40,7 +40,7 @@ prometheus-archive-install-{{ name }}:
         - group
         - mode
   archive.extracted:
-    {{- format_kwargs(p.pkg.component[name]['archive']) }}
+    {{- format_kwargs(p.pkg.comp[name]['archive']) }}
     - trim_output: true
     - enforce_toplevel: false
     - options: --strip-components=1
@@ -51,17 +51,17 @@ prometheus-archive-install-{{ name }}:
       - file: prometheus-archive-install-{{ name }}
 
         {%- if p.linux.altpriority|int <= 0 or grains.os_family|lower in ('macos', 'arch') %}
-            {%- if 'commands' in p.pkg.component[name]  and p.pkg.component[name]['commands'] is iterable %}
-                {%- for cmd in p.pkg.component[name]['commands'] %}
+            {%- if 'commands' in p.pkg.comp[name]  and p.pkg.comp[name]['commands'] is iterable %}
+                {%- for cmd in p.pkg.comp[name]['commands'] %}
 
 prometheus-archive-install-{{ name }}-file-symlink-{{ cmd }}:
   file.symlink:
-                    {%- if 'service' in p.pkg.component[name] %}
+                    {%- if 'service' in p.pkg.comp[name] %}
     - name: {{ p.dir.symlink }}/sbin/{{ cmd }}
                     {%- else %}
     - name: {{ p.dir.symlink }}/bin/{{ cmd }}
                     {% endif %}
-    - target: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
+    - target: {{ p.pkg.comp[name]['path'] }}/{{ cmd }}
     - force: True
     - require:
       - archive: prometheus-archive-install-{{ name }}
@@ -69,7 +69,7 @@ prometheus-archive-install-{{ name }}-file-symlink-{{ cmd }}:
                 {%- endfor %}
             {%- endif %}
         {%- endif %}
-        {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] is mapping %}
+        {%- if 'service' in p.pkg.comp[name] and p.pkg.comp[name]['service'] is mapping %}
 
 prometheus-archive-install-{{ name }}-file-directory:
   file.directory:
@@ -86,7 +86,7 @@ prometheus-archive-install-{{ name }}-file-directory:
 
 prometheus-archive-install-{{ name }}-managed-service:
   file.managed:
-    - name: {{ p.dir.service }}/{{ p.pkg.component[name]['service'].get('name', name) }}.service
+    - name: {{ p.dir.service }}/{{ p.pkg.comp[name]['service'].get('name', name) }}.service
     - source: {{ files_switch(['systemd.ini.jinja'],
                               lookup='prometheus-archive-install-' ~  name ~ '-managed-service'
                  )
@@ -103,10 +103,10 @@ prometheus-archive-install-{{ name }}-managed-service:
         group: {{ name }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
-               {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
-        start: {{ p.pkg.component[name]['path'] }}/{{ name }}
+               {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.comp[name] %}
+        start: {{ p.pkg.comp[name]['path'] }}/{{ name }}
                {%- else %}
-        start: {{ p.pkg.component[name]['path'] }}/{{ name }} --config.file {{ p.pkg.component[name]['config_file'] }}  # noqa 204
+        start: {{ p.pkg.comp[name]['path'] }}/{{ name }} --config.file {{ p.pkg.comp[name]['config_file'] }}  # noqa 204
                {%- endif %}
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory

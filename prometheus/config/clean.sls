@@ -8,12 +8,12 @@
 include:
   - {{ sls_service_clean }}
 
-    {%- for name in p.wanted.component %}
+    {%- for name in p.wanted.comp %}
 
 prometheus-config-clean-{{ name }}:
     - names:
       - {{ p.dir.etc }}/{{ name }}.yml
-      - {{ p.pkg.component[name]['environ_file'] }}
+      - {{ p.pkg.comp[name]['environ_file'] }}
              {%- if grains.os_family|lower in ('freebsd',) %}
   sysrc.absent:
     - name: {{ name }}_environ

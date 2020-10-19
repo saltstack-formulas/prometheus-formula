@@ -4,7 +4,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-  {%- for name in p.wanted.component %}
+  {%- for name in p.wanted.comp %}
 
 prometheus-config-user-install-{{ name }}-user-present:
   group.present:

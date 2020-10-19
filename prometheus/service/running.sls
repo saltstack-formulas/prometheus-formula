@@ -10,9 +10,9 @@ include:
   - {{ sls_config_file }}
   - {{ sls_config_environ }}
 
-    {%- for name in p.wanted.component %}
-        {%- if 'service' in p.pkg.component[name] and p.pkg.component[name]['service'] %}
-            {%- set service_name = p.pkg.component[name]['service'].get('name', name) %}
+    {%- for name in p.wanted.comp %}
+        {%- if 'service' in p.pkg.comp[name] and p.pkg.comp[name]['service'] %}
+            {%- set service_name = p.pkg.comp[name]['service'].get('name', name) %}
 
 prometheus-service-running-{{ name }}-unmasked:
   service.unmasked:
@@ -43,7 +43,7 @@ prometheus-service-running-{{ name }}:
       - firewalld
   firewalld.present:
     - name: public
-    - ports: {{ p.pkg.component[name]['firewall']['ports']|json }}
+    - ports: {{ p.pkg.comp[name]['firewall']['ports']|json }}
     - require:
       - service: prometheus-service-running-{{ name }}
             {%- endif %}

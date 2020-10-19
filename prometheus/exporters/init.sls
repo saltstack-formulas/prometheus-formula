@@ -4,7 +4,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-    {%- if 'node_exporter' in p.wanted.component and 'exporters' in p and 'node_exporter' in p.exporters %}
+    {%- if 'node_exporter' in p.wanted.comp and 'exporters' in p and 'node_exporter' in p.exporters %}
 
 include:
   - .node_exporter

@@ -4,7 +4,7 @@
 prometheus:
   wanted:
     clientlibs: []
-    component:
+    comp:
       - prometheus
       - alertmanager
       - node_exporter
@@ -35,7 +35,7 @@ prometheus:
       enabled: 1
       gpgcheck: 1
 
-    component:
+    comp:
       alertmanager:
         version: v0.17.0
         config_file: /etc/prometheus/alertmanager.yml

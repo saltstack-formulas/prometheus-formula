@@ -11,12 +11,12 @@ include:
 {%- set states = [] %}
 
 {%- set name = 'node_exporter' %}
-{%- if name in p.wanted.component and 'service' in p.pkg.component[name] %}
+{%- if name in p.wanted.comp and 'service' in p.pkg.comp[name] %}
 
-    {%- if 'collector' in p.pkg.component[name]['service']['args'] %}
+    {%- if 'collector' in p.pkg.comp[name]['service']['args'] %}
 prometheus-exporters-{{ name }}-collector-textfile-dir:
   file.directory:
-    - name: {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+    - name: {{ p.pkg.comp[name]['service']['args']['collector.textfile.directory'] }}
     - mode: 755
     - user: {{ name }}
     - group: {{ name }}
@@ -43,7 +43,7 @@ prometheus-exporters-{{ name }}-textfile-dependencies:
     - pkgs: {{ p.exporters[name]['textfile_collectors_dependencies'] }}
     - require_in:
 {%-     for state in states %}
-      - sls: p.pkg.component[name]['config'][textfile_collectors{{ state }}
+      - sls: p.pkg.comp[name]['config'][textfile_collectors{{ state }}
 {%-     endfor %}
 
 include:

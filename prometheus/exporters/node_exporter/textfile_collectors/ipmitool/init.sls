@@ -6,7 +6,7 @@
 
 {%- set name = 'node_exporter' %}
 {%- set config = p.exporters[name]['textfile_collectors']['ipmitool'] %}
-{%- set dir = {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+{%- set dir = {{ p.pkg.comp[name]['service']['args']['collector.textfile.directory'] }}
 {%- set script = p.dir.archive ~ '/textfile_collectors/ipmitool' %}
 {%- set cmd_prefix = 'awk -f ' if grains.os_family in ['FreeBSD'] else '' %}
 

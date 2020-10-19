@@ -11,11 +11,11 @@ include:
   - {{ sls_service_running }}
   - {{ sls_repo_install }}
 
-    {%- for name in p.wanted.component %}
+    {%- for name in p.wanted.comp %}
 
 prometheus-package-install-{{ name }}-installed:
   pkg.installed:
-    - name: {{ p.pkg.component[name].get('name', name) }}
+    - name: {{ p.pkg.comp[name].get('name', name) }}
     - require:
       - sls: {{ sls_repo_install }}
     - require_in:
