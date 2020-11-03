@@ -30,6 +30,7 @@ prometheus-clientlibs-install-{{ name }}:
     {{- format_kwargs(p.pkg.clientlibs[name]['archive']) }}
     - trim_output: true
     - enforce_toplevel: false
+    - force: {{ p.force }}
     - options: --strip-components=1
     - retry: {{ p.retry_option|json }}
     - user: {{ p.identity.rootuser }}

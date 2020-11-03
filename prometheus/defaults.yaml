@@ -2,6 +2,9 @@
 # vim: ft=yaml
 ---
 prometheus:
+  div: '/'
+  force: false
+  overwrite: true
   wanted:
     clientlibs: []
     component:

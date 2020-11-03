@@ -2,12 +2,11 @@
 # vim: ft=sls
 
 {%- if grains.os_family == 'RedHat' %}
+    {%- set tplroot = tpldir.split('/')[0] %}
+    {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
-  {%- set tplroot = tpldir.split('/')[0] %}
-  {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
-
-  {%- if p.pkg.use_upstream_repo and 'repo' in p.pkg and p.pkg.repo %}
-    {%- from tplroot ~ "/files/macros.jinja" import format_kwargs with context %}
+    {%- if p.pkg.use_upstream_repo and 'repo' in p.pkg and p.pkg.repo %}
+        {%- from tplroot ~ "/files/macros.jinja" import format_kwargs with context %}
 
 prometheus-package-repo-install-pkgrepo-managed:
   pkgrepo.managed:
@@ -18,8 +17,8 @@ prometheus-package-repo-install-pkgrepo-managed:
     - pattern: ' gpgkey2='
     - repl: '\n       '
     - ignore_if_missing: True
-  {%- endif %}
 
+    {%- endif %}
 {%- else %}
 
 prometheus-package-repo-install-pkgrepo-managed:

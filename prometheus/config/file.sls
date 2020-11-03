@@ -16,10 +16,12 @@ include:
 prometheus-config-file-etc-file-directory:
   file.directory:
     - name: {{ p.dir.etc }}
+    - makedirs: True
+            {%- if grains.os != 'Windows' %}
+    - mode: '0755'
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
-    - mode: '0755'
-    - makedirs: True
+            {%- endif %}
     - require:
       - sls: {{ sls_archive_install if p.pkg.use_upstream_archive else sls_package_install }}
 
@@ -28,16 +30,18 @@ prometheus-config-file-etc-file-directory:
 
 prometheus-config-file-{{ name }}-file-managed:
   file.managed:
-    - name: {{ p.dir.etc }}/{{ name }}.yml
+    - name: {{ p.dir.etc }}{{ p.div }}{{ name }}.yml
     - source: {{ files_switch(['config.yml.jinja'],
                               lookup='prometheus-config-file-' ~ name ~ '-file-managed'
                  )
               }}
+    - makedirs: True
+    - template: jinja
+            {%- if grains.os != 'Windows' %}
     - mode: 644
     - user: {{ name }}
     - group: {{ name }}
-    - makedirs: True
-    - template: jinja
+            {%- endif %}
     - context:
         config: {{ p.pkg.component[name]['config']|json }}
     - require:

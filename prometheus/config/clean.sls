@@ -12,7 +12,7 @@ include:
 
 prometheus-config-clean-{{ name }}:
     - names:
-      - {{ p.dir.etc }}/{{ name }}.yml
+      - {{ p.dir.etc }}{{ d.div }}{{ name }}.yml
       - {{ p.pkg.component[name]['environ_file'] }}
              {%- if grains.os_family|lower in ('freebsd',) %}
   sysrc.absent:

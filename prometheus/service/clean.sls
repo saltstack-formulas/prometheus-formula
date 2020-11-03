@@ -16,7 +16,7 @@ prometheus-service-clean-{{ name }}:
     - onlyif: systemctl list-units | grep {{ service_name }} >/dev/null 2>&1
                     {%- endif %}
   file.absent:
-    - name: {{ p.dir.service }}/{{ name }}.service
+    - name: {{ p.dir.service }}{{ p.div }}{{ name }}.service
     - require:
       - service: prometheus-service-clean-{{ name }}
   cmd.run:
