@@ -89,8 +89,8 @@ prometheus-archive-install-{{ name }}-file-directory:
     - group: {{ name }}
     - mode: '0755'
     - require:
-      - user: prometheus-config-user-install-{{ name }}-user-present
-      - group: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+      - group: prometheus-config-users-install-{{ name }}-group-present
 
             {%- endif %}
             {%- if grains.kernel|lower == 'linux' %}
@@ -122,8 +122,8 @@ prometheus-archive-install-{{ name }}-managed-service:
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
       - archive: prometheus-archive-install-{{ name }}
-      - user: prometheus-config-user-install-{{ name }}-user-present
-      - group: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+      - group: prometheus-config-users-install-{{ name }}-group-present
   cmd.run:
     - name: systemctl daemon-reload
     - require:

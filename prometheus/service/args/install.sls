@@ -31,8 +31,8 @@ prometheus-service-args-{{ name }}-data-dir:
     - watch_in:
       - service: prometheus-service-running-{{ name }}
     - require:
-      - user: prometheus-config-user-install-{{ name }}-user-present
-      - group: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+      - group: prometheus-config-users-install-{{ name }}-group-present
 
             {%- endif %}
             {%- if grains.os_family == 'FreeBSD' %}

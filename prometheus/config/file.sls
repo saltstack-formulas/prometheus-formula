@@ -46,8 +46,8 @@ prometheus-config-file-{{ name }}-file-managed:
         config: {{ p.pkg.component[name]['config']|json }}
     - require:
       - file: prometheus-config-file-etc-file-directory
-      - user: prometheus-config-user-install-{{ name }}-user-present
-      - group: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+      - group: prometheus-config-users-install-{{ name }}-group-present
     - watch_in:
       - service: prometheus-service-running-{{ name }}
 

@@ -16,16 +16,18 @@ include:
 prometheus-clientlibs-install-{{ name }}:
   file.directory:
     - name: {{ p.pkg.clientlibs[name]['path'] }}
-    - user: {{ p.identity.rootuser }}
-    - group: {{ p.identity.rootgroup }}
-    - mode: '0755'
     - makedirs: True
     - require_in:
       - archive: prometheus-clientlibs-install-{{ name }}
+        {%- if grains.os|lower != 'windows' %}
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
+    - mode: '0755'
     - recurse:
         - user
         - group
         - mode
+        {%- endif %}
   archive.extracted:
     {{- format_kwargs(p.pkg.clientlibs[name]['archive']) }}
     - trim_output: true
@@ -33,7 +35,9 @@ prometheus-clientlibs-install-{{ name }}:
     - force: {{ p.force }}
     - options: --strip-components=1
     - retry: {{ p.retry_option|json }}
+        {%- if grains.os|lower != 'windows' %}
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
+        {%- endif %}
 
     {%- endfor %}
