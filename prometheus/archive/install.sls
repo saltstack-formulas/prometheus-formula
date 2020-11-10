@@ -28,14 +28,10 @@ prometheus-archive-install-prerequisites:
 
     {%- for name in p.wanted.component %}
 
-prometheus-archive-install-{{ name }}:
+prometheus-archive-directory-{{ name }}:
   file.directory:
     - name: {{ p.pkg.component[name]['path'] }}
     - makedirs: True
-    - require:
-      - file: prometheus-archive-install-prerequisites
-    - require_in:
-      - archive: prometheus-archive-install-{{ name }}
         {%- if grains.os != 'Windows' %}
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
@@ -45,6 +41,8 @@ prometheus-archive-install-{{ name }}:
         - group
         - mode
         {%- endif %}
+prometheus-archive-install-{{ name }}:
+        {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
   archive.extracted:
     {{- format_kwargs(p.pkg.component[name]['archive']) }}
     - trim_output: true
@@ -53,12 +51,24 @@ prometheus-archive-install-{{ name }}:
     - force: {{ p.force }}
     - retry: {{ p.retry_option|json }}
     - require:
-      - file: prometheus-archive-install-{{ name }}
-        {%- if grains.os != 'Windows' %}
+      - file: prometheus-archive-directory-{{ name }}
+          {%- if grains.os != 'Windows' %}
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
+          {%- endif %}
+        {% else %}
+  file.managed:
+    - name: {{ p.pkg.component[name]['path'] }}/{{ name }}
+    - source: {{ p.pkg.component[name]['archive']['source'] }}
+    - source_hash: {{ p.pkg.component[name]['archive']['source_hash'] }}
+    - mode: '0755'
+    - require:
+      - file: prometheus-archive-directory-{{ name }}
+          {%- if grains.os != 'Windows' %}
+    - user: {{ p.identity.rootuser }}
+    - group: {{ p.identity.rootgroup }}
+          {%- endif %}
         {%- endif %}
-
         {%- if (grains.kernel|lower == 'linux' and p.linux.altpriority|int <= 0) or grains.os_family|lower in ('macos', 'arch') %}
             {%- if 'commands' in p.pkg.component[name]  and p.pkg.component[name]['commands'] is iterable %}
                 {%- for cmd in p.pkg.component[name]['commands'] %}
@@ -73,7 +83,11 @@ prometheus-archive-install-{{ name }}-file-symlink-{{ cmd }}:
     - target: {{ p.pkg.component[name]['path'] }}/{{ cmd }}
     - force: True
     - require:
+              {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
       - archive: prometheus-archive-install-{{ name }}
+              {% else %}
+      - file: prometheus-archive-install-{{ name }}
+              {% endif %}
 
                 {%- endfor %}
             {%- endif %}
@@ -125,13 +139,21 @@ prometheus-archive-install-{{ name }}-managed-service:
                {%- endif %}
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
+              {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
       - archive: prometheus-archive-install-{{ name }}
+              {% else %}
+      - file: prometheus-archive-install-{{ name }}
+              {% endif %}
       - user: prometheus-config-users-install-{{ name }}-user-present
       - group: prometheus-config-users-install-{{ name }}-group-present
   cmd.run:
     - name: systemctl daemon-reload
     - require:
+              {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
       - archive: prometheus-archive-install-{{ name }}
+              {% else %}
+      - file: prometheus-archive-install-{{ name }}
+              {% endif %}
 
             {%- endif %}{# linux #}
         {%- endif %}{# service #}
