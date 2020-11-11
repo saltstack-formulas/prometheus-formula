@@ -40,7 +40,7 @@ prometheus:
 
     component:
       alertmanager:
-        version: v0.17.0
+        version: v0.21.0
         config_file: /etc/prometheus/alertmanager.yml
         config: {}
         environ_file: /etc/default/prometheus-alertmanager.sh
@@ -56,16 +56,16 @@ prometheus:
             - tcp/9093
             # tcp/9094
         archive:
-          source_hash: 7c8d2cfeb021c80881ae9904d959131091b8785b6fda9800f84ddef148fe0a4f
+          source_hash: 9ccd863937436fd6bfe650e22521a7f2e6a727540988eef515dde208f9aef232
         commands:
           - amtool
           - alertmanager
       blackbox_exporter:
-        version: v0.14.0
+        version: v0.18.0
         config_file: /etc/prometheus/blackbox_exporter.yml
         config: {}
         archive:
-          source_hash: a2918a059023045cafb911272c88a9eb83cdac9a8a5e8e74844b5d6d27f19117
+          source_hash: a87f9530e31e2b20d03a6d941f6f051c57ee724f24b38f2615b8580ca63966dc
         commands:
           - blackbox_exporter
         firewall:
@@ -74,9 +74,9 @@ prometheus:
             - tcp/4506
             - tcp/9110
       consul_exporter:
-        version: v0.4.0
+        version: v0.7.1
         archive:
-          source_hash: ff77c03de67cf381f67480b5be6699901785a34145c518c3484ae3e5b8440d08
+          source_hash: 92ffd37fb5f2350df21e7a688c28e7bb2882c309f613400eafdc411c818ec048
         commands:
           - consul_exporter
         firewall:
@@ -85,9 +85,9 @@ prometheus:
             - tcp/4506
             - tcp/9107
       graphite_exporter:
-        version: v0.6.2
+        version: v0.9.0
         archive:
-          source_hash: 9b962bd06406ece4a865ad6947a6e652e48a92a0d77e496a0351c04e9c2c5e9e
+          source_hash: 8da5bf07180f345abbd0e3c5ddf0f2bd319d930b6f9dd0385f4cfebdc6815c86
         commands:
           - graphite_exporter
         firewall:
@@ -96,9 +96,9 @@ prometheus:
             - tcp/4506
             - tcp/9108
       haproxy_exporter:
-        version: v0.10.0
+        version: v0.11.0
         archive:
-          source_hash: 08150728e281f813a8fcfff4b336f16dbfe4268a1c7510212c8cff2579b10468
+          source_hash: 525ec4684b33a7fd1b23fe39e5c378e09cbc52b56fb3e203cffa26e09d22d10d
         commands:
           - haproxy_exporter
         firewall:
@@ -107,9 +107,9 @@ prometheus:
             - tcp/4506
             - tcp/9101
       memcached_exporter:
-        version: v0.5.0
+        version: v0.7.0
         archive:
-          source_hash: bb07f496ceb63dad9793ad4295205547a4bd20b90628476d64fa96c9a25a020f
+          source_hash: a8dec3f2493330159b02ab5f8916726d2d41d70170f23206b1987cdb450a839b
         commands:
           - memcached_exporter
         firewall:
@@ -118,9 +118,9 @@ prometheus:
             - tcp/4506
             - tcp/9150
       mysqld_exporter:
-        version: v0.11.0
+        version: v0.12.1
         archive:
-          source_hash: b53ad48ff14aa891eb6a959730ffc626db98160d140d9a66377394714c563acf
+          source_hash: 133b0c281e5c6f8a34076b69ade64ab6cac7298507d35b96808234c4aa26b351
         commands:
           - mysqld_exporter
         firewall:
@@ -129,7 +129,7 @@ prometheus:
             - tcp/4506
             - tcp/9207
       node_exporter:
-        version: v0.18.1
+        version: v1.0.1
         environ_file: /etc/default/prometheus-node-exporter.sh
         environ: {}
         config_file: /etc/prometheus/node_exporter.yml
@@ -138,7 +138,7 @@ prometheus:
           args:
             collector.textfile.directory: /var/tmp/node_exporter
         archive:
-          source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
+          source_hash: 3369b76cd2b0ba678b6d618deab320e565c3d93ccb5c2a0d5db51a53857768ae
         commands:
           - node_exporter
         firewall:
@@ -148,7 +148,7 @@ prometheus:
             - tcp/9100
       prometheus:
         name: prometheus
-        version: v2.10.0
+        version: v2.22.1
         config_file: /etc/prometheus/prometheus.yml
         config: {}
         environ_file: /etc/default/prometheus.sh
@@ -161,21 +161,21 @@ prometheus:
           - prometheus
           - promtool
         archive:
-          source_hash: f4233783826f18606b79e5cef0686e4a9c2030146a3c7ce134f0add09f5adcb7
+          source_hash: 9001a9cb939e0a6d9f2b67d22506c620bc9457777272fced43274b032ba35f44
         firewall:
           ports:
             - tcp/4505
             - tcp/4506
             - tcp/9090
       pushgateway:
-        version: v0.8.0
+        version: v1.3.0
         environ_file: /etc/default/prometheus-pushgateway.sh
         environ: {}
         config_file: /etc/prometheus/pushgateway.yml
         config: {}
         service: {}
         archive:
-          source_hash: 6949866ba9ad0cb88d3faffd4281f17df79281398b4dbd0ec3aab300071681ca
+          source_hash: 1ea7260a41c710a5b0f8ca1b90d18e70afdcc98ce23de61f88aba79a73d85947
         commands:
           - pushgateway
         firewall:
@@ -184,9 +184,9 @@ prometheus:
             - tcp/4506
             - tcp/9091
       statsd_exporter:
-        version: v0.11.2
+        version: v0.18.0
         archive:
-          source_hash: 4632ad0c5552e271e84c376da3ffe3af8c265ec5c3035334b70e35756aca1906
+          source_hash: d06793bd984a67e5cbead82b74e0a0f7bcd2518914ba243ab63ff8e8da532ca5
         commands:
           - statsd_exporter
         firewall:
