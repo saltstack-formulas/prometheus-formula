@@ -2,6 +2,22 @@
 Changelog
 =========
 
+`5.2.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.1.0...v5.2.0>`_ (2020-11-12)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **state:** dangling servicename (\ `5457a9f <https://github.com/saltstack-formulas/prometheus-formula/commit/5457a9f2f21e26591d392ed5121aa5f5bcbf8fe0>`_\ )
+* **windows:** windows has no osarch grain (\ `468e420 <https://github.com/saltstack-formulas/prometheus-formula/commit/468e420b3473551ffee81ae7e39cc03073ac639c>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **archive:** use args pillar when using upstream from repo / archive (\ `7a08e8d <https://github.com/saltstack-formulas/prometheus-formula/commit/7a08e8db54ce48eaf2df97fa92876d4d9237c6c7>`_\ )
+
 `5.1.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.2...v5.1.0>`_ (2020-11-12)
 ------------------------------------------------------------------------------------------------------------
 
