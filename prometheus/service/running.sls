@@ -24,22 +24,22 @@ prometheus-service-running-{{ name }}-unmasked:
     - require:
       - sls: {{ sls_config_file }}
       - file: prometheus-config-file-etc-file-directory
-            {%- endif %}
-
-prometheus-service-running-{{ name }}:
-            {%- if grains.kernel|lower == 'linux' and p.wanted.firewall %}
+                {%- if p.wanted.firewall %}
   pkg.installed:
     - name: firewalld
     - reload_modules: true
+                {%- endif %}
             {%- endif %}
+
+prometheus-service-running-{{ name }}:
   service.running:
-    - names:
-      - {{ service_name }}
     - enable: True
     - require:
       - sls: {{ sls_config_file }}
             {%- if grains.kernel|lower == 'linux' %}
     - onlyif: systemctl list-unit-files | grep {{ service_name }} >/dev/null 2>&1
+    - names:
+      - {{ service_name }}
                 {%- if p.wanted.firewall %}
       - firewalld
   firewalld.present:
