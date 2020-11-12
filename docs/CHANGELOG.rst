@@ -2,6 +2,29 @@
 Changelog
 =========
 
+`5.1.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.2...v5.1.0>`_ (2020-11-12)
+------------------------------------------------------------------------------------------------------------
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **pre-commit:** add to formula [skip ci] (\ `a639b78 <https://github.com/saltstack-formulas/prometheus-formula/commit/a639b782cfdacb65f03e9c59485fe7a17fb3c794>`_\ )
+* **pre-commit:** enable/disable ``rstcheck`` as relevant [skip ci] (\ `5dd496c <https://github.com/saltstack-formulas/prometheus-formula/commit/5dd496c1c466f339108a8fe4e0ea2d27f6a0fe68>`_\ )
+* **pre-commit:** finalise ``rstcheck`` configuration [skip ci] (\ `d00473a <https://github.com/saltstack-formulas/prometheus-formula/commit/d00473a70c2e1f1ed79ff4d713e8539fedf9135a>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **config:** defaults.yaml update archives versions and hashes (\ `bfff38b <https://github.com/saltstack-formulas/prometheus-formula/commit/bfff38b8b7338d515ed477d4ccbba3438f1bbbf4>`_\ )
+
+Tests
+^^^^^
+
+
+* **archive:** update test according to defaults.yaml changes (\ `34a9805 <https://github.com/saltstack-formulas/prometheus-formula/commit/34a980588603bc8a5720b8820754e96108cb505d>`_\ )
+
 `5.0.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.0.1...v5.0.2>`_ (2020-08-31)
 ------------------------------------------------------------------------------------------------------------
 
