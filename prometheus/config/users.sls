@@ -6,11 +6,13 @@
 
   {%- for name in p.wanted.component %}
 
-prometheus-config-user-install-{{ name }}-user-present:
+prometheus-config-users-install-{{ name }}-group-present:
   group.present:
     - name: {{ name }}
     - require_in:
-      - user: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+
+prometheus-config-users-install-{{ name }}-user-present:
   user.present:
     - name: {{ name }}
     - groups:
@@ -23,4 +25,5 @@ prometheus-config-user-install-{{ name }}-user-present:
     - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
                   {%- endif %}
               {%- endif %}
+
   {%- endfor %}

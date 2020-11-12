@@ -23,8 +23,8 @@ prometheus-exporters-{{ name }}-collector-textfile-dir:
         {%- endif %}
     - makedirs: True
     - requre:
-      - user: prometheus-config-user-install-{{ name }}-user-present
-      - group: prometheus-config-user-install-{{ name }}-user-present
+      - user: prometheus-config-users-install-{{ name }}-user-present
+      - group: prometheus-config-users-install-{{ name }}-group-present
     {%- endif %}
 
 {%- for k, v in p.get('exporters', {}).get(name, {}).get('textfile_collectors', {}).items() %}
