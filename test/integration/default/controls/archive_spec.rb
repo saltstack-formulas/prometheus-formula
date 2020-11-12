@@ -38,11 +38,11 @@ control 'prometheus components' do
   describe directory('/var/lib/prometheus') do
     it { should exist }
   end
-  describe directory('/opt/prometheus/prometheus-v2.10.0') do
+  describe directory('/opt/prometheus/prometheus-v2.22.1') do
     it { should exist }
     its('group') { should eq 'root' }
   end
-  describe file('/opt/prometheus/prometheus-v2.10.0/prometheus') do
+  describe file('/opt/prometheus/prometheus-v2.22.1/prometheus') do
     it { should exist }
     its('group') { should eq 'root' }
   end
@@ -55,11 +55,11 @@ control 'prometheus components' do
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
   end
-  describe directory('/opt/prometheus/alertmanager-v0.17.0') do
+  describe directory('/opt/prometheus/alertmanager-v0.21.0') do
     it { should exist }
     its('group') { should eq 'root' }
   end
-  describe file('/opt/prometheus/alertmanager-v0.17.0/amtool') do
+  describe file('/opt/prometheus/alertmanager-v0.21.0/amtool') do
     it { should exist }
     its('group') { should eq 'root' }
   end
@@ -72,11 +72,11 @@ control 'prometheus components' do
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
   end
-  describe directory('/opt/prometheus/node_exporter-v0.18.1') do
+  describe directory('/opt/prometheus/node_exporter-v1.0.1') do
     it { should exist }
     its('group') { should eq 'root' }
   end
-  describe file('/opt/prometheus/node_exporter-v0.18.1/node_exporter') do
+  describe file('/opt/prometheus/node_exporter-v1.0.1/node_exporter') do
     it { should exist }
     its('group') { should eq 'root' }
   end

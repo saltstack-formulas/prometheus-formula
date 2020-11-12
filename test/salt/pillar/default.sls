@@ -82,9 +82,6 @@ prometheus:
                 - to: 'team-X+alerts@example.org'
 
       node_exporter:
-        version: v0.18.1
-        archive:
-          source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
         service:
           args:
             web.listen-address: ":9110"
@@ -94,7 +91,7 @@ prometheus:
         service:
           args:
             web.listen-address: ":9115"
-        config_file: /opt/prometheus/blackbox_exporter-v0.14.0/blackbox.yml
+        config_file: /opt/prometheus/blackbox_exporter-v0.18.0/blackbox.yml
 
       consul_exporter:
         service:
