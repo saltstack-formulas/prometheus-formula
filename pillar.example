@@ -197,8 +197,6 @@ prometheus:
           source: https://github.com/wrouesnel/postgres_exporter/releases/download/v0.8.0/postgres_exporter_v0.8.0_linux-amd64.tar.gz
           skip_verify: true
 
-
-
   linux:
     # 'Alternatives system' priority: zero disables (default)
     # yamllint disable-line rule:braces
