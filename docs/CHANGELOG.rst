@@ -2,6 +2,27 @@
 Changelog
 =========
 
+`5.3.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.2.0...v5.3.0>`_ (2020-11-17)
+------------------------------------------------------------------------------------------------------------
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **archive:** update pillar.example with unofficial exporter (\ `10c0b4a <https://github.com/saltstack-formulas/prometheus-formula/commit/10c0b4a030365da704f9d2e75857cdfbfa1fab74>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **archive:** add support for non official exporters (\ `2ff6b90 <https://github.com/saltstack-formulas/prometheus-formula/commit/2ff6b90cd8c7b50cb93c627d4624e41d37c7f96d>`_\ )
+
+Tests
+^^^^^
+
+
+* **archive:** add unofficial exporter test (\ `43053a6 <https://github.com/saltstack-formulas/prometheus-formula/commit/43053a6e5917b9800fe8d22fc173036956903a73>`_\ )
+
 `5.2.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.1.0...v5.2.0>`_ (2020-11-12)
 ------------------------------------------------------------------------------------------------------------
 
