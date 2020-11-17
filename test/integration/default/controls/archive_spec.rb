@@ -8,10 +8,14 @@ control 'prometheus components' do
     service_dir = '/lib/systemd/system'
     alert_manager_service = 'prometheus-alertmanager'
     node_exporter_service = 'prometheus-node-exporter'
+    php_fpm_exporter_service = 'php-fpm_exporter'
+    postgres_exporter_service = 'prometheus-postgres-exporter'
   else
     service_dir = '/usr/lib/systemd/system'
     alert_manager_service = 'alertmanager'
     node_exporter_service = 'node_exporter'
+    php_fpm_exporter_service = 'php-fpm_exporter'
+    postgres_exporter_service = 'postgres_exporter'
   end
 
   # describe package('cron') do
@@ -33,6 +37,12 @@ control 'prometheus components' do
     it { should exist }
   end
   describe user('node_exporter') do
+    it { should exist }
+  end
+  describe user('php-fpm_exporter') do
+    it { should exist }
+  end
+  describe user('postgres_exporter') do
     it { should exist }
   end
   describe directory('/var/lib/prometheus') do
@@ -85,6 +95,38 @@ control 'prometheus components' do
     its('group') { should eq 'node_exporter' }
   end
   describe file("#{service_dir}/#{node_exporter_service}.service") do
+    it { should exist }
+    its('group') { should eq 'root' }
+    its('mode') { should cmp '0644' }
+  end
+  describe directory('/opt/prometheus/php-fpm_exporter-v0.6.1') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe file('/opt/prometheus/php-fpm_exporter-v0.6.1/php-fpm_exporter') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe directory('/var/lib/prometheus/php-fpm_exporter') do
+    it { should exist }
+  end
+  describe file("#{service_dir}/#{php_fpm_exporter_service}.service") do
+    it { should exist }
+    its('group') { should eq 'root' }
+    its('mode') { should cmp '0644' }
+  end
+  describe directory('/var/lib/prometheus/postgres_exporter') do
+    it { should exist }
+  end
+  describe directory('/opt/prometheus/postgres_exporter-v0.8.0') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe file('/opt/prometheus/postgres_exporter-v0.8.0/postgres_exporter') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe file("#{service_dir}/#{postgres_exporter_service}.service") do
     it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
