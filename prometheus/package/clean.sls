@@ -11,6 +11,7 @@
 include:
   - {{ sls_config_clean }}
   - {{ sls_service_clean }}
+  - {{ sls_repo_clean }}
 
     {%- for name in p.wanted.component %}
 
@@ -20,5 +21,6 @@ prometheus-package-clean-{{ name }}-removed:
     - require:
       - sls: {{ sls_config_clean }}
       - sls: {{ sls_service_clean }}
+      - sls: {{ sls_repo_clean }}
 
     {%- endfor %}
