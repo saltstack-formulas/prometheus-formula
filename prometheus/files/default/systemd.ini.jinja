@@ -8,6 +8,9 @@ After=
 Documentation=https://github.com/saltstack-formulas/prometheus-formula
 
 [Service]
+{% for var in env %}
+Environment={{ var }}
+{% endfor %}
 User={{ user }}
 Group={{ group }}
 WorkingDirectory={{ workdir }}

@@ -10,12 +10,14 @@ control 'prometheus components' do
     node_exporter_service = 'prometheus-node-exporter'
     php_fpm_exporter_service = 'php-fpm_exporter'
     postgres_exporter_service = 'prometheus-postgres-exporter'
+    mysqld_exporter_service = 'prometheus-mysqld-exporter'
   else
     service_dir = '/usr/lib/systemd/system'
     alert_manager_service = 'alertmanager'
     node_exporter_service = 'node_exporter'
     php_fpm_exporter_service = 'php-fpm_exporter'
     postgres_exporter_service = 'postgres_exporter'
+    mysqld_exporter_service = 'mysqld_exporter'
   end
 
   # describe package('cron') do
@@ -43,6 +45,12 @@ control 'prometheus components' do
     it { should exist }
   end
   describe user('postgres_exporter') do
+    it { should exist }
+  end
+  describe group('mysqld_exporter') do
+    it { should exist }
+  end
+  describe user('mysqld_exporter') do
     it { should exist }
   end
   describe directory('/var/lib/prometheus') do
@@ -131,6 +139,25 @@ control 'prometheus components' do
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
   end
+  describe directory('/opt/prometheus/mysqld_exporter-v0.12.1') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe file('/opt/prometheus/mysqld_exporter-v0.12.1/mysqld_exporter') do
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe directory('/var/lib/prometheus/mysqld_exporter') do
+    it { should exist }
+    its('group') { should eq 'mysqld_exporter' }
+  end
+  describe file("#{service_dir}/#{mysqld_exporter_service}.service") do
+    it { should exist }
+    its('content') { should match 'Environment=DATA_SOURCE_NAME=foo:bar@/' }
+    its('group') { should eq 'root' }
+    its('mode') { should cmp '0644' }
+  end
+
   describe file('/usr/local/sbin/alertmanager') do
     it { should exist }
     its('group') { should eq 'root' }

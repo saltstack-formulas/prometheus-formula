@@ -126,6 +126,7 @@ prometheus-archive-install-{{ name }}-managed-service:
         name: {{ name }}
         user: {{ name }}
         group: {{ name }}
+        env: {{ p.pkg.component[name]['service'].get('env', [])|tojson }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
                {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
