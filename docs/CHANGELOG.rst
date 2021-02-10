@@ -2,6 +2,42 @@
 Changelog
 =========
 
+`5.4.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.3.0...v5.4.0>`_ (2021-02-10)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **clean:** include repo clean too (\ `782dd45 <https://github.com/saltstack-formulas/prometheus-formula/commit/782dd4545247a6eaaab77d42788b6dbdc040597a>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **commitlint:** ensure ``upstream/master`` uses main repo URL [skip ci] (\ `e0f6a8b <https://github.com/saltstack-formulas/prometheus-formula/commit/e0f6a8baeb4e36e295c5355ff4e08e943b4a24b7>`_\ )
+* **gitlab-ci:** add ``rubocop`` linter (with ``allow_failure``\ ) [skip ci] (\ `7d80e4a <https://github.com/saltstack-formulas/prometheus-formula/commit/7d80e4afc1ffdaec29ec94a355d75e6f8b878672>`_\ )
+* **gitlab-ci:** use GitLab CI as Travis CI replacement (\ `4f290c2 <https://github.com/saltstack-formulas/prometheus-formula/commit/4f290c2dde3125f9e648a2817912c8f594ed277a>`_\ )
+* **pre-commit:** update hook for ``rubocop`` [skip ci] (\ `60ec8e5 <https://github.com/saltstack-formulas/prometheus-formula/commit/60ec8e514d3c33540089bacbe8edeaf8bfa05f0d>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* **archive:** update pillar.example with env var for mysqld_exporter (\ `1631137 <https://github.com/saltstack-formulas/prometheus-formula/commit/1631137b1bad116f5d7d5b8a472b9c4f41b5f707>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **archive:** managing env vars in systemd unit (\ `4e60b17 <https://github.com/saltstack-formulas/prometheus-formula/commit/4e60b17741fb202fded2838e67cb8f870c98450f>`_\ )
+
+Tests
+^^^^^
+
+
+* **archive:** add env vars tests (\ `018e759 <https://github.com/saltstack-formulas/prometheus-formula/commit/018e7591839901536cc743141e45cbbd20f94a53>`_\ )
+
 `5.3.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.2.0...v5.3.0>`_ (2020-11-17)
 ------------------------------------------------------------------------------------------------------------
 
