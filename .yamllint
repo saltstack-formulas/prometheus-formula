@@ -14,6 +14,7 @@ ignore: |
   test/**/states/**/*.sls
   .kitchen/
   prometheus/osfamilymap.yaml
+  test/salt/pillar/repo.sls
 
 yaml-files:
   # Default settings

@@ -49,10 +49,12 @@ prometheus:
             smtp_from: 'alertmanager@example.org'
             smtp_auth_username: 'alertmanager'
             smtp_auth_password: "multiline\nmysecret"
-            smtp_hello: "host.example.org"
             slack_api_url: "http://mysecret.example.com/"
+            {%- if grains.get('oscodename', '') not in ['stretch', 'bionic'] %}
+            smtp_hello: "host.example.org"
             http_config:
               proxy_url: 'http://127.0.0.1:1025'
+            {%- endif %}
           route:
             group_by: ['alertname', 'cluster', 'service']
             group_wait: 30s
