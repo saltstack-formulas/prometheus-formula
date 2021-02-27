@@ -28,6 +28,12 @@ prometheus-clientlibs-install-{{ name }}:
         - group
         - mode
         {%- endif %}
+        {%- if grains.get('osfinger', '') in ['Oracle Linux Server-8'] %}
+  pkg.installed:
+    - name: tar
+    - require_in:
+      - archive: prometheus-clientlibs-install-{{ name }}
+        {%- endif %}
   archive.extracted:
     {{- format_kwargs(p.pkg.clientlibs[name]['archive']) }}
     - trim_output: true
