@@ -209,7 +209,7 @@ prometheus:
   linux:
     # 'Alternatives system' priority: zero disables (default)
     # yamllint disable-line rule:braces
-    altpriority: {{ range(1, 9100000) | random }}
+    altpriority: {{ range(1, 100000) | random }}
 
   tofs:
     # The files_switch key serves as a selector for alternative
