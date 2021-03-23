@@ -312,6 +312,7 @@ suites:
       state_top:
         base:
           '*':
+            - prometheus._mapdata
             - prometheus
       pillars:
         top.sls:
@@ -328,6 +329,7 @@ suites:
       state_top:
         base:
           '*':
+            - prometheus._mapdata
             - prometheus
       pillars:
         top.sls:
