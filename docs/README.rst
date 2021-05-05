@@ -1,5 +1,3 @@
-.. _readme:
-
 prometheus-formula
 ==================
 
@@ -37,7 +35,7 @@ Contributing to this repo
 
 **Commit message formatting is significant!!**
 
-Please see :ref:`How to contribute <CONTRIBUTING>` for more details.
+Please see `How to contribute <https://github.com/saltstack-formulas/.github/blob/master/CONTRIBUTING.rst>`_ for more details.
 
 Available metastates
 --------------------
@@ -46,7 +44,7 @@ Available metastates
    :local:
 
 ``prometheus``
-^^^^^^^^^^^^
+^^^^^^^^^^^^^^
 
 *Meta-state (This is a state that includes other states)*.
 
@@ -54,62 +52,62 @@ This installs from prometheus solution.
 
 
 ``prometheus.archive``
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 This state will install prometheus components on MacOS and GNU/Linux from archive.
 
 ``prometheus.clientlibs``
-^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will install prometheus client libraries on MacOS and GNU/Linux from archive.
 
 ``prometheus.package``
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 This state will install prometheus component packages from GNU/Linux.
 
 ``prometheus.config``
-^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^
 
 This state will apply prometheus service configuration (files).
 
 ``prometheus.service``
-^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^
 
 This state will start prometheus component services.
 
 ``prometheus.exporters``
-^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will apply prometheus exporters configuration.
 
 ``prometheus.exporters.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove prometheus exporters configuration.
 
 ``prometheus.service.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will stop prometheus component services.
 
 ``prometheus.config.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove prometheus service configuration (files).
 
 ``prometheus.package.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will uninstall prometheus component packages from GNU/Linux.
 
 ``prometheus.clientlibs.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will uninstall prometheus client libraries.
 
 ``prometheus.archive.clean``
-^^^^^^^^^^^^^^^^^^^^^^^^^^^
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This state will remove prometheus component archive (directories).
 
