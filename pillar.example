@@ -97,6 +97,7 @@ prometheus:
         service:
           name: prometheus-node-exporter
           args:
+            collector.systemd: null
             web.listen-address: ":9110"
             # collector.textfile.directory: /var/tmp/node_exporter
 

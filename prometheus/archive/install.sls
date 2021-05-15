@@ -132,7 +132,11 @@ prometheus-archive-install-{{ name }}-managed-service:
                {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
                  {%- set args = [] %}
                  {%- for param, value in p.pkg.component.get(name).get('service').get('args', {}).items() %}
-                    {% do args.append("--" ~ param ~ "=" ~ value ) %}
+                    {%- if value is not none %}
+                      {% do args.append("--" ~ param ~ "=" ~ value ) %}
+                    {%- else %}
+                      {% do args.append("--" ~ param ) %}
+                    {%- endif %}
                  {%- endfor %}
         start: {{ p.pkg.component[name]['path'] }}/{{ name }} {{ args|join(' ') }}
                {%- else %}
