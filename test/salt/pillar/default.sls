@@ -135,6 +135,7 @@ prometheus:
 
           # Load rules once and periodically evaluate them according to the global
           # 'evaluation_interval'
+          # You can manage these files with the `extra_files` dict (see below)
           rule_files:
             - "first_rules.yml"
             # - "second_rules.yml"
@@ -211,6 +212,37 @@ prometheus:
     # 'Alternatives system' priority: zero disables (default)
     # yamllint disable-line rule:braces
     altpriority: {{ range(1, 100000) | random }}
+
+  # This dict lets you manage other config files (like the `rule_files` for the
+  # alertmanager) or split the config un multiple and organize files in meaninful ways
+  extra_files:
+    first_rules:
+      component: alertmanager
+      config:
+        groups:
+          - name: example
+            rules:
+              - alert: HighRequestLatency
+                expr: 'job:request_latency_seconds:mean5m{job="myjob"} > 0.5'
+                for: 10m
+                labels:
+                  severity: page
+                annotations:
+                  summary: High request latency
+    # You can specify a `file` parameter, which will be used to create a file
+    # under the prometheus config dir. In this example, the file will be
+    # named /etc/prometheus/subdir/second.yml
+    second_rules:
+      file: subdir/second
+      component: alertmanager
+      config:
+        groups:
+          - name: example
+            rules:
+              - alert: HighRequestLatency
+                expr: 'job:request_latency_seconds:mean5m{job="myjob"} > 0.5'
+                for: 10m
+                labels: {}
 
   tofs:
     # The files_switch key serves as a selector for alternative
