@@ -5,6 +5,7 @@ prometheus:
   div: '/'
   force: false
   overwrite: true
+  extra_files: {}
   wanted:
     clientlibs: []
     component:
