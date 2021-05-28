@@ -22,7 +22,7 @@ prometheus-exporters-{{ name }}-collector-textfile-dir:
     - group: {{ name }}
         {%- endif %}
     - makedirs: True
-    - requre:
+    - require:
       - user: prometheus-config-users-install-{{ name }}-user-present
       - group: prometheus-config-users-install-{{ name }}-group-present
     {%- endif %}
