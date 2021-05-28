@@ -2,6 +2,48 @@
 Changelog
 =========
 
+`5.5.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.4.0...v5.5.0>`_ (2021-05-28)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **clientlibs/install:** ensure ``tar`` is available for Oracle Linux 8 (\ `d30b42c <https://github.com/saltstack-formulas/prometheus-formula/commit/d30b42ced095dba6b10bab8c77b2e064cb150008>`_\ )
+* **node_exporter:** typo (\ `cc112e7 <https://github.com/saltstack-formulas/prometheus-formula/commit/cc112e71b922ef74853b4f561d5b126056cf0d58>`_\ ), closes `#57 <https://github.com/saltstack-formulas/prometheus-formula/issues/57>`_
+* **pillar:** fix ``OverflowError: Range too big`` -- ``MAX_RANGE (100000)`` (\ `c9cfdfd <https://github.com/saltstack-formulas/prometheus-formula/commit/c9cfdfd9e17615bdd52143eb5153b0f0f3ac0736>`_\ ), closes `/gitlab.com/myii/prometheus-formula/-/jobs/1077740890#L779 <https://github.com//gitlab.com/myii/prometheus-formula/-/jobs/1077740890/issues/L779>`_
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* add ``arch-master`` to matrix and update ``.travis.yml`` [skip ci] (\ `046b0ee <https://github.com/saltstack-formulas/prometheus-formula/commit/046b0ee23937b574f297503fd6f29dba4e225314>`_\ )
+* **gemfile+lock:** use ``ssf`` customised ``kitchen-docker`` repo [skip ci] (\ `05f66ac <https://github.com/saltstack-formulas/prometheus-formula/commit/05f66ac9bceef49c49f973d53036bc15ec98e730>`_\ )
+* **kitchen+ci:** use latest pre-salted images (after CVE) [skip ci] (\ `df0ec43 <https://github.com/saltstack-formulas/prometheus-formula/commit/df0ec43f52f21746cef09d8fddadb92762132e1d>`_\ )
+* **kitchen+gitlab:** adjust matrix to add ``3003`` [skip ci] (\ `a9e26a7 <https://github.com/saltstack-formulas/prometheus-formula/commit/a9e26a795df305270d75b9ba94967553f7767091>`_\ )
+* **kitchen+gitlab-ci:** use latest pre-salted images [skip ci] (\ `e283bfb <https://github.com/saltstack-formulas/prometheus-formula/commit/e283bfb188fcf66759b4c1b5bb7ac039319be592>`_\ )
+
+Documentation
+^^^^^^^^^^^^^
+
+
+* remove files which aren't formula-specific [skip ci] (\ `1b2c50a <https://github.com/saltstack-formulas/prometheus-formula/commit/1b2c50ae37a6a53df40db7c39907c051ba3bbc51>`_\ )
+* **readme:** fix headings and contributing link [skip ci] (\ `bb7b816 <https://github.com/saltstack-formulas/prometheus-formula/commit/bb7b816aac6d21b85d0dbb20ed894c7f6a8ca941>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **archive:** allow command line arguments without values (\ `08ad2ca <https://github.com/saltstack-formulas/prometheus-formula/commit/08ad2caf4ccf51c3e162f0d9cbf737f21d2633d2>`_\ )
+* **config:** allow to manage extra files (\ `5f3dc6f <https://github.com/saltstack-formulas/prometheus-formula/commit/5f3dc6f11a42d66c13dd50b5a2115d36b1243f93>`_\ )
+
+Tests
+^^^^^
+
+
+* standardise use of ``share`` suite & ``_mapdata`` state [skip ci] (\ `2b38c9e <https://github.com/saltstack-formulas/prometheus-formula/commit/2b38c9e4025c24309ca8c622119250b15c669e50>`_\ )
+* **pillar/repo:** avoid ``alertmanager`` config where newer than package (\ `83efb0b <https://github.com/saltstack-formulas/prometheus-formula/commit/83efb0b43418a5ba363dc755c2228b1561d7fa30>`_\ )
+
 `5.4.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.3.0...v5.4.0>`_ (2021-02-10)
 ------------------------------------------------------------------------------------------------------------
 
