@@ -33,7 +33,7 @@ prometheus-config-install-{{ name }}-environ_file:
     #- contents: |
     #   command_args="{{ concat_args(args) }}"
     - context:
-        args: {{ args }}
+        args: {{ concat_args(args) }}
     - watch_in:
       - service: prometheus-service-running-{{ name }}
     - require:

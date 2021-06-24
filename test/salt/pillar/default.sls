@@ -20,20 +20,20 @@ prometheus:
       # - mysqld_exporter
       # - memcached_exporter  # not in upstream repo, only archive
 
-  exporters:
-    node_exporter:
-      textfile_collectors_dependencies: []
-      textfile_collectors:
-        ipmitool:
-          enable: false
-          remove: false
-          pkg: ipmitool
-        smartmon:
-          enable: false
-          remove: false
-          pkg: smartmontools
-          bash_pkg: bash
-          smartctl: /usr/sbin/smartctl
+  # exporters:
+  #   node_exporter:
+  #     textfile_collectors_dependencies: []
+  #     textfile_collectors:
+  #       ipmitool:
+  #         enable: false
+  #         remove: false
+  #         pkg: ipmitool
+  #       smartmon:
+  #         enable: false
+  #         remove: false
+  #         pkg: smartmontools
+  #         bash_pkg: bash
+  #         smartctl: /usr/sbin/smartctl
   pkg:
     use_upstream_repo: false
     # Changed to use non archive install as default (the archive includes a bespoke
@@ -87,6 +87,10 @@ prometheus:
                 - to: 'team-X+alerts@example.org'
 
       node_exporter:
+        environ:
+          args:
+            collector.systemd: true
+            web.listen-address: ":9110"
         service:
           args:
             collector.systemd: null

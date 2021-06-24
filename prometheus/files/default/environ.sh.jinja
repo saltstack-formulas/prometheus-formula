@@ -2,8 +2,8 @@
 # File managed by Salt at <{{ source }}>.
 # Your changes may be overwritten.
 ########################################################################
-# Set the command-line arguments to pass to the server.
-ARGS="{%- for arg, value in args.items() %}--{{ arg }}={{ value }}{{ " " if not loop.last else "" }}{% endfor %}"
+# Set the command-line arguments to pass to the server.%}"
+ARGS="{{ args }}"
 
 
 

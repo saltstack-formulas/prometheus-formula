@@ -9,6 +9,7 @@ driver:
   run_command: /lib/systemd/systemd
   forward:
     - 9090:9090
+    - 9110:9110
 
 platforms:
   ## SALT `tiamat`
