@@ -44,7 +44,7 @@ prometheus:
         version: v0.21.0
         config_file: /etc/prometheus/alertmanager.yml
         config: {}
-        environ_file: /etc/default/prometheus-alertmanager.sh
+        environ_file: /etc/default/prometheus-alertmanager
         environ: {}
         service:
           args:
@@ -131,7 +131,7 @@ prometheus:
             - tcp/9207
       node_exporter:
         version: v1.0.1
-        environ_file: /etc/default/prometheus-node-exporter.sh
+        environ_file: /etc/default/prometheus-node-exporter
         environ: {}
         config_file: /etc/prometheus/node_exporter.yml
         config: {}
@@ -170,7 +170,7 @@ prometheus:
             - tcp/9090
       pushgateway:
         version: v1.3.0
-        environ_file: /etc/default/prometheus-pushgateway.sh
+        environ_file: /etc/default/prometheus-pushgateway
         environ: {}
         config_file: /etc/prometheus/pushgateway.yml
         config: {}
