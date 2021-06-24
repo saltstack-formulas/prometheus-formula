@@ -14,10 +14,10 @@ prometheus:
       - alertmanager
       - node_exporter
       - blackbox_exporter
-      - consul_exporter
-      - php-fpm_exporter
+      # - consul_exporter
+      # - php-fpm_exporter
       - postgres_exporter
-      - mysqld_exporter
+      # - mysqld_exporter
       # - memcached_exporter  # not in upstream repo, only archive
 
   exporters:
@@ -36,7 +36,9 @@ prometheus:
           smartctl: /usr/sbin/smartctl
   pkg:
     use_upstream_repo: false
-    use_upstream_archive: true
+    # Changed to use non archive install as default (the archive includes a bespoke
+    # implementation of service thats needs updating)
+    use_upstream_archive: false
 
     clientlibs:
       # https://prometheus.io/docs/instrumenting/clientlibs
@@ -102,17 +104,21 @@ prometheus:
           # This is to test that any fancy name we use, will work in archive mode
           name: my-fancy-consul-exporter-service
 
-      mysqld_exporter:
-        service:
-          args:
-            web.listen-address: 0.0.0.0:9192
-          env:
-            - 'DATA_SOURCE_NAME=foo:bar@/'
+      # mysqld_exporter:
+      #   service:
+      #     args:
+      #       web.listen-address: 0.0.0.0:9192
+      #     env:
+      #       - 'DATA_SOURCE_NAME=foo:bar@/'
 
       prometheus:
         service:
           args:
             web.listen-address: 0.0.0.0:9090
+        environ:
+          args:
+            web.listen-address: 0.0.0.0:9090
+            log.level: debug
         config:
           # yamllint disable-line rule:line-length
           # ref https://raw.githubusercontent.com/prometheus/prometheus/release-2.10/config/testdata/conf.good.yml
