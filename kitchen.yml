@@ -7,6 +7,8 @@ driver:
   use_sudo: false
   privileged: true
   run_command: /lib/systemd/systemd
+  forward:
+    - 9090:9090
 
 platforms:
   ## SALT `tiamat`
@@ -350,7 +352,7 @@ suites:
       state_top:
         base:
           '*':
-            - prometheus._mapdata
+            # - prometheus._mapdata
             - prometheus
       pillars:
         top.sls:

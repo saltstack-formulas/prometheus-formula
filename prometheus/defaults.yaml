@@ -152,7 +152,7 @@ prometheus:
         version: v2.22.1
         config_file: /etc/prometheus/prometheus.yml
         config: {}
-        environ_file: /etc/default/prometheus.sh
+        environ_file: /etc/default/prometheus
         environ: {}
         service:
           args:
