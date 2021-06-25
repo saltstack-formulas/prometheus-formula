@@ -1,6 +1,17 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+# Prometheus has two approaches to handling config arguments, through an environment
+# file or directly adding to the service file.
+# This formular takes both approaches in seperate circumstances, with the archive
+# install approach implementing a custom service file, and the repo (default) approach
+# using an environ file with the standard package provided service file.
+# As a result, depending on the install method used, the environ:args or service:args
+# pillars need to be set appropriately.
+# The default options given under service in the default.yaml may not therefore apply
+# depending on the install method, and in some cases they are no longer consistent
+# with the default configuration in the latest package.
+# This applies to all components with an example provided for node_exporter.
 prometheus:
   wanted:
     clientlibs:
@@ -33,6 +44,12 @@ prometheus:
           smartctl: /usr/sbin/smartctl
   pkg:
     use_upstream_repo: false
+    # Uses the archive install method with true or repo method with false. Default is
+    # false.
+    # The archive and repo methods use completely different approaches to
+    # / service arguments handling, with different required pillar values.
+    # The repo method uses the package service config, the archive method uses a custom
+    # service config.
     use_upstream_archive: true
 
     clientlibs:
@@ -94,6 +111,10 @@ prometheus:
         version: v0.18.1
         archive:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
+        environ:
+          args:
+            collector.systemd: null
+            web.listen-address: ":9110"
         service:
           name: prometheus-node-exporter
           args:

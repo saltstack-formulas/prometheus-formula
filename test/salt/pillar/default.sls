@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+# Uses the archive install method identified by 'use_upstream_archive: true'
 prometheus:
   wanted:
     clientlibs:
@@ -14,31 +15,29 @@ prometheus:
       - alertmanager
       - node_exporter
       - blackbox_exporter
-      # - consul_exporter
-      # - php-fpm_exporter
+      - consul_exporter
+      - php-fpm_exporter
       - postgres_exporter
-      # - mysqld_exporter
-      # - memcached_exporter  # not in upstream repo, only archive
+      - mysqld_exporter
+      - memcached_exporter  # not in upstream repo, only archive
 
-  # exporters:
-  #   node_exporter:
-  #     textfile_collectors_dependencies: []
-  #     textfile_collectors:
-  #       ipmitool:
-  #         enable: false
-  #         remove: false
-  #         pkg: ipmitool
-  #       smartmon:
-  #         enable: false
-  #         remove: false
-  #         pkg: smartmontools
-  #         bash_pkg: bash
-  #         smartctl: /usr/sbin/smartctl
+  exporters:
+    node_exporter:
+      textfile_collectors_dependencies: []
+      textfile_collectors:
+        ipmitool:
+          enable: false
+          remove: false
+          pkg: ipmitool
+        smartmon:
+          enable: false
+          remove: false
+          pkg: smartmontools
+          bash_pkg: bash
+          smartctl: /usr/sbin/smartctl
   pkg:
     use_upstream_repo: false
-    # Changed to use non archive install as default (the archive includes a bespoke
-    # implementation of service thats needs updating)
-    use_upstream_archive: false
+    use_upstream_archive: true
 
     clientlibs:
       # https://prometheus.io/docs/instrumenting/clientlibs
@@ -108,12 +107,12 @@ prometheus:
           # This is to test that any fancy name we use, will work in archive mode
           name: my-fancy-consul-exporter-service
 
-      # mysqld_exporter:
-      #   service:
-      #     args:
-      #       web.listen-address: 0.0.0.0:9192
-      #     env:
-      #       - 'DATA_SOURCE_NAME=foo:bar@/'
+      mysqld_exporter:
+        service:
+          args:
+            web.listen-address: 0.0.0.0:9192
+          env:
+            - 'DATA_SOURCE_NAME=foo:bar@/'
 
       prometheus:
         service:
