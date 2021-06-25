@@ -81,7 +81,7 @@ prometheus:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
         environ:
           args:
-            collector.systemd: true
+            log.level: debug
             web.listen-address: ":9110"
         service:
           args:

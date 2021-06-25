@@ -44,6 +44,6 @@ control 'prometheus services' do
 
   describe file('/etc/default/prometheus-node-exporter') do
     its('content') { should include '--web.listen-address=:9110' }
-    its('content') { should include '--collector.systemd' }
+    its('content') { should include '--log.level=debug' }
   end
 end
