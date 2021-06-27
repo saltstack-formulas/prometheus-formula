@@ -11,7 +11,16 @@ control 'prometheus packages' do
         alertmanager
         node_exporter
       ]
-    when 'debian'
+    when 'linux'
+      case platform[:name]
+      when 'arch'
+        %w[
+          prometheus
+          alertmanager
+          prometheus-node-exporter
+        ]
+      end
+    else
       %w[
         prometheus
         prometheus-alertmanager

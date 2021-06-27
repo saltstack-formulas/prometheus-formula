@@ -21,6 +21,14 @@ control 'prometheus services' do
       ]
     end
 
+  node_exporter =
+    case platform[:family]
+    when 'redhat'
+      'node_exporter'
+    else
+      'prometheus-node-exporter'
+    end
+
   services.each do |service|
     describe service(service) do
       it { should be_enabled }
@@ -42,7 +50,7 @@ control 'prometheus services' do
     its('content') { should include '--log.level=debug' }
   end
 
-  describe file('/etc/default/prometheus-node-exporter') do
+  describe file("/etc/default/#{node_exporter}") do
     its('content') { should include '--web.listen-address=:9110' }
     its('content') { should include '--log.level=debug' }
   end
