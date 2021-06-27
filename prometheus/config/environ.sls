@@ -7,13 +7,16 @@
 {%- from tplroot ~ "/files/macros.jinja" import concat_args %}
 {%- set sls_archive_install = tplroot ~ '.archive.install' %}
 {%- set sls_package_install = tplroot ~ '.package.install' %}
+{%- set sls_service_running = tplroot ~ '.service.running' %}
 
 include:
   - {{ sls_archive_install if p.pkg.use_upstream_archive else sls_package_install }}
+  - {{ sls_service_running }}
 
     {%- for name in p.wanted.component %}
         {%- if 'environ' in p.pkg.component[name] and 'args' in p.pkg.component[name]['environ'] %}
             {%- set args = p.pkg.component[name]['environ']['args'] %}
+            {%- set arg_name = p.pkg.component[name]['environ']['environ_arg_name'] %}
             {%- if 'environ_file' in p.pkg.component[name] and p.pkg.component[name]['environ_file'] %}
 
 prometheus-config-install-{{ name }}-environ_file:
@@ -30,10 +33,9 @@ prometheus-config-install-{{ name }}-environ_file:
     - user: {{ p.identity.rootuser }}
     - group: {{ p.identity.rootgroup }}
                 {%- endif %}
-    #- contents: |
-    #   command_args="{{ concat_args(args) }}"
     - context:
         args: {{ concat_args(args) }}
+        arg_name: {{ arg_name }}
     - watch_in:
       - service: prometheus-service-running-{{ name }}
     - require:

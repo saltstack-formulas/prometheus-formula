@@ -4,3 +4,4 @@
 include:
   - .file
   - .environ
+  - .storage
