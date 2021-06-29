@@ -150,7 +150,7 @@ Debian:
         args_file: /etc/default/prometheus-sql-exporter
       squid_exporter:
         name: prometheus-squid-exporter
-        args_file: /etc/default/prometheus-squid-
+        args_file: /etc/default/prometheus-squid
       tplink_plug_exporter:
         name: prometheus-tplink-plug-exporter
         args_file: /etc/default/prometheus-tplink-plug-exporter
