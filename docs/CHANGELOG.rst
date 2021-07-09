@@ -2,6 +2,33 @@
 Changelog
 =========
 
+`5.5.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.0...v5.5.1>`_ (2021-07-09)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* added guidance and reverted incorrected changes from prior commits (\ `0ca247a <https://github.com/saltstack-formulas/prometheus-formula/commit/0ca247a37edd6dceb62d5524ce755c87c31ab599>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* added guidance and reverted incorrected changes from prior commits (\ `a4dfb87 <https://github.com/saltstack-formulas/prometheus-formula/commit/a4dfb87554b9a5d35fe5654698940380cc5fadee>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* added handle for alternative argument opts header (\ `076869a <https://github.com/saltstack-formulas/prometheus-formula/commit/076869a8cdbde4ed1034d98f16cdeaa17906554e>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* added handle for alternative argument opts header (\ `4de3ebd <https://github.com/saltstack-formulas/prometheus-formula/commit/4de3ebd24196c347ae1ebba88d754c9dd535cf74>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* removed erroneus dash (-) (\ `ef8a3a9 <https://github.com/saltstack-formulas/prometheus-formula/commit/ef8a3a9ad781bee86686465a13e27e301f0c5ea5>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* removed erroneus dash (-) (\ `52845bb <https://github.com/saltstack-formulas/prometheus-formula/commit/52845bb534ba98947ee161e7fb745489b2ad57da>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* revert to use of macro.jinja for arg handling (\ `f2261f9 <https://github.com/saltstack-formulas/prometheus-formula/commit/f2261f9dc958792a16c13a6380386a1f7239f386>`_\ )
+* revert to use of macro.jinja for arg handling (\ `696bee0 <https://github.com/saltstack-formulas/prometheus-formula/commit/696bee0522b9e37befbe76728c2d3211f25b8a68>`_\ )
+* rework to implement environment variables handling (\ `e52f804 <https://github.com/saltstack-formulas/prometheus-formula/commit/e52f804bf454f8c57d8ed51e6566f60befd4d7c7>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* rework to implement environment variables handling (\ `eea5b40 <https://github.com/saltstack-formulas/prometheus-formula/commit/eea5b407fa6dee5cdcb7bd951b752beb1833176c>`_\ ), closes `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_ `#59 <https://github.com/saltstack-formulas/prometheus-formula/issues/59>`_
+* switched test config entry that wasnt available for deb9 (\ `5c1d8b6 <https://github.com/saltstack-formulas/prometheus-formula/commit/5c1d8b68707ebfbe948cf8f0c21c98504c751d5b>`_\ )
+* switched test config entry that wasnt available for deb9 (\ `4635ca7 <https://github.com/saltstack-formulas/prometheus-formula/commit/4635ca70702a05bf5db24df54956c175d0cd3e18>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **3003.1:** update inc. AlmaLinux, Rocky & ``rst-lint`` [skip ci] (\ `5550397 <https://github.com/saltstack-formulas/prometheus-formula/commit/55503974e4cc338590750b02ed964f0afdd44f11>`_\ )
+* **kitchen+gitlab:** remove Ubuntu 16.04 & Fedora 32 (EOL) [skip ci] (\ `fa96aab <https://github.com/saltstack-formulas/prometheus-formula/commit/fa96aabba76128ebca85b76631bf04ec8daaeb90>`_\ )
+
 `5.5.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.4.0...v5.5.0>`_ (2021-05-28)
 ------------------------------------------------------------------------------------------------------------
 
