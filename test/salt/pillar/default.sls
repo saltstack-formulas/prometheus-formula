@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+# Uses the archive install method identified by 'use_upstream_archive: true'
 prometheus:
   wanted:
     clientlibs:
@@ -18,7 +19,7 @@ prometheus:
       - php-fpm_exporter
       - postgres_exporter
       - mysqld_exporter
-      # - memcached_exporter  # not in upstream repo, only archive
+      - memcached_exporter  # not in upstream repo, only archive
 
   exporters:
     node_exporter:
@@ -85,6 +86,10 @@ prometheus:
                 - to: 'team-X+alerts@example.org'
 
       node_exporter:
+        environ:
+          args:
+            collector.systemd: true
+            web.listen-address: ":9110"
         service:
           args:
             collector.systemd: null
@@ -113,6 +118,10 @@ prometheus:
         service:
           args:
             web.listen-address: 0.0.0.0:9090
+        environ:
+          args:
+            web.listen-address: 0.0.0.0:9090
+            log.level: debug
         config:
           # yamllint disable-line rule:line-length
           # ref https://raw.githubusercontent.com/prometheus/prometheus/release-2.10/config/testdata/conf.good.yml

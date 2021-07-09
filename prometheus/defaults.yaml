@@ -44,8 +44,11 @@ prometheus:
         version: v0.21.0
         config_file: /etc/prometheus/alertmanager.yml
         config: {}
-        environ_file: /etc/default/prometheus-alertmanager.sh
-        environ: {}
+        environ_file: /etc/default/prometheus-alertmanager
+        environ:
+          environ_arg_name: ARGS
+        # These service args will not impact installs using the non archive method and
+        # instead should be added as environ args in such a case
         service:
           args:
             config.file: /etc/prometheus/alertmanager.yml
@@ -65,6 +68,9 @@ prometheus:
         version: v0.18.0
         config_file: /etc/prometheus/blackbox_exporter.yml
         config: {}
+        environ_file: /etc/default/prometheus-blackbox-exporter
+        environ:
+          environ_arg_name: ARGS
         archive:
           source_hash: a87f9530e31e2b20d03a6d941f6f051c57ee724f24b38f2615b8580ca63966dc
         commands:
@@ -131,10 +137,13 @@ prometheus:
             - tcp/9207
       node_exporter:
         version: v1.0.1
-        environ_file: /etc/default/prometheus-node-exporter.sh
-        environ: {}
+        environ_file: /etc/default/prometheus-node-exporter
+        environ:
+          environ_arg_name: ARGS
         config_file: /etc/prometheus/node_exporter.yml
         config: {}
+        # These service args will not impact installs using the non archive method and
+        # instead should be added as environ args in such a case
         service:
           args:
             collector.textfile.directory: /var/tmp/node_exporter
@@ -152,8 +161,11 @@ prometheus:
         version: v2.22.1
         config_file: /etc/prometheus/prometheus.yml
         config: {}
-        environ_file: /etc/default/prometheus.sh
-        environ: {}
+        environ_file: /etc/default/prometheus
+        environ:
+          environ_arg_name: ARGS
+        # These service args will not impact installs using the non archive method and
+        # instead should be added as environ args in such a case
         service:
           args:
             config.file: /etc/prometheus/prometheus.yml
@@ -170,8 +182,9 @@ prometheus:
             - tcp/9090
       pushgateway:
         version: v1.3.0
-        environ_file: /etc/default/prometheus-pushgateway.sh
-        environ: {}
+        environ_file: /etc/default/prometheus-pushgateway
+        environ:
+          environ_arg_name: ARGS
         config_file: /etc/prometheus/pushgateway.yml
         config: {}
         service: {}
@@ -195,7 +208,6 @@ prometheus:
             - tcp/4505
             - tcp/4506
             - tcp/9102
-
     clientlibs:
       # https://prometheus.io/docs/instrumenting/clientlibs
       # no bash & perl client tarballs are available

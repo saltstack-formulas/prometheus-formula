@@ -15,7 +15,22 @@
     {%- set macos_rootgroup = salt['cmd.run']("stat -f '%Sg' /dev/console") %}
 {%- endif %}
 
-Arch: {}
+Arch:
+  pkg:
+    component:
+      alertmanager:
+        name: alertmanager
+      blackbox_exporter:
+        name: prometheus-blackbox-exporter
+      prometheus:
+        environ_file: /etc/conf.d/prometheus
+        environ:
+          environ_arg_name: PROMETHEUS_ARGS
+      node_exporter:
+        name: prometheus-node-exporter
+        environ_file: /etc/conf.d/prometheus-node-exporter
+        environ:
+          environ_arg_name: NODE_EXPORTER_ARGS
 
 Alpine: {}
 
@@ -29,8 +44,6 @@ Debian:
     use_upstream_package: false
     use_upstream_archive: false
     component:
-      prometheus:
-        name: prometheus
       alertmanager:
         name: prometheus-alertmanager
         service:
@@ -47,11 +60,20 @@ Debian:
       bird_exporter:
         name: prometheus-bird-exporter
         args_file: /etc/default/prometheus-bird-exporter
+      prometheus:
+        name: prometheus
       blackbox_exporter:
         name: prometheus-blackbox-exporter
+        config_file: /etc/prometheus/blackbox.yml
+        environ_file: /etc/default/prometheus-blackbox-exporter
+        environ:
+          environ_arg_name: ARGS
         service:
           name: prometheus-blackbox-exporter
-        config_file: /etc/prometheus/blackbox.yml
+      consul_exporter:
+        name: prometheus-consul-exporter
+      graphite_exporter:
+        name: prometheus-graphite-exporter
       hacluster_exporter:
         name: prometheus-hacluster-exporter
         args_file: /etc/default/prometheus-hacluster-exporter
@@ -70,6 +92,8 @@ Debian:
       mailexporter:
         name: prometheus-mailexporter
         args_file: /etc/default/prometheus-mailexporter
+      memcached_exporter:
+        name: prometheus-memcached-exporter
       mongodb_exporter:
         name: prometheus-mongodb-exporter
         args_file: /etc/default/prometheus-mongodb-exporter
@@ -85,7 +109,7 @@ Debian:
         args_file: /etc/default/prometheus-nginx-exporter
       nginx_vts_exporter:
         name: prometheus-nginx-vts-exporter
-        args_file: /etc/default/prometheus-nginx-vts-exporter
+        args_file: /etc/default/prometheus-nginx-vts-export
       node_exporter:
         name: prometheus-node-exporter
         service:
@@ -113,7 +137,11 @@ Debian:
         args_file: /etc/default/prometheus-process-exporter
       pushgateway:
         name: prometheus-pushgateway
+        service:
+          name: prometheus-pushgateway
         args_file: /etc/default/prometheus-pushgateway
+      statsd_exporter:
+        name: prometheus-statsd-exporter
       snmp_exporter:
         name: prometheus-snmp-exporter
         args_file: /etc/default/prometheus-snmp-exporter
@@ -122,7 +150,7 @@ Debian:
         args_file: /etc/default/prometheus-sql-exporter
       squid_exporter:
         name: prometheus-squid-exporter
-        args_file: /etc/default/prometheus-squid-exporter
+        args_file: /etc/default/prometheus-squid
       tplink_plug_exporter:
         name: prometheus-tplink-plug-exporter
         args_file: /etc/default/prometheus-tplink-plug-exporter
@@ -135,7 +163,7 @@ Debian:
       xmpp_alerts:
         name: prometheus-xmpp-alerts
         args_file: /etc/default/prometheus-xmpp-alerts
-
+        
   exporters:
     node_exporter:
       textfile_collectors_dependencies:
@@ -148,6 +176,35 @@ RedHat:
     component:
       prometheus:
         name: prometheus2
+        environ_file: /etc/default/prometheus
+        environ:
+          environ_arg_name: PROMETHEUS_OPTS
+          args:
+            config.file: /etc/prometheus/prometheus.yml
+            storage.tsdb.path: /var/lib/prometheus/data
+            web.console.libraries: /usr/share/prometheus/console_libraries
+            web.console.templates: /usr/share/prometheus/consoles
+      alertmanager:
+        environ_file: /etc/default/alertmanager
+        environ:
+          environ_arg_name: ALERTMANAGER_OPTS
+          args: 
+            config.file: /etc/prometheus/alertmanager.yml
+            storage.path: /var/lib/prometheus/alertmanager
+      node_exporter:
+        environ_file: /etc/default/node_exporter
+        environ:
+          environ_arg_name: NODE_EXPORTER_OPTS
+      pushgateway:
+        environ_file: /etc/default/pushgateway
+        environ:
+          environ_arg_name: PUSHGATEWAY_OPTS
+      blackbox_exporter:
+        environ_file: /etc/default/blackbox_exporter
+        environ:
+          environ_arg_name: BLACKBOX_EXPORTER_OPTS
+          args:
+            config.file: /etc/prometheus/blackbox.yml
     repo:
       # https://akai-tsuki.hatenablog.com/entry/2017/12/03/000000
       # yamllint disable rule:line-length
@@ -385,3 +442,4 @@ MacOS:
       statsd_exporter:
         archive:
           source_hash: 15132494523c2b6a89e09b2da63452c8fe587fb82fcc3fd21cc75a4aa2766644
+

@@ -12,6 +12,7 @@ extends: 'default'
 # 5. Any YAML files under directory `.kitchen/`, introduced during local testing
 # 6. `kitchen.vagrant.yml`, which contains Embedded Ruby (ERB) template syntax
 ignore: |
+  .bundle/
   .cache/
   .git/
   node_modules/

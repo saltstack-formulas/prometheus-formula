@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # vim: ft=yaml
 ---
+# Uses the standard install method from package repo
 prometheus:
   wanted:
     clientlibs:
@@ -78,6 +79,10 @@ prometheus:
         version: v0.18.1
         archive:
           source_hash: b2503fd932f85f4e5baf161268854bf5d22001869b84f00fd2d1f57b51b72424
+        environ:
+          args:
+            log.level: debug
+            web.listen-address: ":9110"
         service:
           args:
             web.listen-address: ":9110"
@@ -92,6 +97,10 @@ prometheus:
         service:
           args:
             web.listen-address: 0.0.0.0:9090
+        environ:
+          args:
+            web.listen-address: 0.0.0.0:9090
+            log.level: debug
         config:
           # yamllint disable-line rule:line-length
           # ref https://raw.githubusercontent.com/prometheus/prometheus/release-2.10/config/testdata/conf.good.yml
