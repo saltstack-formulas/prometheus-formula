@@ -206,9 +206,14 @@ RedHat:
           args:
             config.file: /etc/prometheus/blackbox.yml
     repo:
+        {%- if grains.os == 'Amazon' %}
+          {%- set releasever = salt['cmd.run']("rpm -E '%{rhel}'") %}
+        {% else %}
+          {%- set releasever = "$releasever" %}
+        {%- endif %}
       # https://akai-tsuki.hatenablog.com/entry/2017/12/03/000000
       # yamllint disable rule:line-length
-      baseurl: 'https://packagecloud.io/prometheus-rpm/release/el/$releasever/$basearch'
+      baseurl: "https://packagecloud.io/prometheus-rpm/release/el/{{ releasever }}/$basearch"
       gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
       # yamllint enable rule:line-length
       sslverify: 1
