@@ -1,5 +1,14 @@
 # Changelog
 
+## [5.5.2](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.1...v5.5.2) (2021-07-16)
+
+
+### Bug Fixes
+
+* **clientlibs/install:** ensure tar is available for Amazon Linux 2 ([7140ccf](https://github.com/saltstack-formulas/prometheus-formula/commit/7140ccf8a8150d3776c2dc241f67ad93fa1f5787))
+* check for Amazon in osfamilymap for pkg repo ([338ab4d](https://github.com/saltstack-formulas/prometheus-formula/commit/338ab4ddb6d895e085a47b335f54451d9d406bc8)), closes [#65](https://github.com/saltstack-formulas/prometheus-formula/issues/65)
+* update Gitlab CI -test amazonlinux correctly ([6745bf2](https://github.com/saltstack-formulas/prometheus-formula/commit/6745bf23d43f583c0e73d66776c68a669eb9d688)), closes [#65](https://github.com/saltstack-formulas/prometheus-formula/issues/65)
+
 ## [5.5.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.0...v5.5.1) (2021-07-09)
 
 
