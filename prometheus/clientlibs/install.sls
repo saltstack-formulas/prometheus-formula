@@ -28,7 +28,7 @@ prometheus-clientlibs-install-{{ name }}:
         - group
         - mode
         {%- endif %}
-        {%- if grains.get('osfinger', '') in ['Oracle Linux Server-8'] %}
+        {%- if grains.get('osfinger', '') in ['Oracle Linux Server-8', 'Amazon Linux-2'] %}
   pkg.installed:
     - name: tar
     - require_in:
