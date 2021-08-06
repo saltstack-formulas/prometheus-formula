@@ -18,7 +18,7 @@ prometheus-config-users-install-{{ name }}-user-present:
     - groups:
       - {{ name }}
               {%- if grains.os != 'Windows' %}
-    - shell: /bin/false
+    - shell: {{ p.shell }}
                   {%- if grains.kernel|lower == 'linux' %}
     - createhome: false
                   {%- elif grains.os_family == 'MacOS' %}
