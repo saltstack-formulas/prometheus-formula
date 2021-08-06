@@ -2,6 +2,30 @@
 Changelog
 =========
 
+`5.6.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.2...v5.6.0>`_ (2021-08-06)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **defaults:** use nologin instead of /bin/false (\ `1af0deb <https://github.com/saltstack-formulas/prometheus-formula/commit/1af0deb087b1d6b1109a838871933da97cb38474>`_\ )
+* **indempotency:** run reload onchanges only (\ `9166498 <https://github.com/saltstack-formulas/prometheus-formula/commit/9166498fd8fe046c24220f95b7876a50f3a99d3a>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile+lock:** use ``ssf`` customised ``inspec`` repo [skip ci] (\ `3fafc21 <https://github.com/saltstack-formulas/prometheus-formula/commit/3fafc2172e8ed77ee537a7935de988a0bc4c99de>`_\ )
+* add Debian 11 Bullseye & update ``yamllint`` configuration [skip ci] (\ `802970c <https://github.com/saltstack-formulas/prometheus-formula/commit/802970c47d95241acbf69338db24cd74959f3fd9>`_\ )
+* **kitchen:** move ``provisioner`` block & update ``run_command`` [skip ci] (\ `3203953 <https://github.com/saltstack-formulas/prometheus-formula/commit/32039539bbe345314a1b65133dbadc0cccc40940>`_\ )
+
+Features
+^^^^^^^^
+
+
+* **config/users:** add support for ``debian-11`` [skip ci] (\ `0e65cc3 <https://github.com/saltstack-formulas/prometheus-formula/commit/0e65cc345b316412fad4ce9966f99d86c9fa829c>`_\ )
+
 `5.5.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.1...v5.5.2>`_ (2021-07-16)
 ------------------------------------------------------------------------------------------------------------
 
