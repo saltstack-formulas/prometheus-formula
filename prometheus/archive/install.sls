@@ -153,7 +153,7 @@ prometheus-archive-install-{{ name }}-managed-service:
       - group: prometheus-config-users-install-{{ name }}-group-present
   cmd.run:
     - name: systemctl daemon-reload
-    - require:
+    - onchanges:
               {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
       - archive: prometheus-archive-install-{{ name }}
               {% else %}
