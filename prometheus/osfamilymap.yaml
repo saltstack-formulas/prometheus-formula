@@ -406,6 +406,7 @@ Windows:
 
 MacOS:
   div: '/'
+  shell: /sbin/nologin
   dir:
     default: /etc/defaults
   identity:

@@ -310,6 +310,8 @@ prometheus:
     rootuser: root
     rootgroup: root
 
+  shell: /usr/sbin/nologin
+
   retry_option:
     # https://docs.saltstack.com/en/latest/ref/states/requisites.html#retrying-states
     attempts: 3
