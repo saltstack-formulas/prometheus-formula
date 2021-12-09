@@ -1,5 +1,19 @@
 # Changelog
 
+## [5.6.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.0...v5.6.1) (2021-12-09)
+
+
+### Bug Fixes
+
+* **users:** users should always be created as system users ([ee20f82](https://github.com/saltstack-formulas/prometheus-formula/commit/ee20f821d663ea1b2b1da444e3b4e01a08349eb1))
+
+
+### Continuous Integration
+
+* **kitchen+ci:** update with `3004` pre-salted images/boxes [skip ci] ([4628d74](https://github.com/saltstack-formulas/prometheus-formula/commit/4628d741b82cc4a732bcbf6f4460cbf241bb50bb))
+* **kitchen+ci:** update with latest `3003.2` pre-salted images [skip ci] ([cfb0949](https://github.com/saltstack-formulas/prometheus-formula/commit/cfb0949e82f769152b4dbbd64cf5ee5ef575d253))
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] ([9fda233](https://github.com/saltstack-formulas/prometheus-formula/commit/9fda2330ab4b72978ec9064091bc43e54020049b))
+
 # [5.6.0](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.2...v5.6.0) (2021-08-06)
 
 
