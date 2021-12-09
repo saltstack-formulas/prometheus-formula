@@ -21,9 +21,7 @@ prometheus-config-users-install-{{ name }}-user-present:
     - shell: {{ p.shell }}
                   {%- if grains.kernel|lower == 'linux' %}
     - createhome: false
-                    {%- if grains.get('osfinger', '') in ['Debian-11'] %}
     - system: true
-                    {%- endif %}
                   {%- elif grains.os_family == 'MacOS' %}
     - unless: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
                   {%- endif %}
