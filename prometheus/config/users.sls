@@ -9,6 +9,7 @@
 prometheus-config-users-install-{{ name }}-group-present:
   group.present:
     - name: {{ name }}
+    - system: true
     - require_in:
       - user: prometheus-config-users-install-{{ name }}-user-present
 
