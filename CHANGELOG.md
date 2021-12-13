@@ -1,5 +1,12 @@
 # Changelog
 
+## [5.6.2](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.1...v5.6.2) (2021-12-13)
+
+
+### Bug Fixes
+
+* **groups:** groups should always be created as system groups ([711ebf7](https://github.com/saltstack-formulas/prometheus-formula/commit/711ebf7c1b153096dab3031bc9ea46d162d83bbf))
+
 ## [5.6.1](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.0...v5.6.1) (2021-12-09)
 
 
