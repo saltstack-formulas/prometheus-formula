@@ -118,6 +118,7 @@ prometheus:
         service:
           args:
             web.listen-address: 0.0.0.0:9090
+            storage.tsdb.retention.time: 150d
         environ:
           args:
             web.listen-address: 0.0.0.0:9090
