@@ -129,19 +129,28 @@ prometheus-archive-install-{{ name }}-managed-service:
         env: {{ p.pkg.component[name]['service'].get('env', [])|tojson }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
-               {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
-                 {%- set args = [] %}
-                 {%- for param, value in p.pkg.component.get(name).get('service').get('args', {}).items() %}
-                    {%- if value is not none %}
-                      {% do args.append("--" ~ param ~ "=" ~ value ) %}
-                    {%- else %}
-                      {% do args.append("--" ~ param ) %}
-                    {%- endif %}
-                 {%- endfor %}
-        start: {{ p.pkg.component[name]['path'] }}/{{ name }} {{ args|join(' ') }}
-               {%- else %}
-        start: {{ p.pkg.component[name]['path'] }}/{{ name }} --config.file {{ p.pkg.component[name]['config_file'] }}  # noqa 204
+             {%- set all_args = p.pkg.component.get(name).get('service').get('args', {}) %}
+             {%- set commandline_only_args = ["storage.tsdb.retention.time"] %}
+             {%- if name in ('node_exporter', 'consul_exporter') or 'config_file' not in p.pkg.component[name] %}
+               {%- set args = all_args %}
+             {%- else %}
+               {%- set args = {'config.file': p.pkg.component[name]['config_file']} %}
+             {%- endif %}
+             {%- for arg in commandline_only_args %}
+               {%- set value = all_args.get(arg) %}
+               {%- if value is not none %}
+                 {%- do args.update({arg: value}) %}
                {%- endif %}
+             {%- endfor %}
+             {%- set flags = [] %}
+             {%- for param, value in args.items() %}
+                {%- if value is not none %}
+                  {% do flags.append("--" ~ param ~ "=" ~ value ) %}
+                {%- else %}
+                  {% do flags.append("--" ~ param ) %}
+                {%- endif %}
+             {%- endfor %}
+        start: {{ p.pkg.component[name]['path'] }}/{{ name }} {{ flags|join(' ') }}
     - require:
       - file: prometheus-archive-install-{{ name }}-file-directory
               {%- if p.pkg.component.get(name).get('archive').get('tar', true) %}
