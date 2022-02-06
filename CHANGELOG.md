@@ -1,5 +1,18 @@
 # Changelog
 
+## [5.6.3](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.2...v5.6.3) (2022-02-06)
+
+
+### Bug Fixes
+
+* **archive:** make sure special commandline flags are accepted ([9529d5f](https://github.com/saltstack-formulas/prometheus-formula/commit/9529d5fcfe3bea44aa683bb3312fcb0eff41e192))
+
+
+### Continuous Integration
+
+* **gemfile:** allow rubygems proxy to be provided as an env var [skip ci] ([d1b7d8c](https://github.com/saltstack-formulas/prometheus-formula/commit/d1b7d8c2de74eed0d257a466aa78dc3f5da09af4))
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] ([5d39408](https://github.com/saltstack-formulas/prometheus-formula/commit/5d39408744dadcc331d1041e7bcb894bdfc35206))
+
 ## [5.6.2](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.1...v5.6.2) (2021-12-13)
 
 

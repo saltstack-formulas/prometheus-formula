@@ -2,6 +2,48 @@
 Changelog
 =========
 
+`5.6.3 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.2...v5.6.3>`_ (2022-02-06)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **archive:** make sure special commandline flags are accepted (\ `9529d5f <https://github.com/saltstack-formulas/prometheus-formula/commit/9529d5fcfe3bea44aa683bb3312fcb0eff41e192>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **gemfile:** allow rubygems proxy to be provided as an env var [skip ci] (\ `d1b7d8c <https://github.com/saltstack-formulas/prometheus-formula/commit/d1b7d8c2de74eed0d257a466aa78dc3f5da09af4>`_\ )
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] (\ `5d39408 <https://github.com/saltstack-formulas/prometheus-formula/commit/5d39408744dadcc331d1041e7bcb894bdfc35206>`_\ )
+
+`5.6.2 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.1...v5.6.2>`_ (2021-12-13)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **groups:** groups should always be created as system groups (\ `711ebf7 <https://github.com/saltstack-formulas/prometheus-formula/commit/711ebf7c1b153096dab3031bc9ea46d162d83bbf>`_\ )
+
+`5.6.1 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.0...v5.6.1>`_ (2021-12-09)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **users:** users should always be created as system users (\ `ee20f82 <https://github.com/saltstack-formulas/prometheus-formula/commit/ee20f821d663ea1b2b1da444e3b4e01a08349eb1>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* **kitchen+ci:** update with ``3004`` pre-salted images/boxes [skip ci] (\ `4628d74 <https://github.com/saltstack-formulas/prometheus-formula/commit/4628d741b82cc4a732bcbf6f4460cbf241bb50bb>`_\ )
+* **kitchen+ci:** update with latest ``3003.2`` pre-salted images [skip ci] (\ `cfb0949 <https://github.com/saltstack-formulas/prometheus-formula/commit/cfb0949e82f769152b4dbbd64cf5ee5ef575d253>`_\ )
+* **kitchen+ci:** update with latest CVE pre-salted images [skip ci] (\ `9fda233 <https://github.com/saltstack-formulas/prometheus-formula/commit/9fda2330ab4b72978ec9064091bc43e54020049b>`_\ )
+
 `5.6.0 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.5.2...v5.6.0>`_ (2021-08-06)
 ------------------------------------------------------------------------------------------------------------
 
