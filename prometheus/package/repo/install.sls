@@ -11,12 +11,6 @@
 prometheus-package-repo-install-pkgrepo-managed:
   pkgrepo.managed:
     {{- format_kwargs(p.pkg.repo) }}
-  file.replace:
-    # redhat workaround for salt issue #51494
-    - name: /etc/yum.repos.d/prometheus.repo
-    - pattern: ' gpgkey2='
-    - repl: '\n       '
-    - ignore_if_missing: True
 
     {%- endif %}
 {%- else %}

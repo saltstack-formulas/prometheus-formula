@@ -163,7 +163,7 @@ Debian:
       xmpp_alerts:
         name: prometheus-xmpp-alerts
         args_file: /etc/default/prometheus-xmpp-alerts
-        
+
   exporters:
     node_exporter:
       textfile_collectors_dependencies:
@@ -188,7 +188,7 @@ RedHat:
         environ_file: /etc/default/alertmanager
         environ:
           environ_arg_name: ALERTMANAGER_OPTS
-          args: 
+          args:
             config.file: /etc/prometheus/alertmanager.yml
             storage.path: /var/lib/prometheus/alertmanager
       node_exporter:
@@ -211,10 +211,9 @@ RedHat:
         {% else %}
           {%- set releasever = "$releasever" %}
         {%- endif %}
-      # https://akai-tsuki.hatenablog.com/entry/2017/12/03/000000
       # yamllint disable rule:line-length
       baseurl: "https://packagecloud.io/prometheus-rpm/release/el/{{ releasever }}/$basearch"
-      gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey gpgkey2=https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
+      gpgkey: 'https://packagecloud.io/prometheus-rpm/release/gpgkey https://raw.githubusercontent.com/lest/prometheus-rpm/master/RPM-GPG-KEY-prometheus-rpm'
       # yamllint enable rule:line-length
       sslverify: 1
       sslcacert: /etc/pki/tls/certs/ca-bundle.crt
@@ -448,4 +447,3 @@ MacOS:
       statsd_exporter:
         archive:
           source_hash: 15132494523c2b6a89e09b2da63452c8fe587fb82fcc3fd21cc75a4aa2766644
-
