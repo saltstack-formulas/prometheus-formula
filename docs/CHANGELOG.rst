@@ -2,6 +2,27 @@
 Changelog
 =========
 
+`5.6.4 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.3...v5.6.4>`_ (2022-02-26)
+------------------------------------------------------------------------------------------------------------
+
+Bug Fixes
+^^^^^^^^^
+
+
+* **pkgrepo:** remove gpgkey2 file.replace for idempotency (\ `e96c953 <https://github.com/saltstack-formulas/prometheus-formula/commit/e96c9531f90148a703f0df1262149bb4b1c08caa>`_\ )
+
+Continuous Integration
+^^^^^^^^^^^^^^^^^^^^^^
+
+
+* update linters to latest versions [skip ci] (\ `7d5df46 <https://github.com/saltstack-formulas/prometheus-formula/commit/7d5df46905c24d7695a4a1a7c8a5716102e5423d>`_\ )
+
+Tests
+^^^^^
+
+
+* **system:** add ``build_platform_codename`` [skip ci] (\ `2396a13 <https://github.com/saltstack-formulas/prometheus-formula/commit/2396a135b3aa5f2a288c018ac06e630443bb3dab>`_\ )
+
 `5.6.3 <https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.2...v5.6.3>`_ (2022-02-06)
 ------------------------------------------------------------------------------------------------------------
 
