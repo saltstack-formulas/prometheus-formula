@@ -6,7 +6,7 @@
 
 {%- set name = 'node_exporter' %}
 {%- set config = p.exporters[name]['textfile_collectors']['ipmitool'] %}
-{%- set dir = {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+{%- set dir = p.pkg.component[name]['service']['args']['collector.textfile.directory'] %}
 {%- set script = p.dir.archive ~ '/textfile_collectors/ipmitool' %}
 {%- set cmd_prefix = 'awk -f ' if grains.os_family in ['FreeBSD'] else '' %}
 
@@ -15,10 +15,11 @@ prometheus-exporters-install-{{ name }}-textfile_collectors-ipmitool:
     - name: {{ config.pkg }}
   file.managed:
     - name: {{ script }}
-    - source: salt://prometheus/exporters-install/{{ name }}/textfile_collectors/files/ipmitool
+    - source: salt://prometheus/exporters/{{ name }}/textfile_collectors/files/ipmitool
         {%- if grains.os != 'Windows' %}
     - mode: 755
         {%- endif %}
+    - makedirs: True
   cron.present:
     - identifier: prometheus-exporters-{{ name }}-textfile_collectors-ipmitool-cronjob
     - name: cd {{ dir }} && LANG=C ipmitool sensor | {{ cmd_prefix }}{{ script }} > .ipmitool.prom$$; mv .ipmitool.prom$$ ipmitool.prom
