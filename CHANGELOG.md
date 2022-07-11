@@ -1,5 +1,23 @@
 # Changelog
 
+## [5.6.5](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.4...v5.6.5) (2022-07-11)
+
+
+### Bug Fixes
+
+* **storage/install:** correct "owner" param to "user" ([8294f4f](https://github.com/saltstack-formulas/prometheus-formula/commit/8294f4fd30d696e0ed52954608cea2a3938603e6))
+
+
+### Continuous Integration
+
+* update `pre-commit` configuration inc. for pre-commit.ci [skip ci] ([7e63074](https://github.com/saltstack-formulas/prometheus-formula/commit/7e6307429582ede529f5d0a0947836d192113754))
+* **kitchen+gitlab:** update for new pre-salted images [skip ci] ([f870697](https://github.com/saltstack-formulas/prometheus-formula/commit/f8706975574416d3783c5089dc11698bf9c1ef0c))
+
+
+### Tests
+
+* **system.rb:** add support for `mac_os_x` [skip ci] ([5c7c22e](https://github.com/saltstack-formulas/prometheus-formula/commit/5c7c22e4380b6bcf7fe10540873f69dd62d4ffd3))
+
 ## [5.6.4](https://github.com/saltstack-formulas/prometheus-formula/compare/v5.6.3...v5.6.4) (2022-02-26)
 
 
