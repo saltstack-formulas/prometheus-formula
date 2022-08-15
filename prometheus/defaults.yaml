@@ -26,7 +26,6 @@ prometheus:
   pkg:
     uri: https://github.com/prometheus
     use_upstream_repo: false
-    use_upstream_package: true
     use_upstream_archive: false
     deps:
       - gzip

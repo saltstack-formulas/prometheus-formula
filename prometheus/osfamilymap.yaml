@@ -41,7 +41,6 @@ Debian:
     deps:
       - cron
     use_upstream_repo: false
-    use_upstream_package: false
     use_upstream_archive: false
     component:
       alertmanager:
