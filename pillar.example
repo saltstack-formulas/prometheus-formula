@@ -126,6 +126,10 @@ prometheus:
         service:
           args:
             web.listen-address: 0.0.0.0:9090
+          # Enable the service on startup (default: true)
+          enable: true
+          # Reload service if changes occur instead of restarting (default: false)
+          reload: false
         config:
           # yamllint disable-line rule:line-length
           # ref https://raw.githubusercontent.com/prometheus/prometheus/release-2.10/config/testdata/conf.good.yml

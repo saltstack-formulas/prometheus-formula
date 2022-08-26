@@ -33,7 +33,8 @@ prometheus-service-running-{{ name }}-unmasked:
 
 prometheus-service-running-{{ name }}:
   service.running:
-    - enable: True
+    - enable: {{ p.pkg.component[name]['service'].get('enable', True) }}
+    - reload: {{ p.pkg.component[name]['service'].get('reload', False) }}
     - require:
       - sls: {{ sls_config_file }}
             {%- if grains.kernel|lower == 'linux' %}
