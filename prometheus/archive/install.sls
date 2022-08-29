@@ -47,7 +47,6 @@ prometheus-archive-install-{{ name }}:
     {{- format_kwargs(p.pkg.component[name]['archive']) }}
     - trim_output: true
     - enforce_toplevel: false
-    - options: --strip-components=1
     - force: {{ p.force }}
     - retry: {{ p.retry_option|json }}
     - require:
