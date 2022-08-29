@@ -20,6 +20,7 @@ prometheus:
       - postgres_exporter
       - mysqld_exporter
       - memcached_exporter  # not in upstream repo, only archive
+      - prometheus_bigquery_remote_storage_adapter
 
   exporters:
     node_exporter:
@@ -217,6 +218,22 @@ prometheus:
           # yamllint disable-line rule:line-length
           source: https://github.com/wrouesnel/postgres_exporter/releases/download/v0.8.0/postgres_exporter_v0.8.0_linux-amd64.tar.gz
           skip_verify: true
+
+      prometheus_bigquery_remote_storage_adapter:
+        version: v0.4.6
+        service:
+          name: prometheus-bigquery-backend
+          env:
+            - "PROMBQ_DATASET=prometheus"
+            - "PROMBQ_TABLE=metrics_stream"
+            - "PROMBQ_GCP_PROJECT_ID=foobar"
+        archive:
+          official: false
+          name: /opt/prometheus/prometheus_bigquery_remote_storage_adapter
+          options: "--strip-components=0"
+          source: https://github.com/KohlsTechnology/prometheus_bigquery_remote_storage_adapter/releases/download/v0.4.6/prometheus_bigquery_remote_storage_adapter_0.4.6_Linux_x86_64.tar.gz
+          source_hash: https://github.com/KohlsTechnology/prometheus_bigquery_remote_storage_adapter/releases/download/v0.4.6/checksums.txt
+          source_hash_name: prometheus_bigquery_remote_storage_adapter_0.4.6_Linux_x86_64.tar.gz
 
   linux:
     # 'Alternatives system' priority: zero disables (default)
