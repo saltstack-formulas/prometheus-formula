@@ -11,6 +11,7 @@ control 'services with a consistent service name on each distro' do
         prometheus-alertmanager
         prometheus-node-exporter
         prometheus-blackbox-exporter
+        prometheus-bigquery-backend
       ]
     else
       %w[
@@ -18,6 +19,7 @@ control 'services with a consistent service name on each distro' do
         alertmanager
         node_exporter
         blackbox_exporter
+        prometheus-bigquery-backend
       ]
     end
 
