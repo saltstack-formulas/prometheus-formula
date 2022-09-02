@@ -29,6 +29,7 @@
     {%- for name,v in p.pkg.component.items() %}
         {%- set url = None %}
         {%- set dir = name %}
+        {%- do p.pkg.component[name].get('archive', {}).setdefault('options', '--strip-components=1') %}
         {%- if 'version' in v and v.version and 'archive' in v and v.archive and 'uri' in p.pkg %}
             {%- set uri = '%s/%s/releases/download/%s/%s'|format(p.pkg.uri, name, v.version, name) %}
             {%- set url = '%s-%s.%s-%s.tar.gz'|format(uri, v.version|replace('v',''), p.kernel, p.arch) %}
