@@ -15,7 +15,7 @@ prometheus-config-users-install-{{ name }}-group-present:
 
 prometheus-config-users-install-{{ name }}-user-present:
   user.present:
-    - name: {{ name|truncate(32, False, "") }}
+    - name: {{ name|truncate(16, False, "") }}
     - groups:
       - {{ name|truncate(16, False, "") }}
               {%- if grains.os != 'Windows' %}

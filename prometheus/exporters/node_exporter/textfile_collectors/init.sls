@@ -18,7 +18,7 @@ prometheus-exporters-{{ name }}-collector-textfile-dir:
     - name: {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
         {%- if grains.os != 'Windows' %}
     - mode: 755
-    - user: {{ name|truncate(32, False, "") }}
+    - user: {{ name|truncate(16, False, "") }}
     - group: {{ name|truncate(16, False, "") }}
         {%- endif %}
     - makedirs: True

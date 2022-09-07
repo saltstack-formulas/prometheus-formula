@@ -56,7 +56,7 @@ control 'prometheus components' do
   describe group('prometheus_bigqu') do
     it { should exist }
   end
-  describe user('prometheus_bigquery_remote_stora') do
+  describe user('prometheus_bigqu') do
     it { should exist }
   end
   describe directory('/var/lib/prometheus') do

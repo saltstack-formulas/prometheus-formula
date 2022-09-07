@@ -19,7 +19,7 @@ prometheus-config-clean-{{ name }}:
     - name: {{ name }}_environ
              {%- endif %}
   user.absent:
-    - name: {{ name|truncate(32, False, "") }}
+    - name: {{ name|truncate(16, False, "") }}
                 {%- if grains.os_family == 'MacOS' %}
     - onlyif: /usr/bin/dscl . list /Users | grep {{ name }} >/dev/null 2>&1
                 {%- endif %}
