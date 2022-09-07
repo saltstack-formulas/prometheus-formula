@@ -25,8 +25,8 @@ include:
 prometheus-service-args-{{ name }}-data-dir:
   file.directory:
     - name: {{ args['storage.tsdb.path'] }}
-    - user: {{ name|truncate(32) }}
-    - group: {{ name|truncate(32) }}
+    - user: {{ name|truncate(32, False, "") }}
+    - group: {{ name|truncate(16, False, "") }}
     - makedirs: True
     - watch_in:
       - service: prometheus-service-running-{{ name }}

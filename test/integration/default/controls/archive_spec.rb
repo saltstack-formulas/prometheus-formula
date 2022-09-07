@@ -53,10 +53,10 @@ control 'prometheus components' do
   describe user('mysqld_exporter') do
     it { should exist }
   end
-  describe group('prometheus_bigquery_remote_st...') do
+  describe group('prometheus_bigqu') do
     it { should exist }
   end
-  describe user('prometheus_bigquery_remote_st...') do
+  describe user('prometheus_bigquery_remote_stora') do
     it { should exist }
   end
   describe directory('/var/lib/prometheus') do
@@ -173,7 +173,7 @@ control 'prometheus components' do
   end
   describe directory('/var/lib/prometheus/prometheus_bigquery_remote_storage_adapter') do # rubocop:disable Layout/LineLength
     it { should exist }
-    its('group') { should eq 'prometheus_bigquery_remote_st...' }
+    its('group') { should eq 'prometheus_bigqu' }
   end
   describe file("#{service_dir}/prometheus-bigquery-backend.service") do
     it { should exist }

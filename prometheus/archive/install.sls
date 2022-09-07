@@ -98,8 +98,8 @@ prometheus-archive-install-{{ name }}-file-directory:
     - name: {{ p.dir.var }}{{ p.div }}{{ name }}
     - makedirs: True
             {%- if grains.os != 'Windows' %}
-    - user: {{ name|truncate(32) }}
-    - group: {{ name|truncate(32) }}
+    - user: {{ name|truncate(32, False, "") }}
+    - group: {{ name|truncate(16, False, "") }}
     - mode: '0755'
     - require:
       - user: prometheus-config-users-install-{{ name }}-user-present
@@ -123,8 +123,8 @@ prometheus-archive-install-{{ name }}-managed-service:
     - context:
         desc: prometheus - {{ name }} service
         name: {{ name }}
-        user: {{ name|truncate(32) }}
-        group: {{ name|truncate(32) }}
+        user: {{ name|truncate(32, False, "") }}
+        group: {{ name|truncate(16, False, "") }}
         env: {{ p.pkg.component[name]['service'].get('env', [])|tojson }}
         workdir: {{ p.dir.var }}/{{ name }}
         stop: ''
