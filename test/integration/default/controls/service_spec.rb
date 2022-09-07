@@ -11,7 +11,6 @@ control 'services with a consistent service name on each distro' do
         prometheus-alertmanager
         prometheus-node-exporter
         prometheus-blackbox-exporter
-        prometheus-bigquery-backend
       ]
     else
       %w[
@@ -19,7 +18,6 @@ control 'services with a consistent service name on each distro' do
         alertmanager
         node_exporter
         blackbox_exporter
-        prometheus-bigquery-backend
       ]
     end
 
@@ -51,5 +49,13 @@ control 'services with any service name we want to give them' do
   # consul_exporter port
   describe port(9107) do
     it { should be_listening }
+  end
+end
+
+control 'services that should be enabled but not running' do
+  title 'should be enabled'
+  describe service('prometheus-bigquery-backend') do
+    it { should be_enabled }
+    it { should_not be_running }
   end
 end
