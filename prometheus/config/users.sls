@@ -8,16 +8,16 @@
 
 prometheus-config-users-install-{{ name }}-group-present:
   group.present:
-    - name: {{ name }}
+    - name: {{ name|truncate(16, False, "") }}
     - system: true
     - require_in:
       - user: prometheus-config-users-install-{{ name }}-user-present
 
 prometheus-config-users-install-{{ name }}-user-present:
   user.present:
-    - name: {{ name }}
+    - name: {{ name|truncate(16, False, "") }}
     - groups:
-      - {{ name }}
+      - {{ name|truncate(16, False, "") }}
               {%- if grains.os != 'Windows' %}
     - shell: {{ p.shell }}
                   {%- if grains.kernel|lower == 'linux' %}

@@ -53,6 +53,12 @@ control 'prometheus components' do
   describe user('mysqld_exporter') do
     it { should exist }
   end
+  describe group('prometheus_bigqu') do
+    it { should exist }
+  end
+  describe user('prometheus_bigqu') do
+    it { should exist }
+  end
   describe directory('/var/lib/prometheus') do
     it { should exist }
   end
@@ -154,6 +160,23 @@ control 'prometheus components' do
   describe file("#{service_dir}/#{mysqld_exporter_service}.service") do
     it { should exist }
     its('content') { should match 'Environment=DATA_SOURCE_NAME=foo:bar@/' }
+    its('group') { should eq 'root' }
+    its('mode') { should cmp '0644' }
+  end
+  describe directory('/opt/prometheus/prometheus_bigquery_remote_storage_adapter-v0.4.6') do # rubocop:disable Layout/LineLength
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe file('/opt/prometheus/prometheus_bigquery_remote_storage_adapter-v0.4.6/prometheus_bigquery_remote_storage_adapter') do # rubocop:disable Layout/LineLength
+    it { should exist }
+    its('group') { should eq 'root' }
+  end
+  describe directory('/var/lib/prometheus/prometheus_bigquery_remote_storage_adapter') do # rubocop:disable Layout/LineLength
+    it { should exist }
+    its('group') { should eq 'prometheus_bigqu' }
+  end
+  describe file("#{service_dir}/prometheus-bigquery-backend.service") do
+    it { should exist }
     its('group') { should eq 'root' }
     its('mode') { should cmp '0644' }
   end
