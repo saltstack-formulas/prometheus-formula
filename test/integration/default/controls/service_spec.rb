@@ -51,11 +51,3 @@ control 'services with any service name we want to give them' do
     it { should be_listening }
   end
 end
-
-control 'services that should be enabled but not running' do
-  title 'should be enabled'
-  describe service('prometheus-bigquery-backend') do
-    it { should be_enabled }
-    it { should_not be_running }
-  end
-end
