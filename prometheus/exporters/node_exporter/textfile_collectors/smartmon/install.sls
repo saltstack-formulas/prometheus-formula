@@ -2,11 +2,11 @@
 # vim: ft=sls
 
 {%- set tplroot = tpldir.split('/')[0] %}
-{%- from tplroot ~ "/map.jinja" import prometheus with context %}
+{%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
 {%- set name = 'node_exporter' %}
 {%- set config = p.exporters[name]['textfile_collectors']['smartmon'] %}
-{%- set dir = {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
+{%- set dir = p.pkg.component[name]['service']['args']['collector.textfile.directory'] %}
 {%- set script = p.dir.archive ~ '/textfile_collectors/smartmon.sh' %}
 
 prometheus-exporters-install-{{ name }}-textfile_collectors-smartmon:
@@ -23,6 +23,7 @@ prometheus-exporters-install-{{ name }}-textfile_collectors-smartmon:
             {%- if grains.os != 'Windows' %}
     - mode: 755
             {%- endif %}
+    - makedirs: True
   cron.present:
     - identifier: prometheus-exporters-{{ name }}-textfile_collectors-smartmon-cronjob
     - name: cd {{ dir }} && LANG=C {{ script }} > .smartmon.prom$$ && mv .smartmon.prom$$ smartmon.prom

@@ -5,14 +5,11 @@
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 {%- set sls_config_users = tplroot ~ '.config.users' %}
 
-include:
-  - {{ sls_config_users }}
-
 {%- set states = [] %}
 {%- set name = 'node_exporter' %}
 {%- if name in p.wanted.component and 'service' in p.pkg.component[name] %}
 
-    {%- if 'collector' in p.pkg.component[name]['service']['args'] %}
+    {%- if 'collector.textfile.directory' in p.pkg.component[name]['service']['args'] %}
 prometheus-exporters-{{ name }}-collector-textfile-dir:
   file.directory:
     - name: {{ p.pkg.component[name]['service']['args']['collector.textfile.directory'] }}
@@ -32,7 +29,7 @@ prometheus-exporters-{{ name }}-collector-textfile-dir:
 {%-         if v.get('remove', False) %}
 {%-             set state = ".{}.clean".format(k) %}
 {%-         else %}
-{%-             set state = ".{}".format(k) %}
+{%-             set state = ".{}.install".format(k) %}
 {%-         endif %}
 {%-         do states.append(state) %}
 {%-     endif %}
@@ -44,12 +41,14 @@ prometheus-exporters-{{ name }}-textfile-dependencies:
     - pkgs: {{ p.exporters[name]['textfile_collectors_dependencies'] }}
     - require_in:
 {%-     for state in states %}
-      - sls: p.pkg.component[name]['config'][textfile_collectors{{ state }}
+      - sls: {{ tplroot }}.exporters.{{ name }}.textfile_collectors{{ state }}
 {%-     endfor %}
 
-include:
-{%-     for state in states %}
-  - {{ state }}
-{%      endfor %}
     {%- endif %}
 {%- endif %}
+
+include:
+  - {{ sls_config_users }}
+{%- for state in states %}
+  - {{ state }}
+{%  endfor %}
