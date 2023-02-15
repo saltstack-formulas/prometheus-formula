@@ -4,6 +4,7 @@
 {%- set tplroot = tpldir.split('/')[0] %}
 {%- from tplroot ~ "/map.jinja" import prometheus as p with context %}
 
+  {%- if p.manage_user_group or p.pkg.use_upstream_archive %}
   {%- for name in p.wanted.component %}
 
 prometheus-config-users-install-{{ name }}-group-present:
@@ -29,3 +30,4 @@ prometheus-config-users-install-{{ name }}-user-present:
               {%- endif %}
 
   {%- endfor %}
+  {%- endif %}

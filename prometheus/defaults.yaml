@@ -23,6 +23,8 @@ prometheus:
     tmp: /tmp/prometheus
     var: /var/lib/prometheus
 
+  manage_user_group: true
+
   pkg:
     uri: https://github.com/prometheus
     use_upstream_repo: false

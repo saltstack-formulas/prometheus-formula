@@ -13,6 +13,12 @@ prometheus:
       - alertmanager
       - node_exporter
       - blackbox_exporter
+      {%- if grains.os == 'SUSE' %}
+      - hacluster_exporter
+      - postgres_exporter
+      - saptune_exporter
+      - webhook_snmp
+      {%- endif %}
 
   exporters:
     node_exporter:
@@ -31,7 +37,7 @@ prometheus:
 
   pkg:
     # yamllint disable-line rule:braces rule:commas
-    use_upstream_repo: {{ false if grains.os_family|lower in ('debian',) else true }}
+    use_upstream_repo: {{ false if grains.os_family|lower in ('debian','suse',) else true }}
     use_upstream_archive: false
 
     clientlibs:
