@@ -219,7 +219,66 @@ RedHat:
       sslcacert: /etc/pki/tls/certs/ca-bundle.crt
       metadata_expire: 300
 
-Suse: {}
+Suse:
+  manage_user_group: false
+  pkg:
+    use_upstream_repo: false
+    use_upstream_package: false
+    use_upstream_archive: false
+    component:
+      alertmanager:
+        name: golang-github-prometheus-alertmanager
+        service:
+          name: prometheus-alertmanager
+        environ_file: /etc/sysconfig/prometheus-alertmanager
+        args:
+            config.file: /etc/prometheus/alertmanager.yml
+        config_file: /etc/prometheus/alertmanager.yml
+      prometheus:
+        name: golang-github-prometheus-prometheus
+        service:
+          name: prometheus
+        environ_file: /etc/sysconfig/prometheus
+        environ:
+          environ_arg_name: ARGS
+        config_file: /etc/prometheus/prometheus.yml
+      blackbox_exporter:
+        name: prometheus-blackbox_exporter
+        config_file: /etc/prometheus/blackbox.yml
+        service:
+          name: prometheus-blackbox_exporter
+      hacluster_exporter:
+        name: prometheus-ha_cluster_exporter
+        environ_file: /etc/sysconfig/prometheus-ha_cluster_exporter
+        environ:
+          environ_arg_name: ARGS
+        service:
+          name: prometheus-ha_cluster_exporter
+      node_exporter:
+        name: golang-github-prometheus-node_exporter
+        service:
+          name: prometheus-node_exporter
+        environ_file: /etc/sysconfig/prometheus-node_exporter
+        environ:
+          environ_arg_name: ARGS
+      postgres_exporter:
+        name: prometheus-postgres_exporter
+        service:
+          name: prometheus-postgres_exporter
+        environ_file: /etc/sysconfig/prometheus-postgres_exporter
+        environ:
+          environ_arg_name: POSTGRES_EXPORTER_PARAMS
+      saptune_exporter:
+        name: prometheus-saptune_exporter
+        service:
+          name: prometheus-saptune_exporter
+      webhook_snmp:
+        name: prometheus-webhook-snmp
+        service:
+          name: prometheus-webhook-snmp
+        environ_file: /etc/default/prometheus-webhook-snmp
+        environ:
+          environ_arg_name: PROMETHEUS_WEBHOOK_SNMP_OPTIONS
 
 Gentoo:
   pkg:

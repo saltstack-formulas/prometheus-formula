@@ -31,7 +31,12 @@ prometheus-config-file-etc-file-directory:
 
 prometheus-config-file-{{ name }}-file-managed:
   file.managed:
-    - name: {{ p.dir.etc }}{{ p.div }}{{ name }}.yml
+        {%- if 'config_file' in p.pkg.component[name] %}
+        {%- set config_file = p.pkg.component[name]['config_file'] %}
+        {%- else %}
+        {%- set config_file = p.dir.etc ~ p.div ~ name ~ '.yml' %}
+        {%- endif %}
+    - name: {{ config_file }}
     - source: {{ files_switch(['config.yml.jinja'],
                               lookup='prometheus-config-file-' ~ name ~ '-file-managed'
                  )
@@ -40,15 +45,19 @@ prometheus-config-file-{{ name }}-file-managed:
     - template: jinja
             {%- if grains.os != 'Windows' %}
     - mode: 644
+            {%- if p.manage_user_group %}
     - user: {{ name }}
     - group: {{ name }}
+            {%- endif %}
             {%- endif %}
     - context:
         config: {{ p.pkg.component[name]['config']|json }}
     - require:
       - file: prometheus-config-file-etc-file-directory
+            {%- if p.manage_user_group %}
       - user: prometheus-config-users-install-{{ name }}-user-present
       - group: prometheus-config-users-install-{{ name }}-group-present
+            {%- endif %}
     - watch_in:
       - service: prometheus-service-running-{{ name }}
 
@@ -71,15 +80,19 @@ prometheus-config-file-{{ ef }}-file-managed:
     - template: jinja
             {%- if grains.os != 'Windows' %}
     - mode: 644
+            {%- if p.manage_user_group %}
     - user: {{ component }}
     - group: {{ component }}
+            {%- endif %}
             {%- endif %}
     - context:
         config: {{ p.extra_files[ef]['config'] }}
     - require:
       - file: prometheus-config-file-etc-file-directory
+            {%- if p.manage_user_group %}
       - user: prometheus-config-users-install-{{ component }}-user-present
       - group: prometheus-config-users-install-{{ component }}-group-present
+            {%- endif %}
     - watch_in:
       - service: prometheus-service-running-{{ component }}
 

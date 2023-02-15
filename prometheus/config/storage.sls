@@ -24,9 +24,11 @@ prometheus-service-args-{{ name }}-data-dir:
     - makedirs: True
     - watch_in:
       - service: prometheus-service-running-{{ name }}
+            {%- if p.manage_user_group %}
     - require:
       - user: prometheus-config-users-install-{{ name }}-user-present
       - group: prometheus-config-users-install-{{ name }}-group-present
+            {%- endif %}
 
             {%- endif %}
         {% endif %}
